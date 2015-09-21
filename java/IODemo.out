@@ -1,0 +1,82 @@
+Line1import java.io.*;
+Line2public class IOStreamDemo
+Line3{
+Line4	public static void main(String[] args)
+Line5	{
+Line6		try{
+Line7			//1.Buffered input file
+Line8			DataInputStream in = new DataInputStream(
+Line9				new BufferedInputStream(
+Line10				new FileInputStream(args[0])));
+Line11			String s,s2 = new String();
+Line12			while((s = in.readLine()) != null)
+Line13			{
+Line14				s2 += s + "\n";
+Line15			}
+Line16			in.close();
+Line17			//System.out.println(s2);
+Line18			//2.Input from memory
+Line19			StringBufferInputStream in2 = new StringBufferInputStream(s2);
+Line20			int c;
+Line21			//while((c = in2.read()) != -1)
+Line22			//	System.out.print((char)c);
+Line23			//3.Formatted memory input
+Line24			try{
+Line25				DataInputStream in3 = new DataInputStream(
+Line26					new StringBufferInputStream(s2));
+Line27				//while(true)
+Line28					System.out.print((char)(in3.readByte()));
+Line29			}
+Line30			catch(EOFException e){
+Line31				System.out.println("End of stream encountered");
+Line32			}
+Line33			//4.Line numbering & file output
+Line34			try{
+Line35				LineNumberInputStream li = new LineNumberInputStream(
+Line36					new StringBufferInputStream(s2));
+Line37				DataInputStream in4 = new DataInputStream(li);
+Line38				PrintStream out1 =  new PrintStream(
+Line39					new BufferedOutputStream(
+Line40					new FileOutputStream("IODemo.out")));
+Line41				while((s = in4.readLine()) != null)
+Line42					out1.println("Line" + li.getLineNumber() +s);
+Line43				out1.close();
+Line44			}
+Line45			catch(EOFException e){
+Line46				System.out.println("End of stream encountered");
+Line47			}
+Line48			//5.Storing & recovering data
+Line49			try{
+Line50				DataOutputStream out2 = new DataOutputStream(
+Line51					new BufferedOutputStream(
+Line52					new FileOutputStream("Data.txt")));
+Line53				out2.writeBytes("Here's ths value of pi:\n");
+Line54				out2.writeDouble(3.14159);
+Line55				out2.close();
+Line56				DataInputStream in5 = new DataInputStream(
+Line57					new BufferedInputStream(
+Line58					new FileInputStream("Data.txt")));
+Line59				System.out.println(in5.readLine());
+Line60				System.out.println(in5.readDouble());
+Line61			}catch(EOFException e){
+Line62				System.out.println("End of stream encounted");
+Line63			}
+Line64			//6.Reading/writing random access files
+Line65			RandomAccessFile rf = new RandomAccessFile("rtest.dat","rw");
+Line66			for(int i = 0; i < 10; ++i)
+Line67				rf.writeDouble(i * 1.414);
+Line68			rf.close();
+Line69			rf = new RandomAccessFile("rtest.dat","rw");
+Line70			rf.seek(5*8);
+Line71			rf.writeDouble(47.0001);
+Line72			rf.close();
+Line73			rf = new RandomAccessFile("rtest.dat","r");
+Line74			for(int i = 0 ; i < 10; ++i)
+Line75				System.out.println("Value"+i+":"+rf.readDouble());
+Line76			rf.close();
+Line77		}
+Line78		catch(Exception e){
+Line79			e.printStackTrace();
+Line80		}
+Line81	}
+Line82}

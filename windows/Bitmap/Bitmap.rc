@@ -1,0 +1,10 @@
+//Microsoft Developer Studio generated resource script.
+#include "resource.h"
+
+#include "afxres.h"
+        
+/////////////////////////////////////////////////////////////////////////////
+        
+// Bitmap
+        
+BRICKS                                    BITMAP  DISCARDABLE     "Blue hills.bmp"

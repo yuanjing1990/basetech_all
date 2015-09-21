@@ -1,0 +1,51 @@
+#ifndef YJ_SINGLETON_H
+#define YJ_SINGLETON_H
+
+/*
+Singleton Model
+usage:
+inherit from this class then define this class as friend,
+at last define Dest class's non-parameter constructor as protected
+从此类特化类继承并把此类特化类定义为友元类
+最后定义成员为protected访问
+example:
+//继承自特化类
+class name : public Singleton<name>
+{
+	//特化类声明为友元
+	friend class Singleton<name>;
+	//定义无参数构造函数并设置为protected访问
+	protected:
+		name();
+	public:
+		//自定义此类提供的操作
+		void Operator();
+		...2014/5/14
+}
+*/
+
+template <typename T>
+class Singleton
+{
+	private:
+		static T* _instance;
+	protected:
+		Singleton(){};
+	public:
+		virtual ~Singleton(){};
+		static T* GetSingleton(){
+			if(_instance == 0)
+				_instance = new T;
+			return _instance;
+		}
+		static void Release(){
+			if(_instance != 0)
+				delete _instance;
+			_instance = 0;
+		}
+};
+
+template <typename T>
+T* Singleton<T>::_instance = 0;
+
+#endif

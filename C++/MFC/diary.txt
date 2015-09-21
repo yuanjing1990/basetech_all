@@ -1,0 +1,436 @@
+MFC是Miscrosoft Foundation Classes的缩写，是微软对Windows API的封装，所以要学习MFC，首先要对Win32程序有一个基本的了解，下面用一个例子来说明Win32程序的基本结构。
+
+////////////////////////////////////////////////////
+//test1.cpp
+//编译：cl /EHsc test1.cpp user32.lib
+#include <windows.h>
+CHAR g_appName[] = "TestWin32";
+//消息处理函数
+LRESULT CALLBACK WndProc(HWND hWnd,UINT nMsg,WPARAM wParam,LPARAM lParam);
+//错误输出函数
+void ErrorOutput();
+//主入口函数
+int WinMain(HINSTANCE hInst,HINSTANCE hPreInst,LPSTR lpCmd,int iCmdShow)
+{
+	//定义窗体类，最主要的是定义了窗体类的消息处理函数入口
+	WNDCLASS wc;
+	wc.style = CS_HREDRAW|CS_VREDRAW;
+	wc.lpfnWndProc = WndProc;//指定消息处理函数入口
+	wc.cbClsExtra = 0;
+	wc.cbWndExtra = 0;
+	wc.hInstance = hInst;
+	wc.hIcon = LoadIcon(NULL,IDI_APPLICATION);
+	wc.hCursor = LoadCursor(NULL,IDC_ARROW);
+	wc.hbrBackground = (HBRUSH)COLOR_BACKGROUND;
+	wc.lpszMenuName = NULL;
+	wc.lpszClassName = g_appName;
+
+	//在注册表中注册上面定义的窗体类
+	if(!RegisterClass(&wc))//user32.lib
+	{
+		ErrorOutput();
+		return -1;
+	}
+
+	//利用前面定义的窗体类来创建窗体对象
+	HWND hWnd = CreateWindow(g_appName,"Test",WS_OVERLAPPEDWINDOW,
+							 CW_USEDEFAULT,CW_USEDEFAULT,CW_USEDEFAULT,CW_USEDEFAULT,
+							 NULL,NULL,hInst,NULL);
+	if(hWnd == NULL)
+	{
+		ErrorOutput();
+		return -1;
+	}
+
+	//显示窗体对象
+	ShowWindow(hWnd,iCmdShow);
+	UpdateWindow(hWnd);
+
+	MSG msg;
+	//开始消息处理循环
+	while(GetMessage(&msg,NULL,0,0))
+	{
+		TranslateMessage(&msg);
+		DispatchMessage(&msg);
+	}
+	return 0;
+}
+
+LRESULT CALLBACK WndProc(HWND hWnd,UINT nMsg,WPARAM wParam,LPARAM lParam)
+{
+	switch(nMsg)
+	{
+		//关闭窗口时要发送WM_QUIT，否则不能结束进程
+		case WM_DESTROY:
+			PostQuitMessage(0);
+			return 0;
+	}
+	//使用默认的消息处理函数
+	return DefWindowProc(hWnd,nMsg,wParam,lParam);
+}
+
+void ErrorOutput()
+{
+	LPVOID lpMsgBuf;
+	FormatMessage( 
+		FORMAT_MESSAGE_ALLOCATE_BUFFER | 
+		FORMAT_MESSAGE_FROM_SYSTEM | 
+		FORMAT_MESSAGE_IGNORE_INSERTS,
+		NULL,
+		GetLastError(),
+		0, // Default language
+		(LPTSTR) &lpMsgBuf,
+		0,
+		NULL);
+
+	MessageBox(NULL,(LPCTSTR)lpMsgBuf,"Error",MB_OK);
+	LocalFree(lpMsgBuf);
+}
+////////////////////////////////////////////////////
+上面的程序要点可以规纳如下：
+1、设置窗体类的各个属性并注册此窗体类。
+2、定义窗体类的消息处理函数。
+3、根据注册的窗体类来创建应用程序的窗体。
+4、显示注册的窗体并开始消息循环。
+
+因为MFC对上面的过程进行了封装，所以在MFC程序中，上面大部分的过程我们是看不见的。但为了能随心所欲的使用MFC(获取更大程度上是满足我们的好奇心(∩_∩))，我们就需要弄清楚MFC程序和上面的程序中各个过程的对应关系。
+下面我们在来看一个使用MFC的封装库完成的简单的窗体程序。
+///////////////////////////////////////////////////
+//file:test2.cpp
+//编译：cl /c /EHsc test2.cpp
+//连接：link /SUBSYSTEM:WINDOWS test2.obj
+#include <afxwin.h>
+class MyApp : public CWinApp
+{
+	public:
+		virtual BOOL InitInstance();
+};
+class MyFrame : public CFrameWnd
+{
+	public:
+		MyFrame();
+};
+MyFrame::MyFrame()
+{
+	Create(0,_T("My App"));
+}
+BOOL MyApp::InitInstance()
+{
+	m_pMainWnd = new MyFrame();
+	m_pMainWnd->ShowWindow(m_nCmdShow);
+	m_pMainWnd->UpdateWindow();
+	return true;
+}
+MyApp g_app;
+///////////////////////////////////////////////////
+上面的代码确实比直接使用WIN32 API要简单很多。但是对比第一个程序中的要点，我们原来总结的要点在这里却再也找不到对应了。
+MFC到底做了什么？注册窗体、创建窗体和消息循环等过程都在哪里？带着上面的这些疑问，让我们来剖析上面的这个“简单的”MFC程序吧！
+
+首先要找出程序的入口函数，但这个程序中很明显没有像WinMain这样的函数，它到底隐藏在哪里呢？
+回头看这个程序，实际上可以运行的代码就只有：
+MyApp g_app;
+这句定义全局变量的代码，定义变量时会执行构造函数，但MyApp类定义中并没有定义构造函数，所以这我们把目光投向了它的基类CWinApp上。
+查看CWinApp的定义如下：
+CWinApp::CWinApp(LPCTSTR lpszAppName)
+{
+	if (lpszAppName != NULL)
+		m_pszAppName = _tcsdup(lpszAppName);
+	else
+		m_pszAppName = NULL;
+
+	// initialize CWinThread state
+	AFX_MODULE_STATE* pModuleState = _AFX_CMDTARGET_GETSTATE();
+	ENSURE(pModuleState);
+	AFX_MODULE_THREAD_STATE* pThreadState = pModuleState->m_thread;
+	ENSURE(pThreadState);
+	ASSERT(AfxGetThread() == NULL);
+	pThreadState->m_pCurrentWinThread = this;
+	ASSERT(AfxGetThread() == this);
+	m_hThread = ::GetCurrentThread();
+	m_nThreadID = ::GetCurrentThreadId();
+
+	// initialize CWinApp state
+	ASSERT(afxCurrentWinApp == NULL); // only one CWinApp object please
+	pModuleState->m_pCurrentWinApp = this;
+	ASSERT(AfxGetApp() == this);
+
+	// 下面省略了部分成员的初始化
+	//---------------------------
+}
+上面的构造函数中只有成员的初始化过程，并没有WinMain这样的函数掉用。
+回头看看此时的调用堆栈，可以看到栈顶有wWinMainCRTStartup()这样的函数调用，有可能这个就是程序的入口函数。
+但入口为什么会变成(w)WinMainCRTStartup而不是原来默认的(w)WinMain,前面的w表示是相应的宽字符程序入口。
+如果你的MFC程序是自动生成的，依次选取属性->链接器->命令行，可以看到/ENTRY:"wWinMainCRTStartup"这样的链接属性。
+我们的示例MFC程序链接时并没有使用/ENTRY:"wWinMainCRTStartup"选项，可能VC的链接器会自动设置MFC程序的入口。
+好，既然找到的MFC程序的入口，接下来看看它是怎样和MFC代码相关联的。
+从上面的入口函数往下看，可以看到wWinMain这样的函数调用（这个不就是WIN32程序的入口吗！）。
+然后看wWinMain的定义，看到调用AfxWinMain,继续深入，AfxWinInit函数中可以看到下面的调用
+pThread->InitInstance();
+而这个调用会使用我们在MyApp类中重定义的此函数。
+pThread是CWinThread类型的指针，但根据调用的结果看，它实际上是指向MyApp对象的。
+探究它们的继承关系如下：CWinThread->CWinApp->MyApp。前面依次是后面的基类。
+再看AfxWinMain定义，还有：
+pThread->ExitInstance();
+pThread->Run();
+所以函数ExitInstance()和Run()应该也是可以被MyApp类重定义的。
+
+调用顺序为wWinMainCRTStartup,wWinMain,AfxWinMain,AfxWinInit
+
+----------------------------------------------------------
+前面关于程序入口点的说明有点问题：
+并不是只有MFC的程序入口才是(w)WinMainCRTStartup,所有的程序的入口都是(w)WinMainCRTStartup。
+进入(w)WinMainCRTStartup后再根据程序类型分别调用(w)WinMain或(w)main。所以MFC程序入口和WIN32
+程序入口其实都是(w)WinMain,只不过MFC程序的(w)WinMain被MFC已有的代码定义了，不用我们再定义。
+另：MFC定义的(w)WinMain只是调用了AfxWinMain，程序运行的相关内容都在AfxWinMain中，所以修改
+AfxWinMain()中函数调用pThread->InitInstance(),pThread->ExitInstance(),pThread->Run()等函数
+就可以修改程序的运行效果。
+----------------------------------------------------------
+
+来看看我们自定义的InitInstance()都做了些什么？
+我们一句句的看：
+m_pMainWnd = new MyFrame();
+m_pMainWnd应该是MyApp基类中的成员，是一个CWnd对象指针。
+此句在堆中分配了一个MyFrame对象并赋值给了m_pMainWnd，创建MyFrame对象时调用的基类的函数CFrameWnd::Create。
+进入Create,调用了基类CWnd::CreateEx函数，可以看到调用了CFrameWnd::PreCreateWindow，而此函数又调用了
+AfxEndDeferRegisterClass,在这个函数中就可以AfxRegisterClassXXX函数调用，此函数就注册了窗口类，窗口类中
+指定了Windows默认的消息处理函数DefWindowProc。
+
+对于上面的过程我们可能会对设置的消息处理函数有疑问，如果创建的窗口的消息处理函数是Windows默认的消息处理，
+那么MFC如何对各种消息进行响应呢？对于这个问题我们回到CWnd::CreateEx函数中，我们可以看到在CFrameWnd::PreCreateWindow
+函数调用之后有会调用AfxHookWindowCreate这个函数，进入此函数可以看到调用SetWindowsHookEx，此函数在消息处理
+链中塞入了函数_AfxCbtFilterHook，再来看看_AfxCbtFilterHook函数做了些什么！
+先贴出源码：
+LRESULT CALLBACK
+_AfxCbtFilterHook(int code, WPARAM wParam, LPARAM lParam)
+{
+	_AFX_THREAD_STATE* pThreadState = _afxThreadState.GetData();
+	if (code != HCBT_CREATEWND)
+	{
+		// wait for HCBT_CREATEWND just pass others on...
+		return CallNextHookEx(pThreadState->m_hHookOldCbtFilter, code,
+			wParam, lParam);
+	}
+
+	ASSERT(lParam != NULL);
+	LPCREATESTRUCT lpcs = ((LPCBT_CREATEWND)lParam)->lpcs;
+	ASSERT(lpcs != NULL);
+
+	CWnd* pWndInit = pThreadState->m_pWndInit;
+	BOOL bContextIsDLL = afxContextIsDLL;
+	if (pWndInit != NULL || (!(lpcs->style & WS_CHILD) && !bContextIsDLL))
+	{
+		...
+		ASSERT(wParam != NULL); // should be non-NULL HWND
+		HWND hWnd = (HWND)wParam;
+		WNDPROC oldWndProc;
+		if (pWndInit != NULL)
+		{
+			AFX_MANAGE_STATE(pWndInit->m_pModuleState);
+
+			// the window should not be in the permanent map at this time
+			ASSERT(CWnd::FromHandlePermanent(hWnd) == NULL);
+
+			// connect the HWND to pWndInit...
+			pWndInit->Attach(hWnd);
+			// allow other subclassing to occur first
+			pWndInit->PreSubclassWindow();
+
+			WNDPROC *pOldWndProc = pWndInit->GetSuperWndProcAddr();
+			ASSERT(pOldWndProc != NULL);
+
+			// subclass the window with standard AfxWndProc
+			WNDPROC afxWndProc = AfxGetAfxWndProc();
+			oldWndProc = (WNDPROC)SetWindowLongPtr(hWnd, GWLP_WNDPROC,
+				(DWORD_PTR)afxWndProc);
+			ASSERT(oldWndProc != NULL);
+			if (oldWndProc != afxWndProc)
+				*pOldWndProc = oldWndProc;
+
+			pThreadState->m_pWndInit = NULL;
+		}
+		else
+		{
+			ASSERT(!bContextIsDLL);   // should never get here
+			...
+		}
+	}
+
+lCallNextHook:
+	LRESULT lResult = CallNextHookEx(pThreadState->m_hHookOldCbtF, code,
+		wParam, lParam);
+	...
+	return lResult;
+}
+
+在上面一段代码中我们看到此构造函数只拦截了窗口创建消息的处理，其他消息并没有拦截，并在处理时调用
+SetWindowLongPtr(hWnd, GWLP_WNDPROC,(DWORD_PTR)afxWndProc);
+如果你学过Win32编程，一定知道这个调用就是来修改窗口的处理函数的，这个函数把主窗口的处理函数
+修改成了afxWndProc，这个是MFC内部定义函数，其有又调用了AfxCallWndProc，此函数调用CWnd::WindowProc,
+在CWnd::WindowProc中又调用CWnd::OnWndMsg，在CWnd::OnWndMsg中就可以看到OnCommand，OnNotify函数调用，以及
+在消息映射表中查找消息的过程，精简之后源码如下：
+BOOL CWnd::OnWndMsg(UINT message, WPARAM wParam, LPARAM lParam, LRESULT* pResult)
+{
+	LRESULT lResult = 0;
+	union MessageMapFunctions mmf;
+	mmf.pfn = 0;
+	CInternalGlobalLock winMsgLock;
+	// special case for commands
+	if (message == WM_COMMAND)
+	{
+		if (OnCommand(wParam, lParam))
+		{
+			lResult = 1;
+			goto LReturnTrue;
+		}
+		return FALSE;
+	}
+
+	// special case for notifies
+	if (message == WM_NOTIFY)
+	{
+		NMHDR* pNMHDR = (NMHDR*)lParam;
+		if (pNMHDR->hwndFrom != NULL && OnNotify(wParam, lParam, &lResult))
+			goto LReturnTrue;
+		return FALSE;
+	}
+	...
+
+	const AFX_MSGMAP* pMessageMap; pMessageMap = GetMessageMap();
+	UINT iHash; iHash = (LOWORD((DWORD_PTR)pMessageMap) ^ message) & (iHashMax-1);
+	winMsgLock.Lock(CRIT_WINMSGCACHE);
+	AFX_MSG_CACHE* pMsgCache; pMsgCache = &_afxMsgCache[iHash];
+	const AFX_MSGMAP_ENTRY* lpEntry;
+	if (message == pMsgCache->nMsg && pMessageMap == pMsgCache->pMessageMap)
+	{
+		...
+	}
+	else
+	{
+		// not in cache, look for it
+		pMsgCache->nMsg = message;
+		pMsgCache->pMessageMap = pMessageMap;
+
+		for (/* pMessageMap already init'ed */; pMessageMap->pfnGetBaseMap != NULL;
+			pMessageMap = (*pMessageMap->pfnGetBaseMap)())
+		{
+			// Note: catch not so common but fatal mistake!!
+			//      BEGIN_MESSAGE_MAP(CMyWnd, CMyWnd)
+			ASSERT(pMessageMap != (*pMessageMap->pfnGetBaseMap)());
+			if (message < 0xC000)
+			{
+				// constant window message
+				if ((lpEntry = AfxFindMessageEntry(pMessageMap->lpEntries,
+					message, 0, 0)) != NULL)
+				{
+					pMsgCache->lpEntry = lpEntry;
+					winMsgLock.Unlock();
+					goto LDispatch;
+				}
+			}
+			else
+			{
+				// registered windows message
+				lpEntry = pMessageMap->lpEntries;
+				while ((lpEntry = AfxFindMessageEntry(lpEntry, 0xC000, 0, 0)) != NULL)
+				{
+					UINT* pnID = (UINT*)(lpEntry->nSig);
+					ASSERT(*pnID >= 0xC000 || *pnID == 0);
+						// must be successfully registered
+					if (*pnID == message)
+					{
+						pMsgCache->lpEntry = lpEntry;
+						winMsgLock.Unlock();
+						goto LDispatchRegistered;
+					}
+					lpEntry++;      // keep looking past this one
+				}
+			}
+		}
+
+		pMsgCache->lpEntry = NULL;
+		winMsgLock.Unlock();
+		return FALSE;
+	}
+LDispatchRegistered:    // for registered windows messages
+	ASSERT(message >= 0xC000);
+	ASSERT(sizeof(mmf) == sizeof(mmf.pfn));
+	mmf.pfn = lpEntry->pfn;
+	lResult = (this->*mmf.pfn_l_w_l)(wParam, lParam);
+
+LReturnTrue:
+	if (pResult != NULL)
+		*pResult = lResult;
+	return TRUE;
+}
+消息分为命令消息、控件通行以及窗口消息，上面的函数中OnCommand处理命令消息，OnNotify处理控件通知，
+窗口消息的处理是查找MessageMap对应条目然后调用处理函数，查找MessageMap时向基类的MessageMap回溯，
+我们的例子程序中最先查找的MyFrame的MessageMap，之后依次调用CFrameWnd,CWnd,CCmdTarget,CObject的
+MessageMap，从上面的说明中可以得到窗口消息的传导路径是直接从派生类传递到基类的。
+下面来看看处理命令消息的OnCommand函数和处理控件通知消息的OnNotify函数。
+调用OnCommand函数的窗口指针是MyFrame类型，所以实际要调用的是MyFrame::OnCommand，MyFrame中没有重写
+此函数，那么调用的就是CFrameWnd::OnCommand,进入后接着调用CWnd::OnCommand,在此函数中又调用了
+CFrameWnd::OnCmdMsg，此函数代码如下：
+BOOL CFrameWnd::OnCmdMsg(UINT nID, int nCode, void* pExtra,
+	AFX_CMDHANDLERINFO* pHandlerInfo)
+{
+	CPushRoutingFrame push(this);
+
+	// pump through current view FIRST
+	CView* pView = GetActiveView();
+	if (pView != NULL && pView->OnCmdMsg(nID, nCode, pExtra, pHandlerInfo))
+		return TRUE;
+
+	// then pump through frame
+	if (CWnd::OnCmdMsg(nID, nCode, pExtra, pHandlerInfo))
+		return TRUE;
+
+	// last but not least, pump through app
+	CWinApp* pApp = AfxGetApp();
+	if (pApp != NULL && pApp->OnCmdMsg(nID, nCode, pExtra, pHandlerInfo))
+		return TRUE;
+
+	return FALSE;
+}
+重上面的代码可以看出，命令消息先由CView处理，再交由CFrameWnd处理，最后给CWinApp处理，而且被其中一个类型
+处理之后就不会再被后面的类型处理。这里OnCmdMsg函数调用的都是CCmdTarget::OnCmdMsg函数，此函数源码如下：
+BOOL CCmdTarget::OnCmdMsg(UINT nID, int nCode, void* pExtra,
+	AFX_CMDHANDLERINFO* pHandlerInfo)
+{
+	// determine the message number and code (packed into nCode)
+	const AFX_MSGMAP* pMessageMap;
+	const AFX_MSGMAP_ENTRY* lpEntry;
+	UINT nMsg = 0;
+
+	if (nCode != CN_UPDATE_COMMAND_UI)
+	{
+		nMsg = HIWORD(nCode);
+		nCode = LOWORD(nCode);
+	}
+
+	// for backward compatibility HIWORD(nCode)==0 is WM_COMMAND
+	if (nMsg == 0)
+		nMsg = WM_COMMAND;
+
+	// look through message map to see if it applies to us
+
+	for (pMessageMap = GetMessageMap(); pMessageMap->pfnGetBaseMap != NULL;
+	  pMessageMap = (*pMessageMap->pfnGetBaseMap)())
+	{
+		// Note: catches BEGIN_MESSAGE_MAP(CMyClass, CMyClass)!
+		ASSERT(pMessageMap != (*pMessageMap->pfnGetBaseMap)());
+		lpEntry = AfxFindMessageEntry(pMessageMap->lpEntries, nMsg, nCode, nID);
+		if (lpEntry != NULL)
+		{
+			return _AfxDispatchCmdMsg(this, nID, nCode,
+				lpEntry->pfn, pExtra, lpEntry->nSig, pHandlerInfo);
+		}
+	}
+	return FALSE;   // not handled
+}
+此函数也是依次从派生类到基类查找消息处理表，调用处理函数，从上面的说明可以知道，一条命令消息的
+处理路径是先传递给CView的派生类，之后传递给CFrameWnd的派生类及基类，最后传递给CWinApp的派生类。
+CWnd::OnNotify也是调用了CFrameWnd::OnCmdMsg，所以控件通知和命令消息的处理路径一样。
+下面借用《深入浅出MFC》中的一张图来作个总结，MFC中的消息处理路径如图中红色箭头所示：
+--图Message Route.png
+
+

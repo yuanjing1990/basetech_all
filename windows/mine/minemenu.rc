@@ -1,0 +1,13 @@
+#include "resource.h"
+#include "afxres.h"
+MINE MENU DISCARDABLE
+BEGIN
+	POPUP "&File"
+	BEGIN
+		MENUITEM "&Begin",	IDM_FILE_BEGIN
+		MENUITEM "&ReBegin",	IDM_FILE_REBEGIN
+		MENUITEM "E&xit",	IDM_APP_EXIT
+	END
+	
+	MENUITEM "&Help",	IDM_APP_HELP
+END
