@@ -16,7 +16,7 @@ int main(int argc,char** argv)
 		tcp::resolver::iterator endpoint_iterator = resolver.resolve(query);
 		boost::system::error_code error = boost::asio::error::host_not_found;
 		tcp::socket socket(io_service);
-		//socket.connect(endpoint_iterator,error);
+		socket.connect(*endpoint_iterator,error);
 		for(;;)
 		{
 			boost::array<char,128> buf;
