@@ -1,11 +1,12 @@
 DIRS=$(foreach i,$(shell ls),$(shell if [ -d ./$(i) ]; then echo $(i);fi))
 all:$(DIRS)
 
-MyDirectX:
-	cd MyDirectX && make
-tutorial:
-	cd tutorial && make
-VectexShader:
+#MyDirectX:
+#	cd MyDirectX && make
+#tutorial:
+#	cd tutorial && make
+#VectexShader:
+$(DIRS):
 	cd $@ && make
 	
 clean:
