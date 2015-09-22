@@ -1,17 +1,42 @@
-OBJTMP=DXUT.obj DXUTenum.obj DXUTmisc.obj
-COMLIB=dxerr.lib dxguid.lib d3dx9d.lib d3d9.lib winmm.lib comctl32.lib  kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib
+SRC_EXTEND=.cpp
+OBJ_EXTEND=.obj
+EXE_EXTEND=.exe
 
-VertexShader.exe:VertexShader.obj dxut.lib
-	cl /Gm VertexShader.obj $(COMLIB) dxut.lib
+CPP=cl.exe
+LD=link.exe
 
-VertexShader.obj:VertexShader.c
-	cl /TP /c VertexShader.c
+#compile flags setting
+CPPFLAGS+=-D_WIN32_WINNT=0x0501
+CPPFLAGS+=-DUNICODE
+CPPFLAGS+=/MDd
+CPPFLAGS+=/EHsc
+CPPFLAGS+=/I D:/DirectxSDK/Include
+#LDFLAGS+=/MANIFEST:no
+LDFLAGS+=/DYNAMICBASE
+LDFLAGS+=/LIBPATH:D:/DirectxSDK/Lib/x86
+LDFLAGS+=kernel32.lib user32.lib gdi32.lib comctl32.lib shell32.lib winmm.lib dxerr9.lib d3d9.lib d3dx9.lib
 
-DXUT.lib:$(OBJTMP)
-	lib DXUT.obj DXUTenum.obj DXUTmisc.obj $(COMLIB)
+#default rule setting
+%.exe: %.obj
+	$(LD) $(LDFLAGS) $< /OUT:$@
+%.obj: %.cpp
+	$(CPP) /c $(CPPFLAGS) $< /Fo$@
 
-$(OBJTMP):DXUT.h DXUT.cpp DXUTenum.h DXUTenum.cpp DXUTmisc.h DXUTmisc.cpp
-	cl /c /TP /D"UNICODE" DXUT.cpp DXUTenum.cpp DXUTmisc.cpp
+#source file,obj file and exe file setting
+SRC_FILES=$(shell ls *$(SRC_EXTEND))
+OBJ_FILES=$(SRC_FILES:%$(SRC_EXTEND)=%$(OBJ_EXTEND))
+#EXE_FILES=$(SRC_FILES:%$(SRC_EXTEND)=%$(EXE_EXTEND))
+EXE_FILES=Test.exe
 
-CLEAR:
-	del *.obj *.exe *.lib
+#dest setting
+all:$(EXE_FILES)
+
+$(EXE_FILES):$(OBJ_FILES)
+	$(LD) $(LDFLAGS) $^ /OUT:$@
+
+clean:
+	@echo 'cleaning C++...'
+	-rm $(OBJ_FILES) *.ilk *.pdb *.manifest
+	@echo 'clean end.'
+
+.PHONY:all clean

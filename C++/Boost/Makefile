@@ -9,11 +9,8 @@ LD=link.exe
 CPPFLAGS+=-D_WIN32_WINNT=0x0501
 CPPFLAGS+=/MDd
 CPPFLAGS+=/EHsc
-CPPFLAGS+=/I D:/DirectxSDK/Include
-#LDFLAGS+=/MANIFEST:no
+LDFLAGS+=/MANIFEST:no
 LDFLAGS+=/DYNAMICBASE
-LDFLAGS+=/LIBPATH:D:/DirectxSDK/Lib/x86
-LDFLAGS+=kernel32.lib user32.lib d3dx9.lib d3d9.lib
 
 #default rule setting
 %.exe: %.obj
@@ -24,18 +21,12 @@ LDFLAGS+=kernel32.lib user32.lib d3dx9.lib d3d9.lib
 #source file,obj file and exe file setting
 SRC_FILES=$(shell ls *$(SRC_EXTEND))
 OBJ_FILES=$(SRC_FILES:%$(SRC_EXTEND)=%$(OBJ_EXTEND))
-#EXE_FILES=$(SRC_FILES:%$(SRC_EXTEND)=%$(EXE_EXTEND))
-EXE_FILES=Test.exe
+EXE_FILES=$(SRC_FILES:%$(SRC_EXTEND)=%$(EXE_EXTEND))
 
 #dest setting
 all:$(EXE_FILES)
 
-$(EXE_FILES):$(OBJ_FILES)
-	$(LD) $(LDFLAGS) $^ /OUT:$@
-
 clean:
-	@echo 'cleaning C++...'
 	-rm $(OBJ_FILES) *.ilk *.pdb *.manifest
-	@echo 'clean end.'
 
 .PHONY:all clean

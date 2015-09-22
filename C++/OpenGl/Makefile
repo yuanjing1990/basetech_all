@@ -9,11 +9,8 @@ LD=link.exe
 CPPFLAGS+=-D_WIN32_WINNT=0x0501
 CPPFLAGS+=/MDd
 CPPFLAGS+=/EHsc
-CPPFLAGS+=/I D:/DirectxSDK/Include
 #LDFLAGS+=/MANIFEST:no
 LDFLAGS+=/DYNAMICBASE
-LDFLAGS+=/LIBPATH:D:/DirectxSDK/Lib/x86
-LDFLAGS+=kernel32.lib user32.lib d3dx9.lib d3d9.lib
 
 #default rule setting
 %.exe: %.obj

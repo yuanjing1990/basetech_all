@@ -24,7 +24,7 @@ int main(int argc,char** argv)
 			std::cout << "IP:" << socket.local_endpoint().address().to_string() << std::endl;
 			std::string message = make_daytime_string();
 			boost::system::error_code ignored_error;
-			boost::asio::write(socket,boost::asio::buffer(message), ignored_error);
+			//boost::asio::write(socket,boost::asio::buffer(message), ignored_error);
 		}
 	}catch(std::exception& e){
 		std::cerr << e.what() << std::endl;

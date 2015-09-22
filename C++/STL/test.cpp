@@ -28,8 +28,8 @@ int main(int argc,char** argv)
 	//t.wait();
 	std::cout << "Hello World!\n";
 	
-	using namespace boost::gregorian;
-	date today = day_clock::local_day();
-	std::cout << today << std::endl;
+	//using namespace boost::gregorian;
+	//date today = day_clock::local_day();
+	//std::cout << today << std::endl;
 	return 0;
 }

@@ -1,62 +1,36 @@
-#
-# sample makefile to illustrate batch-mode inference rules
-#
-O = .
-S = .
-Objs = $O/ColorCode.obj $O/streamiterator.obj $O/usevector.obj $O/example_istream_iterator.obj $O/limit.obj $O/any_main.obj\
- $O/auto_ptr.obj $O/constructor.obj $O/newhandler.obj $O/overnew.obj $O/preprocess.obj $O/rtti.obj $O/streambuffer.obj $O/memorycheck.obj
-Dest = $O/ColorCode.exe $O/streamiterator.exe $O/usevector.exe $O/example_istream_iterator.exe $O/limit.exe $O/any_main.obj\
- $O/auto_ptr.exe $O/constructor.exe $O/newhandler.exe $O/overnew.exe $O/preprocess.exe $O/rtti.exe $O/streambuffer.exe $O/memorycheck.exe\
- Dir_example_boost Dir_exprtmp Dir_meta Dir_mystl Dir_parameter Dir_search Dir_traits Dir_types
-CPPFLAGS = -nologo /EHsc
+SRC_EXTEND=.cpp
+OBJ_EXTEND=.obj
+EXE_EXTEND=.exe
 
+CPP=cl.exe
+LD=link.exe
 
-$(Dest) :
+#compile flags setting
+CPPFLAGS+=-D_WIN32_WINNT=0x0501
+CPPFLAGS+=/EHsc
+CPPFLAGS+=/MDd
+LDFLAGS+=/MANIFEST
+#LDFLAGS+=/MANIFESTDEPENDENCY:type="Win32"
+#LDFLAGS+=/MANIFESTUAC:level=asInvoker
+#LDFLAGS+=/INCREMENTAL:no
 
-{$S}.obj{$O}.exe::
-   $(CC) $(CPPFLAGS) -Fd$O\ $<
-#!ifdef NOBatch
-#{$S}.cpp{$O}.obj:
-#!else
-#{$S}.cpp{$O}.obj::
-#!endif
-#   $(CC) $(CFLAGS) -Fd$O\ -c $<
- 
-$(Objs) :
+#default rule setting
+%.exe: %.obj
+	$(LD) $(LDFLAGS) $< /OUT:$@
+%.obj: %.cpp
+	$(CPP) /c $(CPPFLAGS) $< /Fo$@
 
-#end of makefile
+#source file,obj file and exe file setting
+SRC_FILES=$(shell ls *$(SRC_EXTEND))
+OBJ_FILES=$(SRC_FILES:%$(SRC_EXTEND)=%$(OBJ_EXTEND))
+EXE_FILES=$(SRC_FILES:%$(SRC_EXTEND)=%$(EXE_EXTEND))
 
-Dir_example_boost:
-	cd example_boost && nmake
-
-Dir_exprtmp:
-	cd exprtmp && nmake
-
-Dir_meta:
-	cd meta && nmake
-
-Dir_mystl:
-	cd mystl && nmake
-
-Dir_parameter:
-	cd parameter && nmake
-
-Dir_search:
-	cd search && nmake
-
-Dir_traits:
-	cd traits && nmake
-
-Dir_types:
-	cd types && nmake
+#dest setting
+all:$(EXE_FILES)
 
 clean:
-	del *.obj *.exe
-	cd example_boost && nmake clean
-	cd exprtmp && nmake clean
-	cd meta && nmake clean
-	cd mystl && nmake clean
-	cd parameter && nmake clean
-	cd search && nmake clean
-	cd traits && nmake clean
-	cd types && nmake clean
+	@echo 'cleaning C++...'
+	-rm $(OBJ_FILES) *.ilk *.pdb *.manifest
+	@echo 'clean end.'
+
+.PHONY:all clean

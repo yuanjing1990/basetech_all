@@ -14,8 +14,9 @@ int main(int argc,char** argv)
 		tcp::resolver resolver(io_service);
 		tcp::resolver::query query(argv[1],"daytime");
 		tcp::resolver::iterator endpoint_iterator = resolver.resolve(query);
+		boost::system::error_code error = boost::asio::error::host_not_found;
 		tcp::socket socket(io_service);
-		boost::asio::connect(socket, endpoint_iterator);
+		//socket.connect(endpoint_iterator,error);
 		for(;;)
 		{
 			boost::array<char,128> buf;

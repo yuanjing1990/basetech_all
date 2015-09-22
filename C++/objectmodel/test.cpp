@@ -1,4 +1,4 @@
-#import <msxml4.dll>
+#import <msxml6.dll>
 #include <iostream>
 using namespace std;
 int main(int argc,char* argv[])
@@ -6,7 +6,7 @@ int main(int argc,char* argv[])
 	::CoInitialize(NULL);
 	MSXML2::IXMLDOMDocumentPtr pDoc;
 	MSXML2::IXMLDOMElementPtr xmlRoot;
-	HRESULT hr = pDoc.CreateInstance(__uuidof(MSXML2::DOMDocument40));
+	HRESULT hr = pDoc.CreateInstance(__uuidof(MSXML2::DOMDocument60));
 	if(!SUCCEEDED(hr))
 	{
 		MessageBox(NULL,"Error","无法创建DOMDocument",MB_OK);

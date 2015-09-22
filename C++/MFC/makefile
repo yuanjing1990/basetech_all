@@ -1,26 +1,36 @@
-all:test.exe test1.exe test2.exe
+SRC_EXTEND=.cpp
+OBJ_EXTEND=.obj
+EXE_EXTEND=.exe
 
-LINKER=link
-COMPLIER_FLAGS=/EHsc
-LINKER_FLAGS=/SUBSYSTEM:WINDOWS
-WNDLIBS=kernel32.lib user32.lib gdi32.lib
+CPP=cl.exe
+LD=link.exe
 
-test.obj:test.cpp
-	$(CPP) $(COMPLIER_FLAGS) /c test.cpp
+LIBS=kernel32.lib user32.lib gdi32.lib
 
-test.exe:test.obj
-	$(LINKER) $(LINKER_FLAGS) test.obj
+#compile flags setting
+CPPFLAGS+=-D_WIN32_WINNT=0x0501
+CPPFLAGS+=/EHsc
+LDFLAGS+=/MANIFEST:no
+LDFLAGS+=/SUBSYSTEM:WINDOWS
+LDFLAGS+=$(LIBS)
 
-test1.obj:test1.cpp
-	$(CPP) $(COMPLIER_FLAGS) /c test1.cpp
+#default rule setting
+%.exe: %.obj
+	$(LD) $(LDFLAGS) $< /OUT:$@
+%.obj: %.cpp
+	$(CPP) /c $(CPPFLAGS) $< /Fo$@
 
-test1.exe:test1.obj
-	$(LINKER) $(LINKER_FLAGS) test1.obj $(WNDLIBS)
+#source file,obj file and exe file setting
+SRC_FILES=$(shell ls *$(SRC_EXTEND))
+OBJ_FILES=$(SRC_FILES:%$(SRC_EXTEND)=%$(OBJ_EXTEND))
+EXE_FILES=$(SRC_FILES:%$(SRC_EXTEND)=%$(EXE_EXTEND))
 
-test2.exe:test2.obj
-	$(LINKER) $(LINKER_FLAGS) test2.obj $(WNDLIBS)
-test2.obj:test2.cpp
-	$(CPP) $(COMPLIER_FLAGS) /c test2.cpp
+#dest setting
+all:$(EXE_FILES)
 
 clean:
-	del *.obj *.exe
+	@echo 'cleaning C++...'
+	-rm $(OBJ_FILES) *.ilk *.pdb *.manifest
+	@echo 'clean end.'
+
+.PHONY:all clean
