@@ -34,8 +34,6 @@ $(EXE_FILES):$(OBJ_FILES)
 	$(LD) $(LDFLAGS) $^ /OUT:$@
 
 clean:
-	@echo 'cleaning C++...'
-	-rm $(OBJ_FILES) *.ilk *.pdb *.manifest
-	@echo 'clean end.'
+	-rm -rf $(OBJ_FILES) *.exe *.ilk *.pdb *.manifest
 
 .PHONY:all clean

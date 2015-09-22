@@ -11,5 +11,8 @@ $(PROJECT_DIRS):
 	
 clean:
 	@echo 'cleaning C++...'
-	@echo $(foreach i,$(DIRS),$(shell cd $(i) && make clean)) >/dev/null
+	@echo $(foreach i,$(PROJECT_DIRS),$(shell cd $(i) && make clean)) >/dev/null
+	@echo 'clean OK'
+
+.PHONY:all clean $(PROJECT_DIRS)
 

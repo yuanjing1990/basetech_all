@@ -27,6 +27,6 @@ EXE_FILES=$(SRC_FILES:%$(SRC_EXTEND)=%$(EXE_EXTEND))
 all:$(EXE_FILES)
 
 clean:
-	-rm $(OBJ_FILES) *.ilk *.pdb *.manifest
+	-rm -rf $(OBJ_FILES) *.exe *.ilk *.pdb *.manifest
 
 .PHONY:all clean

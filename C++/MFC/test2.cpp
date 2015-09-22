@@ -1,5 +1,6 @@
 //±‡“Î£∫cl /c /EHsc test2.cpp
 //¡¨Ω”£∫link /SUBSYSTEM:WINDOWS test2.obj
+#define _AFXDLL
 #include <afxwin.h>
 class MyApp : public CWinApp
 {

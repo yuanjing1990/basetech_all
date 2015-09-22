@@ -1,3 +1,4 @@
+#define _AFXDLL
 #include <afxwin.h>
 class MyApp : public CWinApp
 {
