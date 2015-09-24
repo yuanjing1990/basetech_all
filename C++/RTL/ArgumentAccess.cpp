@@ -3,11 +3,14 @@
 void arg_test(char* fmat,...)
 {
 	va_list vl;
+    int i=0;
 	va_start(vl,fmat);
-	if(va_arg(vl,int) != -1)
+	do
 	{
-		printf("%d",(int)vl);
-	}
+        int i = va_arg(vl,int);
+        if(i == -1) break;
+		printf("%d\n",i);
+	}while(true);
 	va_end(vl);
 }
 

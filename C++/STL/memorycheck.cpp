@@ -26,7 +26,7 @@
  *      Default Workspace for a Console Application to
  *      build a Debug version
 */
-
+#ifdef WIN32
 #include "crtdbg.h"
 //#include "mydbgnew.h"
 
@@ -34,8 +34,12 @@
 #define new DEBUG_CLIENTBLOCK
 #endif
 
+#endif //WIN32
+
 int main( )   {
     char *p1;
     p1 =  new char[40];
+#ifdef WIN32
     _CrtMemDumpAllObjectsSince( NULL );
+#endif
 }
