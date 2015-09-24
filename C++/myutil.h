@@ -9,12 +9,12 @@
 #include <functional>
 #include <ctime>
 namespace yq{
-	//==========¹¤¾ßºê===========->Begin
+	//==========å·¥å…·å®===========->Begin
 	#define SAFE_DELETE(p) if((p) != NULL) {delete p;p = NULL;}
-	//==========¹¤¾ßºê===========-<End
+	//==========å·¥å…·å®===========-<End
 	
-	//==========´òÓ¡Àà===========->Begin
-	//´òÓ¡STL¼¯ºÏ
+	//==========æ‰“å°ç±»===========->Begin
+	//æ‰“å°STLé›†åˆ
 	struct _Tick{
 		static clock_t start(){
 			if(m_bflag) return 0;
@@ -25,10 +25,10 @@ namespace yq{
 		static clock_t start_out(){
 			using namespace std;
 			if(m_bflag){
-				cout << "ÉÏ´Î¼ÆÊ±»¹Ã»ÓĞ½áÊø!" << endl;
+				cout << "ä¸Šæ¬¡è®¡æ—¶è¿˜æ²¡æœ‰ç»“æŸ!" << endl;
 				return 0;
 			}
-			cout << "¼ÆÊ±¿ªÊ¼---------------" << endl;
+			cout << "è®¡æ—¶å¼€å§‹---------------" << endl;
 			m_bflag = true;
 			m_start = clock();
 			return m_start;
@@ -36,17 +36,17 @@ namespace yq{
 		static clock_t end(){
 			using namespace std;
 			if(!m_bflag){
-				cout << "¼ÆÊ±»¹Î´¿ªÊ¼£¡" << endl;
+				cout << "è®¡æ—¶è¿˜æœªå¼€å§‹ï¼" << endl;
 				return 0;
 			}
-			cout << "×Ü¼ÆºÄÊ±£º" << (double)(clock()-m_start)/1000 << "s" << endl;
+			cout << "æ€»è®¡è€—æ—¶ï¼š" << (double)(clock()-m_start)/1000 << "s" << endl;
 			m_bflag = false;
 			m_start = 0;
 			return 0;
 		}
 		static clock_t end_out(){
 			end();
-			std::cout << "¼ÆÊ±½áÊø---------------" << std::endl;
+			std::cout << "è®¡æ—¶ç»“æŸ---------------" << std::endl;
 			return 0;
 		}
 		private:
@@ -68,10 +68,10 @@ namespace yq{
 			cout << *_it << ' ';
 		cout << endl;
 	}
-	//==========´òÓ¡Àà===========-<End
+	//==========æ‰“å°ç±»===========-<End
 	
-	//==========¹¦ÄÜÀà===========->Begin
-	//ÔÚ¼¯ºÏÖĞË³Ğò²éÕÒµÈÓÚÌØ¶¨ÖµÔªËØ
+	//==========åŠŸèƒ½ç±»===========->Begin
+	//åœ¨é›†åˆä¸­é¡ºåºæŸ¥æ‰¾ç­‰äºç‰¹å®šå€¼å…ƒç´ 
 	template<class T>
 	typename T::iterator seq_search(T& vec,const typename T::value_type& e)
 	{
@@ -84,7 +84,7 @@ namespace yq{
 		return _it;
 	}
 	
-	//ÔÚ¼¯ºÏÖĞË³Ğò²éÕÒÂú×ãÖ¸¶¨Ìõ¼şµÄÔªËØ
+	//åœ¨é›†åˆä¸­é¡ºåºæŸ¥æ‰¾æ»¡è¶³æŒ‡å®šæ¡ä»¶çš„å…ƒç´ 
 	template <class T,class Op>
 	typename T::iterator seq_search(T& vec,Op _op)
 	{
@@ -97,7 +97,7 @@ namespace yq{
 		return _it;
 	}
 	
-	//²éÑ¯¼¯ºÏÖĞÖ¸¶¨µÄÔªËØÖµÊÇ·ñ´æÔÚ,¶ş·Ö²éÕÒ
+	//æŸ¥è¯¢é›†åˆä¸­æŒ‡å®šçš„å…ƒç´ å€¼æ˜¯å¦å­˜åœ¨,äºŒåˆ†æŸ¥æ‰¾
 	template <class T>
 	bool binary_search(T& vec,typename const T::value_type& e)
 	{
@@ -119,11 +119,11 @@ namespace yq{
 		if((int)_up_pos - (int)_down_pos < 0) return false;
 		return true;
 	}
-	//==========¹¦ÄÜÀà===========-<End
+	//==========åŠŸèƒ½ç±»===========-<End
 	
-	//==========×Ô¶¨Êı¾İ½á¹¹=========->Begin
+	//==========è‡ªå®šæ•°æ®ç»“æ„=========->Begin
 	
-	//¶ş²æÊ÷µÄ¶¨ÒåÓëÊµÏÖ
+	//äºŒå‰æ ‘çš„å®šä¹‰ä¸å®ç°
 	template <class T>
 	struct _bitree{
 		_bitree* m_left_child;
@@ -132,21 +132,21 @@ namespace yq{
 		_bitree(T e):m_value(e),m_left_child(NULL),m_right_child(NULL){
 		}
 		~_bitree(){
-			//Îö¹¹ÒªÏú»Ù×óÓÒ×ÓÊ÷
+			//ææ„è¦é”€æ¯å·¦å³å­æ ‘
 			SAFE_DELETE(m_left_child);
 			SAFE_DELETE(m_right_child);
 		}
-		//¹¹Ôì¶ş²æÊ÷£¨ÓÃµİ¹é£©
-		//ÏÈÔìÊ÷¸ù£¬ÔÙÔì×ó×ÓÊ÷£¬½Ó×ÅÓÒ×ÓÊ÷£¬Ö±µ½·µ»ØNULL
+		//æ„é€ äºŒå‰æ ‘ï¼ˆç”¨é€’å½’ï¼‰
+		//å…ˆé€ æ ‘æ ¹ï¼Œå†é€ å·¦å­æ ‘ï¼Œæ¥ç€å³å­æ ‘ï¼Œç›´åˆ°è¿”å›NULL
 		static _bitree* CreateTree(std::vector<T> vec,int up_pos,int down_pos){
 			int _cur_pos = (up_pos + down_pos) / 2;
-			//µİ¹éÖÕÖ¹
+			//é€’å½’ç»ˆæ­¢
 			if(up_pos - down_pos < 0)
 				return NULL;
 			_bitree* _root = new _bitree(vec.at(_cur_pos));
-			//¹¹Ôì×ó×ÓÊ÷
+			//æ„é€ å·¦å­æ ‘
 			_root->m_left_child = CreateTree(vec,_cur_pos - 1,down_pos);
-			//¹¹ÔìÓÒ×ÓÊ÷
+			//æ„é€ å³å­æ ‘
 			_root->m_right_child = CreateTree(vec,up_pos,_cur_pos + 1);
 			return _root;
 		}
@@ -166,7 +166,7 @@ namespace yq{
 			}
 			return true;
 		}
-		//Éî¶ÈÓÅÏÈÌ½Ë÷
+		//æ·±åº¦ä¼˜å…ˆæ¢ç´¢
 		void DFS_print(std::ostream& os){
 			using namespace std;
 			vector<_bitree*> _tmp;
@@ -187,11 +187,11 @@ namespace yq{
 			}
 		}
 		
-		//ÓÑÔªº¯ÊıÄ£°æÖØÔØÊä³öÔËËã·û
+		//å‹å…ƒå‡½æ•°æ¨¡ç‰ˆé‡è½½è¾“å‡ºè¿ç®—ç¬¦
 		template <class T>
 		friend std::ostream& operator<<(std::ostream& os,const _bitree<T>& e);
 	};
-	//Êä³ö¶ş²æÊ÷
+	//è¾“å‡ºäºŒå‰æ ‘
 	template <class T>
 	std::ostream& operator<<(std::ostream& os,const yq::_bitree<T>& e)
 	{
@@ -199,10 +199,10 @@ namespace yq{
 		return os;
 	}
 	
-	//==========×Ô¶¨Êı¾İ½á¹¹=========-<End
+	//==========è‡ªå®šæ•°æ®ç»“æ„=========-<End
 }
 
-//¶¯Ì¬ÀàĞÍ-------------->Begin
+//åŠ¨æ€ç±»å‹-------------->Begin
 class _Object;
 struct _Runtime_Class{
 	const char* m_lpClassName;
@@ -248,4 +248,4 @@ const _Runtime_Class _Object::class_Object = {
 	"CObject",sizeof(_Object),0xffff,NULL,NULL,NULL};
 _Runtime_Class* _Object::GetRuntimeClass() const{
 	return _RUNTIME_CLASS(_Object);}
-//¶¯Ì¬ÀàĞÍ--------------<End
+//åŠ¨æ€ç±»å‹--------------<End
