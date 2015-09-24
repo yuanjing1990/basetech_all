@@ -1,29 +1,52 @@
-////////////////////////////////////////////////////////////
-//Author By Yuanjing on 20120401
-//
-//
-//
-////////////////////////////////////////////////////////////
 #ifndef MYUTIL_H_
 #define MYUTIL_H_
+/**
+ *@file		myutil.h
+ *@brief	myutil in work. 
+ *this file have many rule i have used in my work.i hope it 
+ *can be useful in other case.
+ *
+ *@author 	Yuanjing
+ *
+ */
 #include <iostream>
 #include <vector>
 #include <functional>
 #include <ctime>
 namespace yq{
 	//==========工具宏===========->Begin
+	///delete ptr and set null
 	#define SAFE_DELETE(p) if((p) != NULL) {delete p;p = NULL;}
 	//==========工具宏===========-<End
 	
 	//==========打印类===========->Begin
-	//打印STL集合
+	/**
+	 * @brief calculate time period for program.
+	 * calculate time period for program,and print start and stop
+	 * info  
+	 *
+	 */
 	struct _Tick{
+
+		/**
+		 * @brief start the clock.
+		 * 
+		 * @return the start clock in milisecond.
+		 * 
+		 */
 		static clock_t start(){
 			if(m_bflag) return 0;
 			m_bflag = true;
 			m_start = clock();
 			return m_start;
 		}
+
+		/**
+		 * @brief start the clock and print info.
+		 *
+		 * @return the start clock in minisecond.
+		 *
+		 */ 
 		static clock_t start_out(){
 			using namespace std;
 			if(m_bflag){
@@ -35,6 +58,13 @@ namespace yq{
 			m_start = clock();
 			return m_start;
 		}
+
+		/**
+		 * @brief stop the clock and print result.
+		 *
+		 * @return the end clock in minisecond.
+		 *
+		 */
 		static clock_t end(){
 			using namespace std;
 			if(!m_bflag){
@@ -46,22 +76,46 @@ namespace yq{
 			m_start = 0;
 			return 0;
 		}
+		
+		/**
+		 * @brief print the clock and print result.
+		 * print the clock and print result,and then print clock will stop.
+		 * 
+		 * @return zero,not used.
+		 *
+		 */
 		static clock_t end_out(){
 			end();
 			std::cout << "计时结束---------------" << std::endl;
 			return 0;
 		}
+
 		private:
 			static clock_t m_start;
 			static bool m_bflag;
 	};
 	clock_t _Tick::m_start = 0;
 	bool _Tick::m_bflag = 0;
+
+	///macro for start _Tick's clock
 	#define TICK_BEGIN yq::_Tick::start();
+
+	///macro for stop _Tick's clock
 	#define TICK_END   yq::_Tick::end();
+
+	///macro for start _Tick's clock and print info
 	#define OUT_TICK_BEGIN yq::_Tick::start_out();
+
+	///macro for stop _Tick's clock and print info
 	#define OUT_TICK_END   yq::_Tick::end_out();
 	
+	/**
+	 * @brief print stl vector type collection.
+	 * print stl collection,which have begin() and end() member
+	 *
+	 * @param vec,the collection will be print.
+	 *
+	 */
 	template <class T>
 	void print(const T& vec)
 	{
@@ -73,7 +127,15 @@ namespace yq{
 	//==========打印类===========-<End
 	
 	//==========功能类===========->Begin
-	//在集合中顺序查找等于特定值元素
+	/**
+	 * @brief 在集合中顺序查找等于特定值元素
+	 *
+	 * @param vec,the collection to be search
+	 * @param e,the value be search
+	 * 
+	 * @return the iterator of e in vec,if not found,vec.end() will be return
+	 *
+	 */
 	template<class T>
 	typename T::iterator seq_search(T& vec,const typename T::value_type& e)
 	{
@@ -86,7 +148,9 @@ namespace yq{
 		return _it;
 	}
 	
-	//在集合中顺序查找满足指定条件的元素
+	/**
+	 * @brief 在集合中顺序查找满足指定条件的元素
+	 */
 	template <class T,class Op>
 	typename T::iterator seq_search(T& vec,Op _op)
 	{
@@ -99,7 +163,9 @@ namespace yq{
 		return _it;
 	}
 	
-	//查询集合中指定的元素值是否存在,二分查找
+	/**
+	 * @brief 查询集合中指定的元素值是否存在,二分查找
+	 */
 	template <class T>
 	bool binary_search(T& vec,typename const T::value_type& e)
 	{
@@ -124,8 +190,10 @@ namespace yq{
 	//==========功能类===========-<End
 	
 	//==========自定数据结构=========->Begin
-	
-	//二叉树的定义与实现
+	//
+	/**
+	 * @brief 二叉树的定义与实现
+	 */
 	template <class T>
 	struct _bitree{
 		_bitree* m_left_child;
@@ -138,7 +206,8 @@ namespace yq{
 			SAFE_DELETE(m_left_child);
 			SAFE_DELETE(m_right_child);
 		}
-		//构造二叉树（用递归）
+		
+		///构造二叉树（用递归）
 		//先造树根，再造左子树，接着右子树，直到返回NULL
 		static _bitree* CreateTree(std::vector<T> vec,int up_pos,int down_pos){
 			int _cur_pos = (up_pos + down_pos) / 2;
@@ -152,6 +221,8 @@ namespace yq{
 			_root->m_right_child = CreateTree(vec,up_pos,_cur_pos + 1);
 			return _root;
 		}
+
+		///插入元素
 		bool InsertElem(T e){
 			if(m_value == e) return false;
 			if(m_value < e)
@@ -168,7 +239,8 @@ namespace yq{
 			}
 			return true;
 		}
-		//深度优先探索
+
+		///深度优先探索
 		void DFS_print(std::ostream& os){
 			using namespace std;
 			vector<_bitree*> _tmp;
@@ -189,11 +261,12 @@ namespace yq{
 			}
 		}
 		
-		//友元函数模版重载输出运算符
+		///友元函数模版重载输出运算符
 		template <class T>
 		friend std::ostream& operator<<(std::ostream& os,const _bitree<T>& e);
 	};
-	//输出二叉树
+
+	///输出二叉树
 	template <class T>
 	std::ostream& operator<<(std::ostream& os,const yq::_bitree<T>& e)
 	{
@@ -205,6 +278,9 @@ namespace yq{
 }
 
 //动态类型-------------->Begin
+/**
+ * @brief the root class of dynamic type
+ */
 class _Object;
 struct _Runtime_Class{
 	const char* m_lpClassName;
