@@ -4,6 +4,8 @@
 //
 //
 ////////////////////////////////////////////////////////////
+#ifndef MYUTIL_H_
+#define MYUTIL_H_
 #include <iostream>
 #include <vector>
 #include <functional>
@@ -249,3 +251,6 @@ const _Runtime_Class _Object::class_Object = {
 _Runtime_Class* _Object::GetRuntimeClass() const{
 	return _RUNTIME_CLASS(_Object);}
 //动态类型--------------<End
+
+#endif
+
