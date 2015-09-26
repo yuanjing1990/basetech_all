@@ -9,6 +9,8 @@
  *@author 	Yuanjing
  *
  */
+#ifndef MYUTIL_H_
+#define MYUTIL_H_
 #include <iostream>
 #include <vector>
 #include <functional>
