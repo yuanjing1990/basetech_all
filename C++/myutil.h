@@ -2,11 +2,30 @@
 #define MYUTIL_H_
 /**
  *@file		myutil.h
- *@brief	myutil in work. 
- *this file have many rule i have used in my work.i hope it 
+ *@brief	My util used in work. 
+ *This file have many utils which i have used in my work.I hope it 
  *can be useful in other case.
  *
  *@author 	Yuanjing
+ *
+ *@defgroup myutil Some utils may be used in work
+ *@{
+ *@defgroup macro_tools Some tools difined with macro
+ *@{
+ *@}
+ *
+ *@defgroup print_tools Some tools used for print 
+ *@{
+ *@}
+ *
+ *@defgroup algorithm_tools Some algorithm difined by myself
+ *@{
+ *@}
+ *
+ *@defgroup rtti Some tools to get rtti
+ *@{
+ *@}
+ *@}
  *
  */
 #ifndef MYUTIL_H_
@@ -16,24 +35,69 @@
 #include <functional>
 #include <ctime>
 namespace yq{
+
 	//==========工具宏===========->Begin
-	///delete ptr and set null
+
+    /**
+     * @addtogroup macro_tools
+     * @{
+     */
+
+    /**
+	 * Delete a ptr and set it to null
+     * 
+     * @param p is a ptr of a certain object
+     */
 	#define SAFE_DELETE(p) if((p) != NULL) {delete p;p = NULL;}
+
+	/**
+     * Macro for start _Tick's clock
+     * @see OUT_TICK_BEGIN
+     */
+	#define TICK_BEGIN yq::_Tick::start();
+
+	/**
+     * Macro for stop _Tick's clock
+     * @see OUT_TICK_END
+     */
+	#define TICK_END   yq::_Tick::end();
+
+	/**
+     * Macro for start _Tick's clock and print info
+     * @see TICK_BEGIN
+     */
+	#define OUT_TICK_BEGIN yq::_Tick::start_out();
+
+	/**
+     * Macro for stop _Tick's clock and print info
+     * @see TICK_END
+     */
+	#define OUT_TICK_END   yq::_Tick::end_out();
+
+    /**
+     * @}
+     */
+	
 	//==========工具宏===========-<End
 	
 	//==========打印类===========->Begin
+    /**
+     * @addtogroup print_tools
+     * @{
+     */
+
 	/**
-	 * @brief calculate time period for program.
-	 * calculate time period for program,and print start and stop
+	 * @brief Calculate time period for program.
+	 * Calculate time period for program,and print start and stop
 	 * info  
 	 *
 	 */
 	struct _Tick{
 
 		/**
-		 * @brief start the clock.
+		 * @brief Start the clock.
 		 * 
-		 * @return the start clock in milisecond.
+		 * @return The start clock in milisecond.
 		 * 
 		 */
 		static clock_t start(){
@@ -44,9 +108,9 @@ namespace yq{
 		}
 
 		/**
-		 * @brief start the clock and print info.
+		 * @brief Start the clock and print info.
 		 *
-		 * @return the start clock in minisecond.
+		 * @return The start clock in minisecond.
 		 *
 		 */ 
 		static clock_t start_out(){
@@ -62,9 +126,9 @@ namespace yq{
 		}
 
 		/**
-		 * @brief stop the clock and print result.
+		 * @brief Stop the clock and print result.
 		 *
-		 * @return the end clock in minisecond.
+		 * @return The end clock in minisecond.
 		 *
 		 */
 		static clock_t end(){
@@ -80,10 +144,10 @@ namespace yq{
 		}
 		
 		/**
-		 * @brief print the clock and print result.
-		 * print the clock and print result,and then print clock will stop.
+		 * @brief Print the clock and print result.
+		 * Print the clock and print result,and then print clock will stop.
 		 * 
-		 * @return zero,not used.
+		 * @return zero,which is useless
 		 *
 		 */
 		static clock_t end_out(){
@@ -99,23 +163,11 @@ namespace yq{
 	clock_t _Tick::m_start = 0;
 	bool _Tick::m_bflag = 0;
 
-	///macro for start _Tick's clock
-	#define TICK_BEGIN yq::_Tick::start();
-
-	///macro for stop _Tick's clock
-	#define TICK_END   yq::_Tick::end();
-
-	///macro for start _Tick's clock and print info
-	#define OUT_TICK_BEGIN yq::_Tick::start_out();
-
-	///macro for stop _Tick's clock and print info
-	#define OUT_TICK_END   yq::_Tick::end_out();
-	
 	/**
-	 * @brief print stl vector type collection.
-	 * print stl collection,which have begin() and end() member
+	 * @brief Print a stl vector-type collection.
+	 * Print stl collection,which have begin() and end() member
 	 *
-	 * @param vec,the collection will be print.
+	 * @param vec is the collection will be print.
 	 *
 	 */
 	template <class T>
@@ -126,14 +178,23 @@ namespace yq{
 			cout << *_it << ' ';
 		cout << endl;
 	}
+
+    /**
+     * @}
+     */
 	//==========打印类===========-<End
 	
 	//==========功能类===========->Begin
+    /**
+     * @addtogroup algorithm_tools
+     * @{
+     */
+
 	/**
 	 * @brief 在集合中顺序查找等于特定值元素
 	 *
-	 * @param vec,the collection to be search
-	 * @param e,the value be search
+	 * @param vec is the collection to be search
+	 * @param e is the value be search
 	 * 
 	 * @return the iterator of e in vec,if not found,vec.end() will be return
 	 *
@@ -189,10 +250,20 @@ namespace yq{
 		if((int)_up_pos - (int)_down_pos < 0) return false;
 		return true;
 	}
+
+    /**
+     * @}
+     */
+
 	//==========功能类===========-<End
 	
 	//==========自定数据结构=========->Begin
-	//
+    /**
+     * @defgroup data_structure Self-defined usually struct
+     * @ingroup myutil
+     * @{
+     */
+
 	/**
 	 * @brief 二叉树的定义与实现
 	 */
@@ -276,14 +347,28 @@ namespace yq{
 		return os;
 	}
 	
+    /**
+     * @}
+     */
+
 	//==========自定数据结构=========-<End
 }
 
 //动态类型-------------->Begin
+
 /**
- * @brief the root class of dynamic type
+ * @addtogroup rtti
+ * @{
+ */
+
+/**
+ * @brief The root class of dynamic-type
  */
 class _Object;
+
+/**
+ * @brief The runtime_class for dynamic ability
+ */
 struct _Runtime_Class{
 	const char* m_lpClassName;
 	int m_nObjectSize;
@@ -299,23 +384,36 @@ struct _Runtime_Class{
 	//const AFX_CLASSINIT* m_pClassInit;
 };
 
+///Declare the dynamic class and func
 #define DECLARE_DYNAMIC(class_name) \
 	public:\
 	static const _Runtime_Class class##class_name;\
 	virtual _Runtime_Class* GetRuntimeClass() const;
 	
+///Define the dynamic class and fun
+///@see IMPLEMENT_RUNTIMECLASS
 #define IMPLEMENT_DYNAMIC(class_name,base_class) \
 	IMPLEMENT_RUNTIMECLASS(class_name,base_class,0xFFFF,NULL,NULL)
 	
+///Define the dynamic class and fun
+///@see IMPLEMENT_DYNAMCI
 #define IMPLEMENT_RUNTIMECLASS(class_name,base_class,wSchema,pfnNew,class_init) \
 	const _Runtime_Class class_name::class##class_name = {\
 	#class_name,sizeof(class class_name),wSchema,pfnNew,RUNTIME_CLASS(base_class),NULL};\
 	_Runtime_Class* class_name::GetRuntimeClass() const{\
 		return RUNTIME_CLASS(class_name);};
 		
+///Get the runtime class
+///@see _RUNTIME_CLASS
 #define RUNTIME_CLASS(class_name) _RUNTIME_CLASS(class_name)
+
+///Get the runtime class
+///@see RUNTIME_CLASS
 #define _RUNTIME_CLASS(class_name) ((_Runtime_Class*)(&class_name::class##class_name))	
 
+/**
+ * @brief The root class of dynamic-class
+ */
 class _Object
 {
 	DECLARE_DYNAMIC(_Object)
@@ -328,6 +426,11 @@ const _Runtime_Class _Object::class_Object = {
 	"CObject",sizeof(_Object),0xffff,NULL,NULL,NULL};
 _Runtime_Class* _Object::GetRuntimeClass() const{
 	return _RUNTIME_CLASS(_Object);}
+
+/**
+ * @}
+ */
+
 //动态类型--------------<End
 
 #endif
