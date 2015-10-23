@@ -34,7 +34,7 @@ CC=gcc
 LD=ld
 
 #compile flags setting
-CPPFLAGS+=-DDEBUG
+CPPFLAGS+=-DDEBUG -g
 LDFLAGS+=-lboost_system
 
 #default rule setting
