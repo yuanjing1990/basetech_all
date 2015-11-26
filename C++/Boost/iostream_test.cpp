@@ -11,6 +11,7 @@
 #include<boost/iostreams/device/file.hpp>
 #include<boost/iostreams/device/array.hpp>
 #include<boost/iostreams/device/back_inserter.hpp>
+#include<boost/iostreams/filtering_stream.hpp>
 using namespace boost::iostreams;
 int main(int argc,char* argv[])
 {
@@ -45,10 +46,20 @@ int main(int argc,char* argv[])
     //-------------------------------------------
     std::cout << "back insert device test..........\n";
     std::vector<int> vec;
-    vec.resize(3);
-    stream<back_insert_device<std::vector<int> > > back_inserter_out(boost::iostreams::back_inserter(vec));
-    back_inserter_out << 1;
-    std::cout << vec[0] << "," << vec[1] << "," << vec[2] << std::endl;
+    //vec.resize(3);
+    stream<back_insert_device<std::vector<int> > > back_inserter_out(vec);
+    //stream<back_insert_device<std::string > > back_inserter_out(boost::iostreams::back_inserter(tmp2));
+    int input[3] = {1,2,3};
+    back_inserter_out.write(input,3);
+    //Need flush,if not the vec will have no elem
+    back_inserter_out.flush();
+    std::cout << vec[0] << "," << vec[1] << "," << vec[2] << "\n" << vec.size() << std::endl;
+    //std::cout << "tmp2=" << tmp2 << std::endl;
     //-------------------------------------------
+
+    filtering_istream fs;
+    fs.push(file_source("test.txt"));
+    fs >> tmp;
+    std::cout << tmp << std::endl;
     return 0;
 }
