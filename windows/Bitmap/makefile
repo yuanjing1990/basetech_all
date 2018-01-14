@@ -4,5 +4,5 @@ Bitmap.obj:Bitmap.c
 	$(CC) /c /Tp Bitmap.c
 Bitmap.res:Bitmap.rc
 	rc Bitmap.rc
-CLEAR:
+clean:
 	del *.exe *.obj *.res

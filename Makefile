@@ -1,4 +1,4 @@
-os=WIN32
+platform=WIN32
 config=debug
 
 EXCLUDE_DIRS=
@@ -6,8 +6,12 @@ EXCLUDE_DIRS=
 ALL_DIRS=$(foreach i,$(shell ls),$(shell if [ -d ./$(i) ];then echo $(i);fi))
 DIRS=$(filter-out $(EXCLUDE_DIRS),$(ALL_DIRS))
 
-os=$(shell uname -s)
-ifeq ($(os),WIN32)
+platform=$(shell uname -s)
+ifneq ($(platform),WIN32)
+	platform=LINUX
+endif
+
+ifeq ($(platform),WIN32)
 CPP=cl.exe
 CPPFLAGS=
 CC=cl.exe
@@ -34,16 +38,43 @@ endif
 	$(LD) $(LDFLAGS) $< /OUT:$@
 ##define make rule############################-<End
 endif
+
+ifeq ($(platform),LINUX)
+EXCLUDE_DIRS+=csharp windows
+CPP=g++
+CPPFLAGS=
+CC=gcc
+CFLAGS=
+LD=ld
+LDFLAGS=
+
+ifeq ($(config),debug)
+CPPFLAGS+=
+CFLAGS+=
+LDFLAGS+=
+else
+CPPFLAGS+=
+CFLAGS+=
+LDFLAGS+=
+endif
+
+##define make rule############################->Begin
+%.o:%.cpp %.hpp
+	$(CPP) -c $(CPPFLAGS) $< -o $@
+%.exe:%.o
+	$(LD) $(LDFLAGS) $< $@
+##define make rule############################-<End
+endif
 export
 
 all:$(DIRS)
 
 #$(DIRS):
 C++:
-	cd $@ && make
+	cd $@ && make platform=$(platform)
 
 clean:
-	@echo $(foreach i,$(DIRS),$(shell cd $(i) && make clean))>/dev/null 
+	@echo $(foreach i,$(DIRS),$(shell cd $(i) && make clean platform=$(platform)))>/dev/null 
 
 .PHONY:all clean $(DIRS)
 

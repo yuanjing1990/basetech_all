@@ -1,4 +1,5 @@
 #include <iostream>
+#include <stdlib.h>
 #include <new>
 using std::new_handler;
 const int LENGTH = 1000000;

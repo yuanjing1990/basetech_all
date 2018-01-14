@@ -1,3 +1,8 @@
+ifeq ($(platform),) 
+	platform=WIN32
+endif
+
+ifeq ($(platform),WIN32)
 SRC_EXTEND=.cpp
 OBJ_EXTEND=.obj
 EXE_EXTEND=.exe
@@ -17,6 +22,27 @@ LDFLAGS+=/DYNAMICBASE
 	$(LD) $(LDFLAGS) $< /OUT:$@
 %.obj: %.cpp
 	$(CPP) /c $(CPPFLAGS) $< /Fo$@
+endif
+
+ifeq ($(platform),LINUX)
+SRC_EXTEND=.cpp
+OBJ_EXTEND=.o
+EXE_EXTEND=.exe
+
+CPP=g++
+CC=gcc
+LD=ld
+
+#compile flags setting
+CPPFLAGS+=-DDEBUG
+LDFLAGS+=-lboost_system
+
+#default rule setting
+%$(EXE_EXTEND): %$(OBJ_EXTEND)
+	$(CPP) $< -o $@ $(LDFLAGS)
+%$(OBJ_EXTEND): %$(SRC_EXTEND)
+	$(CPP) -c $(CPPFLAGS) $< -o $@
+endif
 
 #source file,obj file and exe file setting
 SRC_FILES=$(shell ls *$(SRC_EXTEND))
@@ -27,6 +53,6 @@ EXE_FILES=$(SRC_FILES:%$(SRC_EXTEND)=%$(EXE_EXTEND))
 all:$(EXE_FILES)
 
 clean:
-	-rm -rf $(OBJ_FILES) *.exe *.ilk *.pdb *.manifest
+	@-rm -rf $(OBJ_FILES) $(EXE_FILES) *.ilk *.pdb *.manifest
 
 .PHONY:all clean

@@ -10,6 +10,7 @@ int main( )
    // Used in conjunction with copy algorithm
    // to put elements into a vector read from cin
    vector<int> vec ;
+   vec.resize(4);
    vector <int>::iterator Iter;
 
    cout << "Enter 4 integers separated by spaces & then\n"

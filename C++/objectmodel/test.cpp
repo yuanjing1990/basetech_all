@@ -1,8 +1,11 @@
+#ifdef WIN32
 #import <msxml6.dll>
+#endif
 #include <iostream>
 using namespace std;
 int main(int argc,char* argv[])
 {
+#ifdef WIN32
 	::CoInitialize(NULL);
 	MSXML2::IXMLDOMDocumentPtr pDoc;
 	MSXML2::IXMLDOMElementPtr xmlRoot;
@@ -24,5 +27,6 @@ int main(int argc,char* argv[])
 	pNode->Puttext((_bstr_t)"Story");
 	xmlRoot->appendChild(pNode);
 	pDoc->save("he.xml");
+#endif
 	return 0;
 }

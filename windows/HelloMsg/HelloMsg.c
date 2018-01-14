@@ -17,3 +17,4 @@ int WINAPI WinMain(HINSTANCE hInst,HINSTANCE hPrev,LPTSTR szCmdLine,int iCmdShow
 	MessageBoxPrintf(_TEXT("HelloMsg"),_TEXT("Hello %s,Welcome To %s!"),_TEXT("Yuanjing"),_TEXT("Windows"));
 	return 0;
 }
+

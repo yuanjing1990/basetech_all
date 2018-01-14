@@ -38,7 +38,7 @@ public class Stream
 				System.out.print(f.getAbsolutePath() + "\t" +
 					f.canRead() + "\t" + f.canWrite() + "\t" +
 					f.getName() + "\t" + f.getParent() + "\t" +
-					f.getPath() + "\t" + f.length() + "\t" +
+					f.getPath() + "\t" + f.length()+ "\t" +
 					f.lastModified() + "\t"
 				);
 				if(f.isFile())
