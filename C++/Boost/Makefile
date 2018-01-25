@@ -35,7 +35,7 @@ LD=ld
 
 #compile flags setting
 CPPFLAGS+=-DDEBUG -g
-LDFLAGS+=-lboost_system
+LDFLAGS+=-lpthread -lboost_system
 
 #default rule setting
 %$(EXE_EXTEND): %$(OBJ_EXTEND)
