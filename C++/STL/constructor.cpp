@@ -3,6 +3,7 @@
 #include "myutil.h"
 
 using namespace std;
+//一个自定义的String类型
 class String
 {
 public:
@@ -12,6 +13,7 @@ public:
 		{
 			m_data = new char[1];
 			m_data[0] = '\0';
+			return;
 		}
 		m_data = new char[strlen(p)+1];
 		m_data[strlen(p)] = '\0';
@@ -28,6 +30,7 @@ public:
 private:
 	char* m_data;
 };
+
 template<class T>
 class NamedPtr
 {
