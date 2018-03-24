@@ -9,4 +9,4 @@ $(Dest):
 $(Objs):
 
 clean:
-	del *.obj *.exe
+	@-rm *.obj *.exe >/dev/null

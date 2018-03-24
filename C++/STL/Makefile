@@ -13,6 +13,7 @@ $(ALL_DIRS):
 
 clean:
 	make -f Makefile.$(platform) clean
-	@echo $(foreach i,$(ALL_DIRS),$(shell cd $(i) && make clean)) >/dev/null
+
+#@echo $(foreach i,$(ALL_DIRS),$(shell cd $(i) && make clean)) >/dev/null
 
 .PHONY:all clean

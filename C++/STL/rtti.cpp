@@ -1,5 +1,11 @@
-#include <windows.h>
+//#include <windows.h>
 #include <iostream>
+
+typedef const char* LPCSTR;
+typedef unsigned int UINT;
+
+#define PASCAL 
+
 class CObject;
 struct CRuntimeClass
 {

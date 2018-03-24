@@ -1,4 +1,4 @@
-//memcpy_s使用不了
+//memcpy_s使锟矫诧拷锟斤拷
 //
 //
 //
@@ -20,23 +20,23 @@ int main(int argc,char* argv[])
 {
 	char dest[512] = {0};
 	memccpy(dest,buf,'T',512);
-	printf(dest);
+	printf("%s",dest);
 	printf("\n");
-	printf((char*)memchr(buf,'T',512));
+	printf("%s",(char*)memchr(buf,'T',512));
 	printf("\n");
 	memcpy(dest,buf,512);
-	printf(dest);
+	printf("%s",dest);
 	printf("\n");
 	memcmp(buf,dest,sizeof(buf)) >= 0 ? printf("buf is Larger") : printf("dest is Larger");
 	printf("\n");
-	printf("%d",sizeof(buf));
+	printf("%lu",sizeof(buf));
 	memset(dest,0,512);
 	memcpy(dest,buf,strlen(buf)-3);
-	printf(dest);
+	printf("%s",dest);
 	printf("\n");
-	
+
 	memmove(dest+2,dest,strlen(dest));
-	printf(dest);
+	printf("%s",dest);
 	printf("\n");
 	//errno_t err;
 	//int err = memcpy_s(dest,510,buf,512);

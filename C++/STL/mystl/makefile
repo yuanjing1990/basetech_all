@@ -4,4 +4,4 @@ test.exe:test.obj
 test.obj:test.cpp *.h
 
 clean:
-	del *.obj *.exe
+	@-rm *.obj *.exe

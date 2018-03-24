@@ -1,6 +1,6 @@
 #include <stdarg.h>
 #include <stdio.h>
-void arg_test(char* fmat,...)
+void arg_test(const char* fmat,...)
 {
 	va_list vl;
     int i=0;
