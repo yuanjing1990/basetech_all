@@ -1,6 +1,7 @@
 #ifndef MYUTIL_H_
 #define MYUTIL_H_
 /**
+ *
  *@file		myutil.h
  *@brief	My util used in work.
  *This file have many utils which i have used in my work.I hope it
@@ -10,21 +11,21 @@
  *
  *@defgroup myutil Some utils may be used in work
  *@{
- *@defgroup macro_tools Some tools difined with macro
- *@{
- *@}
+ * @defgroup macro_tools Some tools difined with macro
+ * @{
+ * @}
  *
- *@defgroup print_tools Some tools used for print
- *@{
- *@}
+ * @defgroup print_tools Some tools used for print
+ * @{
+ * @}
  *
- *@defgroup algorithm_tools Some algorithm difined by myself
- *@{
- *@}
+ * @defgroup algorithm_tools Some algorithm difined by myself
+ * @{
+ * @}
  *
- *@defgroup rtti Some tools to get rtti
- *@{
- *@}
+ * @defgroup rtti Some tools to get rtti
+ * @{
+ * @}
  *@}
  *
  */
@@ -35,16 +36,16 @@
 namespace yq{
 	//==========工具宏===========->Begin
 
-    /**
-     * @addtogroup macro_tools
-     * @{
-     */
+  /**
+   * @addtogroup macro_tools
+   * @{
+   */
 
-    /**
-	 * Delete a ptr and set it to null
-     *
-     * @param p is a ptr of a certain object
-     */
+	/**
+		 * @brief Delete a ptr and set it to null
+		 *
+		 * @param p is a ptr of a certain object
+		 */
 	#define SAFE_DELETE(p) if((p) != NULL) {delete p;p = NULL;}
 
 	/**
@@ -71,17 +72,17 @@ namespace yq{
      */
 	#define OUT_TICK_END   yq::_Tick::end_out();
 
-    /**
-     * @}
-     */
+  /**
+   * @}
+   */
 
 	//==========工具宏===========-<End
 
 	//==========打印类===========->Begin
-    /**
-     * @addtogroup print_tools
-     * @{
-     */
+  /**
+   * @addtogroup print_tools
+   * @{
+   */
 
 	/**
 	 * @brief Calculate time period for program.
@@ -188,16 +189,16 @@ namespace yq{
 		cout << endl;
 	}
 
-    /**
-     * @}
-     */
+  /**
+   * @}
+   */
 	//==========打印类===========-<End
 
 	//==========功能类===========->Begin
-    /**
-     * @addtogroup algorithm_tools
-     * @{
-     */
+  /**
+   * @addtogroup algorithm_tools
+   * @{
+   */
 
 	/**
 	 * @brief 在集合中顺序查找等于特定值元素
@@ -260,18 +261,18 @@ namespace yq{
 		return true;
 	}
 
-    /**
-     * @}
-     */
+  /**
+   * @}
+   */
 
 	//==========功能类===========-<End
 
 	//==========自定数据结构=========->Begin
-    /**
-     * @defgroup data_structure Self-defined usually struct
-     * @ingroup myutil
-     * @{
-     */
+  /**
+   * @defgroup data_structure Self-defined usually struct
+   * @ingroup myutil
+   * @{
+   */
 
 	/**
 	 * @brief 二叉树的定义与实现
@@ -356,9 +357,9 @@ namespace yq{
 		return os;
 	}
 
-    /**
-     * @}
-     */
+  /**
+   * @}
+   */
 
 	//==========自定数据结构=========-<End
 }
