@@ -1,30 +1,20 @@
-<<<<<<< HEAD
-/**
- *@file		myutil.h
- *@brief	myutil in work. 
- *this file have many rule i have used in my work.i hope it 
-=======
 #ifndef MYUTIL_H_
 #define MYUTIL_H_
 /**
  *@file		myutil.h
- *@brief	My util used in work. 
- *This file have many utils which i have used in my work.I hope it 
->>>>>>> 30f7e0ef1fec5ab4c3deeae9ccb7a2bc18d71423
+ *@brief	My util used in work.
+ *This file have many utils which i have used in my work.I hope it
  *can be useful in other case.
  *
  *@author 	Yuanjing
  *
-<<<<<<< HEAD
- */
-=======
  *@defgroup myutil Some utils may be used in work
  *@{
  *@defgroup macro_tools Some tools difined with macro
  *@{
  *@}
  *
- *@defgroup print_tools Some tools used for print 
+ *@defgroup print_tools Some tools used for print
  *@{
  *@}
  *
@@ -38,26 +28,11 @@
  *@}
  *
  */
-#ifndef MYUTIL_H_
-#define MYUTIL_H_
->>>>>>> 30f7e0ef1fec5ab4c3deeae9ccb7a2bc18d71423
 #include <iostream>
 #include <vector>
 #include <functional>
 #include <ctime>
 namespace yq{
-<<<<<<< HEAD
-	//==========工具宏===========->Begin
-	///delete ptr and set null
-	#define SAFE_DELETE(p) if((p) != NULL) {delete p;p = NULL;}
-	//==========工具宏===========-<End
-	
-	//==========打印类===========->Begin
-	/**
-	 * @brief calculate time period for program.
-	 * calculate time period for program,and print start and stop
-=======
-
 	//==========工具宏===========->Begin
 
     /**
@@ -67,7 +42,7 @@ namespace yq{
 
     /**
 	 * Delete a ptr and set it to null
-     * 
+     *
      * @param p is a ptr of a certain object
      */
 	#define SAFE_DELETE(p) if((p) != NULL) {delete p;p = NULL;}
@@ -99,9 +74,9 @@ namespace yq{
     /**
      * @}
      */
-	
+
 	//==========工具宏===========-<End
-	
+
 	//==========打印类===========->Begin
     /**
      * @addtogroup print_tools
@@ -111,23 +86,16 @@ namespace yq{
 	/**
 	 * @brief Calculate time period for program.
 	 * Calculate time period for program,and print start and stop
->>>>>>> 30f7e0ef1fec5ab4c3deeae9ccb7a2bc18d71423
-	 * info  
+	 * info
 	 *
 	 */
 	struct _Tick{
 
 		/**
-<<<<<<< HEAD
-		 * @brief start the clock.
-		 * 
-		 * @return the start clock in milisecond.
-=======
 		 * @brief Start the clock.
-		 * 
+		 *
 		 * @return The start clock in milisecond.
->>>>>>> 30f7e0ef1fec5ab4c3deeae9ccb7a2bc18d71423
-		 * 
+		 *
 		 */
 		static clock_t start(){
 			if(m_bflag) return 0;
@@ -137,17 +105,11 @@ namespace yq{
 		}
 
 		/**
-<<<<<<< HEAD
-		 * @brief start the clock and print info.
-		 *
-		 * @return the start clock in minisecond.
-=======
 		 * @brief Start the clock and print info.
 		 *
 		 * @return The start clock in minisecond.
->>>>>>> 30f7e0ef1fec5ab4c3deeae9ccb7a2bc18d71423
 		 *
-		 */ 
+		 */
 		static clock_t start_out(){
 			using namespace std;
 			if(m_bflag){
@@ -161,15 +123,9 @@ namespace yq{
 		}
 
 		/**
-<<<<<<< HEAD
-		 * @brief stop the clock and print result.
-		 *
-		 * @return the end clock in minisecond.
-=======
 		 * @brief Stop the clock and print result.
 		 *
 		 * @return The end clock in minisecond.
->>>>>>> 30f7e0ef1fec5ab4c3deeae9ccb7a2bc18d71423
 		 *
 		 */
 		static clock_t end(){
@@ -183,19 +139,12 @@ namespace yq{
 			m_start = 0;
 			return 0;
 		}
-		
+
 		/**
-<<<<<<< HEAD
-		 * @brief print the clock and print result.
-		 * print the clock and print result,and then print clock will stop.
-		 * 
-		 * @return zero,not used.
-=======
 		 * @brief Print the clock and print result.
 		 * Print the clock and print result,and then print clock will stop.
-		 * 
+		 *
 		 * @return zero,which is useless
->>>>>>> 30f7e0ef1fec5ab4c3deeae9ccb7a2bc18d71423
 		 *
 		 */
 		static clock_t end_out(){
@@ -211,7 +160,6 @@ namespace yq{
 	clock_t _Tick::m_start = 0;
 	bool _Tick::m_bflag = 0;
 
-<<<<<<< HEAD
 	///macro for start _Tick's clock
 	#define TICK_BEGIN yq::_Tick::start();
 
@@ -223,19 +171,12 @@ namespace yq{
 
 	///macro for stop _Tick's clock and print info
 	#define OUT_TICK_END   yq::_Tick::end_out();
-	
+
 	/**
 	 * @brief print stl vector type collection.
 	 * print stl collection,which have begin() and end() member
 	 *
 	 * @param vec,the collection will be print.
-=======
-	/**
-	 * @brief Print a stl vector-type collection.
-	 * Print stl collection,which have begin() and end() member
-	 *
-	 * @param vec is the collection will be print.
->>>>>>> 30f7e0ef1fec5ab4c3deeae9ccb7a2bc18d71423
 	 *
 	 */
 	template <class T>
@@ -246,22 +187,12 @@ namespace yq{
 			cout << *_it << ' ';
 		cout << endl;
 	}
-<<<<<<< HEAD
-	//==========打印类===========-<End
-	
-	//==========功能类===========->Begin
-	/**
-	 * @brief 在集合中顺序查找等于特定值元素
-	 *
-	 * @param vec,the collection to be search
-	 * @param e,the value be search
-=======
 
     /**
      * @}
      */
 	//==========打印类===========-<End
-	
+
 	//==========功能类===========->Begin
     /**
      * @addtogroup algorithm_tools
@@ -273,8 +204,7 @@ namespace yq{
 	 *
 	 * @param vec is the collection to be search
 	 * @param e is the value be search
->>>>>>> 30f7e0ef1fec5ab4c3deeae9ccb7a2bc18d71423
-	 * 
+	 *
 	 * @return the iterator of e in vec,if not found,vec.end() will be return
 	 *
 	 */
@@ -289,7 +219,7 @@ namespace yq{
 		}
 		return _it;
 	}
-	
+
 	/**
 	 * @brief 在集合中顺序查找满足指定条件的元素
 	 */
@@ -304,7 +234,7 @@ namespace yq{
 		}
 		return _it;
 	}
-	
+
 	/**
 	 * @brief 查询集合中指定的元素值是否存在,二分查找
 	 */
@@ -329,19 +259,13 @@ namespace yq{
 		if((int)_up_pos - (int)_down_pos < 0) return false;
 		return true;
 	}
-<<<<<<< HEAD
-	//==========功能类===========-<End
-	
-	//==========自定数据结构=========->Begin
-	//
-=======
 
     /**
      * @}
      */
 
 	//==========功能类===========-<End
-	
+
 	//==========自定数据结构=========->Begin
     /**
      * @defgroup data_structure Self-defined usually struct
@@ -349,7 +273,6 @@ namespace yq{
      * @{
      */
 
->>>>>>> 30f7e0ef1fec5ab4c3deeae9ccb7a2bc18d71423
 	/**
 	 * @brief 二叉树的定义与实现
 	 */
@@ -365,7 +288,7 @@ namespace yq{
 			SAFE_DELETE(m_left_child);
 			SAFE_DELETE(m_right_child);
 		}
-		
+
 		///构造二叉树（用递归）
 		//先造树根，再造左子树，接着右子树，直到返回NULL
 		static _bitree* CreateTree(std::vector<T> vec,int up_pos,int down_pos){
@@ -419,7 +342,7 @@ namespace yq{
 				_tmp.swap(_tmp_t);
 			}
 		}
-		
+
 		///友元函数模版重载输出运算符
 		template <class T>
 		friend std::ostream& operator<<(std::ostream& os,const _bitree<T>& e);
@@ -432,22 +355,15 @@ namespace yq{
 		_bitree<T>(e).DFS_print(os);
 		return os;
 	}
-	
-<<<<<<< HEAD
-=======
+
     /**
      * @}
      */
 
->>>>>>> 30f7e0ef1fec5ab4c3deeae9ccb7a2bc18d71423
 	//==========自定数据结构=========-<End
 }
 
 //动态类型-------------->Begin
-<<<<<<< HEAD
-/**
- * @brief the root class of dynamic type
-=======
 
 /**
  * @addtogroup rtti
@@ -456,7 +372,6 @@ namespace yq{
 
 /**
  * @brief The root class of dynamic-type
->>>>>>> 30f7e0ef1fec5ab4c3deeae9ccb7a2bc18d71423
  */
 class _Object;
 
@@ -483,12 +398,12 @@ struct _Runtime_Class{
 	public:\
 	static const _Runtime_Class class##class_name;\
 	virtual _Runtime_Class* GetRuntimeClass() const;
-	
+
 ///Define the dynamic class and fun
 ///@see IMPLEMENT_RUNTIMECLASS
 #define IMPLEMENT_DYNAMIC(class_name,base_class) \
 	IMPLEMENT_RUNTIMECLASS(class_name,base_class,0xFFFF,NULL,NULL)
-	
+
 ///Define the dynamic class and fun
 ///@see IMPLEMENT_DYNAMCI
 #define IMPLEMENT_RUNTIMECLASS(class_name,base_class,wSchema,pfnNew,class_init) \
@@ -496,14 +411,14 @@ struct _Runtime_Class{
 	#class_name,sizeof(class class_name),wSchema,pfnNew,RUNTIME_CLASS(base_class),NULL};\
 	_Runtime_Class* class_name::GetRuntimeClass() const{\
 		return RUNTIME_CLASS(class_name);};
-		
+
 ///Get the runtime class
 ///@see _RUNTIME_CLASS
 #define RUNTIME_CLASS(class_name) _RUNTIME_CLASS(class_name)
 
 ///Get the runtime class
 ///@see RUNTIME_CLASS
-#define _RUNTIME_CLASS(class_name) ((_Runtime_Class*)(&class_name::class##class_name))	
+#define _RUNTIME_CLASS(class_name) ((_Runtime_Class*)(&class_name::class##class_name))
 
 /**
  * @brief The root class of dynamic-class
@@ -512,17 +427,14 @@ class _Object
 {
 	DECLARE_DYNAMIC(_Object)
 public:
-	
+
 private:
-	
+
 };
 const _Runtime_Class _Object::class_Object = {
 	"CObject",sizeof(_Object),0xffff,NULL,NULL,NULL};
 _Runtime_Class* _Object::GetRuntimeClass() const{
 	return _RUNTIME_CLASS(_Object);}
-<<<<<<< HEAD
-/// 动态类型--------------<End
-=======
 
 /**
  * @}
@@ -531,5 +443,3 @@ _Runtime_Class* _Object::GetRuntimeClass() const{
 //动态类型--------------<End
 
 #endif
-
->>>>>>> 30f7e0ef1fec5ab4c3deeae9ccb7a2bc18d71423
