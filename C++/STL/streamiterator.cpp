@@ -4,10 +4,7 @@
 #include <iostream>
 #include <iterator>
 #include <algorithm>
-#include <vector>
 #include <set>
-#include <list>
-#include <string>
 using namespace std;
 int main(int argc,char* argv[])
 {

@@ -8,7 +8,7 @@ LD=ld
 
 #compile flags setting
 CPPFLAGS+=-D_DEBUG -g
-LDFLAGS+=-lboost_system
+LDFLAGS+=-lboost_system -lboost_unit_test_framework
 
 #default rule setting
 %$(EXE_EXTEND): %$(OBJ_EXTEND)

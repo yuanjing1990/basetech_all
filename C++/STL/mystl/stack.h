@@ -1,4 +1,6 @@
-#pragma once
+#ifndef MY_STACK_H_
+#define MY_STACK_H_
+
 #include <vector>
 namespace yq{
 	template <typename T,typename CONT = std::vector<T> >
@@ -32,3 +34,5 @@ namespace yq{
 		return elems.back();
 	}
 }
+
+#endif //MY_STACK_H_

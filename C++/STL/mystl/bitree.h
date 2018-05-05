@@ -1,4 +1,6 @@
-#pragma once
+#ifndef MY_BITREE_
+#define MY_BITREE_
+
 #include <iostream>
 #include <stdlib.h>
 namespace yq{
@@ -48,3 +50,5 @@ namespace yq{
 		BiTree* m_rchild;
 	};
 }
+
+#endif //MY_BITREE_

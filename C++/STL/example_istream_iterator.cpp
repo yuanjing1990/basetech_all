@@ -23,6 +23,6 @@ int main( )
    cin.clear ( );
 
    cout << "vec = ";
-   for ( Iter = vec.begin( ) ; Iter != vec.end( ) ; Iter++ )
-      cout << *Iter << " "; cout << endl;
+   copy(vec.begin(),vec.end(),std::ostream_iterator<int>(std::cout," "));
+   cout << endl;
 }
