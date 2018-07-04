@@ -2,8 +2,7 @@
 #-*-coding:utf-8
 import tkinter
 import random
-from threading import Thread
-from threading import Event
+import threading
 from tkinter import *
 
 character_tbl = {}
@@ -71,19 +70,17 @@ class ConsoleView:
 
 class GuiView:
     def __init__(self):
-        self.m_okEvent = Event()
+        self.m_okEvent = threading.Event()
         self.m_question = Question()
         self.m_rootWnd = tkinter.Tk()
         self.m_qstLabel = tkinter.Label(self.m_rootWnd)
         self.m_qstLabel.pack()
         self.m_ansEntry = tkinter.Entry(self.m_rootWnd)
         self.m_ansEntry.pack()
-        self.m_okBtn = tkinter.Button(self.m_rootWnd,command=self.onOkBtnClick)
+        self.m_okBtn = tkinter.Button(self.m_rootWnd,text="OK",command=self.onOkBtnClick)
         self.m_okBtn.pack()
         self.m_msgLabel = tkinter.Label(self.m_rootWnd)
         self.m_msgLabel.pack()
-        self.m_thdMainloop = Thread(target=self.m_rootWnd.mainloop)
-        #self.m_thdMainloop.start()
         pass
     def onOkBtnClick(self):
         self.m_okEvent.set()
@@ -145,10 +142,27 @@ class Controller:
     def checkAnswer(self,ans):
         pass
     def train(self):
+        ret = 0
+        while ret != -1:
+            self.m_view.setQuestion(self.m_model.generateProblem())
+            self.m_view.draw()
+            ans = self.m_view.getAnswer()
+            ret = self.m_view.checkAnswer(ans)
+        pass
+
+class GuiController:
+    def __init__(self,model):
+        self.m_model = model
+        self.m_view = model.getView()
+        pass
+    def checkAnswer(self,ans):
+        pass
+    def train(self):
         self.m_view.setQuestion(self.m_model.generateProblem())
         self.m_view.draw()
         ans = self.m_view.getAnswer()
-        return self.m_view.checkAnswer(ans)
+        ret = self.m_view.checkAnswer(ans)
+        self.m_view.m_rootWnd.mainloop()
         pass
 
 def main():
@@ -160,9 +174,7 @@ def main():
     ctrl = Controller(model)
 
     print("trace ------1")
-    ret = 0
-    while ret != -1:
-        ret = ctrl.train()
+    ctrl.train()
     pass
 
 if __name__ == "__main__":
