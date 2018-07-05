@@ -1,5 +1,5 @@
 #!/usr/bin/python
-#-*-coding:utf-8
+# -*-coding:utf-8
 import tkinter
 import random
 import threading
@@ -7,17 +7,19 @@ from tkinter import *
 
 character_tbl = {}
 
+
 class Question:
-    def __init__(self):
-        self.m_data = ()
-        pass
-    def __init__(self,data=()):
+    def __init__(self, data=()):
         self.m_data = data
         pass
+
     def __str__(self):
+        return self.m_data.str()
         pass
-    def __getitem__(self,i):
+
+    def __getitem__(self, i):
         return self.m_data[i]
+
 
 class QuestionFactory:
     @staticmethod
@@ -31,33 +33,43 @@ class QuestionFactory:
         return Question(ret)
         pass
 
+
 class ConsoleView:
     def __init__(self):
         self.m_question = Question()
+        self.m_ctrl = None
         pass
-    def setQuestion(self,question):
+
+    def setctrl(self, ctrl):
+        self.m_ctrl = ctrl
+        pass
+
+    def setQuestion(self, question):
         self.m_question = question
+
     def draw(self):
-        print("How to write the character %d?"%self.m_question[0])
+        print("How to write the character %d?" % self.m_question[0])
         choice_str = ""
         for e in self.m_question[1]:
             choice_str += "%d.%d\t" % (self.m_question[1].index(e)+1,e)
         print(choice_str)
         pass
+
     def getAnswer(self):
         while True:
-            answer = raw_input("Please input your answer[1-%d] or q|quit:"%len(self.m_question[1]))
+            answer = raw_input("Please input your answer[1-%d] or q|quit:" % len(self.m_question[1]))
             try:
                 if answer in ("q","quit"):
                     return -1
-                elif int(answer) in range(1,len(self.m_question[1])+1):
+                elif int(answer) in range(1, len(self.m_question[1])+1):
                     return int(answer)
                 else:
                     print("Input Error!")
             except ValueError as e:
-                print("Input ValueError:%s!"%e)
+                print("Input ValueError:%s!" % e)
         pass
-    def checkAnswer(self,ans):
+
+    def checkAnswer(self, ans):
         if ans == -1:
             return -1
         elif ans == self.m_question[1].index(self.m_question[0])+1:
@@ -68,6 +80,7 @@ class ConsoleView:
             return 0
         pass
 
+
 class GuiView:
     def __init__(self):
         self.m_okEvent = threading.Event()
@@ -77,93 +90,115 @@ class GuiView:
         self.m_qstLabel.pack()
         self.m_ansEntry = tkinter.Entry(self.m_rootWnd)
         self.m_ansEntry.pack()
-        self.m_okBtn = tkinter.Button(self.m_rootWnd,text="OK",command=self.onOkBtnClick)
+        self.m_okBtn = tkinter.Button(self.m_rootWnd, text="OK", command=self.onOkBtnClick)
         self.m_okBtn.pack()
         self.m_msgLabel = tkinter.Label(self.m_rootWnd)
         self.m_msgLabel.pack()
+        self.m_ctrl = None
         pass
+
+    def setctrl(self,ctrl):
+        self.m_ctrl = ctrl
+        pass
+
     def onOkBtnClick(self):
         self.m_okEvent.set()
         pass
-    def setQuestion(self,question):
+
+    def setQuestion(self, question):
         self.m_question = question
+
     def draw(self):
-        qst_str = "How to write the character %d?\n"%self.m_question[0]
+        qst_str = "How to write the character %d?\n" % self.m_question[0]
         for e in self.m_question[1]:
-            qst_str += "%d.%d\t" % (self.m_question[1].index(e)+1,e)
+            qst_str += "%d.%d\t" % (self.m_question[1].index(e)+1, e)
         # self.m_qstLabel.delete(BEG,END)
         # self.m_qstLabel.insert(END,qst_str)
         self.m_qstLabel.config(text=qst_str)
         pass
+
     def getAnswer(self):
-        hint_str = "Please input your answer[1-%d] or q|quit:"%len(self.m_question[1])
+        hint_str = "Please input your answer[1-%d] or q|quit:" % len(self.m_question[1])
         # self.m_ansEntry.config(hint=hint_str)
         self.m_okEvent.wait()
         answer = self.m_ansEntry.get()
         self.m_okEvent.clear()
 
         try:
-            if answer in ("q","quit"):
+            if answer in ("q", "quit"):
                 return -1
-            elif int(answer) in range(1,len(self.m_question[1])+1):
+            elif int(answer) in range(1, len(self.m_question[1])+1):
                 return int(answer)
             else:
-                self.m_qstLabel.config(text="Input Error!")
+                self.m_msgLabel.config(text="Input Error!")
         except ValueError as e:
-            self.m_qstLabel.config(text="Input ValueError:%s!"%e)
+            self.m_msgLabel.config(text="Input ValueError:%s!" % e)
         pass
+
     def checkAnswer(self,ans):
         if ans == -1:
             return -1
         elif ans == self.m_question[1].index(self.m_question[0])+1:
-            self.m_qstLabel.config(text="You are right!")
+            self.m_msgLabel.config(text="You are right!")
             return 1
         else:
-            self.m_qstLabel.config(text="You are wrong!")
+            self.m_msgLabel.config(text="You are wrong!")
             return 0
         pass
 
+
 class TrainModel:
-    def __init__(self,view):
-        self.m_question = QuestionFactory.createQuestion()
-        self.m_view = view
+    def __init__(self, view):
+        self.m_question = []
+        self.m_view = [view,]
         pass
-    def generateProblem(self):
-        return QuestionFactory.createQuestion()
+
+    def add_view(self, view):
+        self.m_view.append(view)
         pass
+
+    def nextQuestion(self, index):
+        if len(self.m_question) > index:
+            return self.m_question[index]
+        else:
+            self.m_question.append(QuestionFactory.createQuestion())
+            return self.m_question[len(self.m_question)-1]
+        pass
+
+    def checkAnswer(self, ans):
+        return ans
+        pass
+
     def getView(self):
         return self.m_view
 
+
 class Controller:
-    def __init__(self,model):
+    def __init__(self, model):
         self.m_model = model
         self.m_view = model.getView()
+        self.m_index = 0
         pass
-    def checkAnswer(self,ans):
+
+    def checkAnswer(self, ans):
+        ret = self.m_model.checkAnswer(ans)
+        for e in self.m_view:
+            ret = e.checkAnswer(ret)
+        return ret
         pass
+
     def train(self):
         ret = 0
         while ret != -1:
-            self.m_view.setQuestion(self.m_model.generateProblem())
-            self.m_view.draw()
-            ans = self.m_view.getAnswer()
-            ret = self.m_view.checkAnswer(ans)
+            qst = self.m_model.nextQuestion(self.m_index)
+            self.m_index += 1
+            for e in self.m_view:
+                e.setQuestion(qst)
+                e.draw()
+            ans = self.m_view[0].getAnswer()
+            ret = self.checkAnswer(ans)
         pass
 
-class GuiController:
-    def __init__(self,model):
-        self.m_model = model
-        self.m_view = model.getView()
-        pass
-    def checkAnswer(self,ans):
-        pass
-    def train(self):
-        self.m_view.setQuestion(self.m_model.generateProblem())
-        self.m_view.draw()
-        ans = self.m_view.getAnswer()
-        ret = self.m_view.checkAnswer(ans)
-        self.m_view.m_rootWnd.mainloop()
-        pass
 
 def main():
     print("trace ------0")
@@ -172,10 +207,13 @@ def main():
     model = TrainModel(view)
     print("trace ------0.6")
     ctrl = Controller(model)
+    view.setctrl(ctrl)
 
     print("trace ------1")
-    ctrl.train()
+    threading.Thread(target=ctrl.train).start()
+    view.m_rootWnd.mainloop()
     pass
+
 
 if __name__ == "__main__":
     main()
