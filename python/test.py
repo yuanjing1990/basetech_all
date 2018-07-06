@@ -3,6 +3,7 @@
 import tkinter
 import random
 import threading
+import zmq
 from tkinter import *
 
 character_tbl = {}
@@ -19,6 +20,9 @@ class Question:
 
     def __getitem__(self, i):
         return self.m_data[i]
+    
+    def __len__(self):
+        return len(self.m_data)
 
 
 class QuestionFactory:
@@ -40,6 +44,9 @@ class ConsoleView:
         self.m_ctrl = None
         pass
 
+    def close(self):
+        pass
+
     def setctrl(self, ctrl):
         self.m_ctrl = ctrl
         pass
@@ -57,16 +64,24 @@ class ConsoleView:
 
     def getAnswer(self):
         while True:
-            answer = raw_input("Please input your answer[1-%d] or q|quit:" % len(self.m_question[1]))
+            if len(self.m_question) < 2:
+                continue
+            answer = input("Please input your answer[1-%d] or q|quit:" % len(self.m_question[1]))
+            ret = 0
             try:
                 if answer in ("q","quit"):
-                    return -1
+                    ret = -1
                 elif int(answer) in range(1, len(self.m_question[1])+1):
-                    return int(answer)
+                    ret = int(answer)
                 else:
                     print("Input Error!")
             except ValueError as e:
                 print("Input ValueError:%s!" % e)
+            
+            ctx = zmq.Context()
+            sck = ctx.socket(zmq.REQ)
+            sck.connect("ipc:///tmp/test")
+            sck.send(b"%d" % ret)
         pass
 
     def checkAnswer(self, ans):
@@ -97,6 +112,9 @@ class GuiView:
         self.m_ctrl = None
         pass
 
+    def close(self):
+        self.m_rootWnd.destroy()
+
     def setctrl(self,ctrl):
         self.m_ctrl = ctrl
         pass
@@ -118,22 +136,27 @@ class GuiView:
         pass
 
     def getAnswer(self):
-        hint_str = "Please input your answer[1-%d] or q|quit:" % len(self.m_question[1])
+        # hint_str = "Please input your answer[1-%d] or q|quit:" % len(self.m_question[1])
         # self.m_ansEntry.config(hint=hint_str)
-        self.m_okEvent.wait()
-        answer = self.m_ansEntry.get()
-        self.m_okEvent.clear()
+        while True:
+            self.m_okEvent.wait()
+            answer = self.m_ansEntry.get()
+            self.m_okEvent.clear()
 
-        try:
-            if answer in ("q", "quit"):
-                return -1
-            elif int(answer) in range(1, len(self.m_question[1])+1):
-                return int(answer)
-            else:
-                self.m_msgLabel.config(text="Input Error!")
-        except ValueError as e:
-            self.m_msgLabel.config(text="Input ValueError:%s!" % e)
-        pass
+            ret = 0
+            try:
+                if answer in ("q", "quit"):
+                    ret = -1
+                elif int(answer) in range(1, len(self.m_question[1])+1):
+                    ret = int(answer)
+                else:
+                    self.m_msgLabel.config(text="Input Error!")
+            except ValueError as e:
+                self.m_msgLabel.config(text="Input ValueError:%s!" % e)
+            ctx = zmq.Context()
+            sck = ctx.socket(zmq.REQ)
+            sck.connect("ipc:///tmp/test")
+            sck.send(b"%d" % ret)
 
     def checkAnswer(self,ans):
         if ans == -1:
@@ -187,6 +210,11 @@ class Controller:
         return ret
         pass
 
+    def getAnswerFromViews(self):
+        for e in self.m_view:
+            thd = threading.Thread(target = e.getAnswer)
+            thd.start()
+
     def train(self):
         ret = 0
         while ret != -1:
@@ -195,21 +223,26 @@ class Controller:
             for e in self.m_view:
                 e.setQuestion(qst)
                 e.draw()
-            ans = self.m_view[0].getAnswer()
-            ret = self.checkAnswer(ans)
+            # ans = self.m_view[0].getAnswer()
+            ctx = zmq.Context()
+            sck = ctx.socket(zmq.REP)
+            sck.bind("ipc:///tmp/test")
+            ans = sck.recv()
+            ret = self.checkAnswer(int(ans))
+        for e in self.m_view:
+            e.close()
+        print("Exit!")
         pass
 
 
 def main():
-    print("trace ------0")
     view = GuiView()
-    print("trace ------0.5")
     model = TrainModel(view)
-    print("trace ------0.6")
+    conview = ConsoleView()
+    model.add_view(conview)
     ctrl = Controller(model)
     view.setctrl(ctrl)
-
-    print("trace ------1")
+    ctrl.getAnswerFromViews()
     threading.Thread(target=ctrl.train).start()
     view.m_rootWnd.mainloop()
     pass
