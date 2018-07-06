@@ -8,7 +8,6 @@ from tkinter import *
 
 character_tbl = {}
 
-
 class Question:
     def __init__(self, data=()):
         self.m_data = data
