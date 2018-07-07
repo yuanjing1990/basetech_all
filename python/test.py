@@ -8,6 +8,9 @@ from tkinter import *
 
 character_tbl = {}
 
+svr_socket_str = "tcp://*:5555"
+clt_socket_str = "tcp://localhost:5555"
+
 class Question:
     def __init__(self, data=()):
         self.m_data = data
@@ -79,7 +82,7 @@ class ConsoleView:
             
             ctx = zmq.Context()
             sck = ctx.socket(zmq.REQ)
-            sck.connect("ipc:///tmp/test")
+            sck.connect(clt_socket_str)
             sck.send(b"%d" % ret)
         pass
 
@@ -154,7 +157,7 @@ class GuiView:
                 self.m_msgLabel.config(text="Input ValueError:%s!" % e)
             ctx = zmq.Context()
             sck = ctx.socket(zmq.REQ)
-            sck.connect("ipc:///tmp/test")
+            sck.connect(clt_socket_str)
             sck.send(b"%d" % ret)
 
     def checkAnswer(self,ans):
@@ -225,7 +228,7 @@ class Controller:
             # ans = self.m_view[0].getAnswer()
             ctx = zmq.Context()
             sck = ctx.socket(zmq.REP)
-            sck.bind("ipc:///tmp/test")
+            sck.bind(svr_socket_str)
             ans = sck.recv()
             ret = self.checkAnswer(int(ans))
         for e in self.m_view:
