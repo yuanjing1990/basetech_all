@@ -8,12 +8,9 @@ from tkinter import *
 
 character_tbl = {}
 
-<<<<<<< HEAD
-=======
 svr_socket_str = "tcp://*:5555"
 clt_socket_str = "tcp://localhost:5555"
 
->>>>>>> master
 class Question:
     def __init__(self, data=()):
         self.m_data = data
