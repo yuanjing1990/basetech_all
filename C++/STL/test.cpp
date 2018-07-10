@@ -18,6 +18,7 @@ using namespace boost::unit_test::framework;
 #else
 #endif
 
+/*
 BOOST_AUTO_TEST_CASE(test_any)
 {
 	yj::any e1(3);
@@ -80,4 +81,4 @@ BOOST_AUTO_TEST_CASE(test_gregorian)
 	date today = day_clock::local_day();
 	std::cout << today << std::endl;
 }
-
+*/

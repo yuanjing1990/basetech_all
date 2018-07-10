@@ -31,7 +31,7 @@ int main(int argc,char* argv[])
     //-------------------------------------------
     // test array_sink and array_source
     std::cout << "array device test............\n";
-    char tmp1[tmp.length()] = {0};
+    char tmp1[255] = {0};
     stream<array_sink> array_out(array_sink(tmp1,tmp1+tmp.length()));
     array_out << tmp;
     std::cout << tmp1;
