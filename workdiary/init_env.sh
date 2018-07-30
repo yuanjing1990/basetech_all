@@ -40,7 +40,7 @@ get_project_code(){
 
 	mkdir $1
 	cd $1
-	repo init -u ssh://192.168.8.74:29418/Src/$1/platform/manifect -b $2
+	repo init -u ssh://192.168.8.74:29418/Src/$1/platform/manifest -b $2
 	repo sync
 	repo start $2 -all
 }
@@ -58,8 +58,8 @@ compile_project(){
 #
 #
 #####################################################################
-PROJECT_NAME=goni
-BRANCH_NAME=master
+PROJECT_NAME=Goni
+BRANCH_NAME=Goni/Func/UT_lateVE
 USER_NAME=yuanjing
 
 install_software
@@ -68,6 +68,6 @@ if [ ! -e /usr/bin/repo ];then
 	echo get_repo_tool
 	get_repo_tool
 fi
-#get_project_code ${PROJECT_NAME} ${BRANCH_NAME}
-#compile_project
+get_project_code ${PROJECT_NAME} ${BRANCH_NAME}
+compile_project
 
