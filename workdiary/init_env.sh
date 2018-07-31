@@ -6,7 +6,8 @@ install_software(){
 	libx11-dev:i386 libreadline6-dev:i386 libgl1-mesa-glx:i386 \
 	libgl1-mesa-dev gcc-4.4 gcc-4.4-multilib mingw32 tofrodos \
 	python-markdown libxml2-utils xsltproc zlib1g-dev:i386 u-boot-tools openssh-client libswitch-perl \
-	g++-4.4 g++-4.4-multilib cksfv uuid-dev:i386 liblzo2-dev:i386 lzop
+	g++-4.4 g++-4.4-multilib cksfv uuid-dev:i386 liblzo2-dev:i386 lzop \
+	android-tools-adb lcov
 }
 
 #2.config git

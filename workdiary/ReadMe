@@ -1,0 +1,11 @@
+以下脚本都默认使用项目Goni，脚本放到和Goni项目同级目录，如下：
+-WorkDir
+|-Goni
+|-init_env.sh			：主要完成软件的安装，git的配置，代码的获取
+|-run_test.sh			：集成下面部分脚本的功能，包括编译代码、启动模拟器、推送本地测试程序到模拟器，接收一个模块名词参数
+|-build_test.sh			：主要完成测试代码的编译，接收一个模块名词参数
+|-start_emulator.sh		：启动android模拟器
+|-push_test_program.sh		：推送本地测试程序到模拟器，接收一个模块名称参数
+|-runtest_on_emulator.sh	：模拟器上运行的脚本，不要在本地允许，主要是运行测试程序，接收一个模块名词参数
+|-pull_test_result.sh		：从模拟器获取测试程序运行后的覆盖信息到本地，接收两个参数，第一个参数是模块名词，第二个参数是模块类型（platform or frameworks）
+
