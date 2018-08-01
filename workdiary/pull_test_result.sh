@@ -4,6 +4,7 @@
 PROJECT_ROOT=${PWD}/Goni
 MODULE_NAME=$1
 MODULE_TYPE=$2
+DATE=`date +%Y%m%d`
 
 adb pull /data/test-result-gtst${MODULE_NAME}service.xml test_result/application_${MODULE_NAME}service/test-result-gtst${MODULE_NAME}service.xml
 
