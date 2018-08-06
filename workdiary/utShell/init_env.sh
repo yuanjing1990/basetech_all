@@ -1,4 +1,7 @@
 #!/bin/bash
+#usage:
+#	./init_env.sh USER_NAME
+
 #1.install software
 install_software(){
 	sudo apt-get install git-core gnupg flex bison gperf build-essential \
@@ -65,7 +68,7 @@ compile_project(){
 #####################################################################
 PROJECT_NAME=Goni
 BRANCH_NAME=Goni/Func/UT_lateVE
-USER_NAME=yuanjing
+USER_NAME=$1
 
 install_software
 config_git ${USER_NAME}

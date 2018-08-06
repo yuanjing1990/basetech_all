@@ -1,4 +1,6 @@
 #!/bin/bash
+#usage:
+#   ./start_emulator.sh
 PROJECT_ROOT=${PWD}/Goni
 
 cd ${PROJECT_ROOT}
