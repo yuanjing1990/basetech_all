@@ -5,3 +5,7 @@
 资料地址
 \\ibigtom
 \\ibigtom\Group\Diag\Leepi
+\\scorpio.storm\share\group\diag
+
+武汉共享目录
+\\iauto-wuhan-1 iauto：wuhan2018

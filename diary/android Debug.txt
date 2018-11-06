@@ -1,0 +1,12 @@
+gdbclient -r program
+
+run on emulator:
+  gdbserver ip:port program_path
+run on host:
+  adb pull lib_path_on_emulator lib_path_on_host
+  adb pull program_path_on_emulator program_path_on_host
+  adb forward tcp:port tcp:port
+  gdb
+  gdb> set lib_path_on_host
+  gdb> file program_path_on_host
+  gdb> target remote ip:port
