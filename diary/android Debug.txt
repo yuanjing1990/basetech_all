@@ -10,3 +10,5 @@ run on host:
   gdb> set lib_path_on_host
   gdb> file program_path_on_host
   gdb> target remote ip:port
+ or:
+  gdbclient program_name
