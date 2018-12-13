@@ -14,6 +14,6 @@ int main(int argc,char* argv[])
 	cin.clear();
 	//ostream_iterator构造函数第二个参数是输出分割符
 	//假设st内容为12345，输出则为1525354555
-	copy(st.begin(),st.end(),ostream_iterator<int>(cout,"5"));	
+	copy(st.begin(),st.end(),ostream_iterator<int>(cout,"5"));
 	return 0;
 }
