@@ -1,0 +1,5 @@
+//ubuntu install and config remote desktop
+sudo apt install xrdp
+sudo apt install xubuntu-desktop
+echo "xfce4-session" > ~/.xsession
+sudo service xrdp restart

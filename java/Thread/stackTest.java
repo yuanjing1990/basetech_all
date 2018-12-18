@@ -73,6 +73,7 @@ class stack
 		this.notify();
 		data[sip] = strCell;
 		sip++;
+		System.out.println("push " + strCell);
 	}
 	public synchronized String pop()
 	{
@@ -86,6 +87,7 @@ class stack
 		}
 		this.notify();
 		sip--;
+		System.out.println("pop " + data[sip]);
 		return data[sip];
 	}
 }
