@@ -5,7 +5,7 @@ JAVAC=javac
 
 #default rule setting
 %$(EXE_EXTEND): %$(SRC_EXTEND)
-	$(JAVAC) $< 
+	$(JAVAC) -encoding utf-8 $< 
 
 #source file,obj file and exe file setting
 SRC_FILES=$(shell ls *$(SRC_EXTEND))

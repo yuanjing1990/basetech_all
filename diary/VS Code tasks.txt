@@ -1,0 +1,33 @@
+//下面是一个使用cygwin环境编译的例子
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "make",
+            "type": "shell",
+            "command": "make -f Makefile\"",
+            "options": {
+                //关键点在环境变量PATH的配置和当前工作目录的设置
+                "env": {"PATH":"C:\\cygwin64\\bin"},
+                "cwd": "${fileDirname}"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "dedicated",
+                "showReuseMessage": true,
+                "clear": true
+            }
+        },
+    ]
+}
