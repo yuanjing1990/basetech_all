@@ -1,9 +1,12 @@
 #Java Pratice
 
-##JavaIO (WriterReaderDemo.java)
+[TOC]
 
+##JavaIO (WriterReaderDemo.java)
 ###总览
- - 按处理对象可以分为：`字节流`和`字符流`
+![IO类结构](http://www.runoob.com/wp-content/uploads/2013/12/iostream2xx.png "io class")
+
+- 按处理对象可以分为：`字节流`和`字符流`
  	- `字节流`的基类为`InputStream`和`OutputStream`，一次处理一个字节
     - `字符流`的基类为`Reader`和`Writer`，一次处理一个字符（2个字节）
 
@@ -27,7 +30,8 @@
 ```Java
 	import java.io.*;
 ```
- - 文件读写：
+
+#### 文件读写
 ```Java
 	String name ="test.txt";
 	String str1 = "This is test!";
@@ -79,7 +83,7 @@
 	}
 	dis.close();
 ```
- - 字符串读写
+#### 字符串读写
 ```Java
 	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 	String s = br.readLine();
@@ -96,7 +100,7 @@
 	sw.write(s);
 	System.out.println(String.format("Write String by StringWriter:%s",sw.getBuffer()));
 ```
- - 数组读写
+#### 数组读写
 ```Java
 	char[] data = {'a','b','3','4'};
 	CharArrayReader car = new CharArrayReader(data);
@@ -120,5 +124,94 @@
 	ByteArrayOutputStream baos = new ByteArrayOutputStream(100);
 	baos.write(str.getBytes());
 	System.out.println(baos.toString());
+```
+
+##外部类和内部类的访问 (Outer.java)
+###概述
+在定义内部类时常会遇到访问问题，比如静态方法访问内部类、非静态方法访问非静态的内部类等等情况，这里作个总结
+
+- 非静态内部类中无法定义静态方法
+
+- 静态方法中无法直接使用非静态的内部类
+
+###实例
+####外部类的静态方法访问非静态内部类
+```Java
+// 静态方法中无法直接使用非静态的内部类
+// public static Inner StaticGetInner(String str)
+// {
+// 	return new Inner(str);
+// }
+public static Inner StaticGetInner(String str)
+{
+	Outer outer = new Outer("StaticGetInner");
+	Outer.Inner inner = outer.new Inner("StaticGetInner");
+	return inner;
+}
+```
+####外部类的非静态方法访问非静态内部类
+```Java
+public Inner GetInner(String str)
+{
+	return new Inner(str);
+}
+```
+####外部类的静态方法访问静态内部类
+```Java
+public static StaticInner StaticGetStaticInner(String str)
+{
+	return new StaticInner(str);
+}
+```
+####外部类的非静态方法访问静态内部类
+```Java
+public StaticInner GetStaticInner(String str)
+{
+	return new StaticInner(str);
+}
+```
+####非静态内部类访问外部类非静态和静态方法
+```Java
+class Inner
+{
+Inner(String str)
+{
+	System.out.println("Create Inner Class "+str);
+}
+void innerNonStaticMethod()
+{
+	System.out.println("call innerNonStaticMethod ...");
+	GetInner("innerNonStaticMethod");
+	StaticGetInner("innerNonStaticMethod");
+}
+// 非静态内部类中无法定义静态方法
+// public static void innerStaticMethod() {
+// 	System.out.println("call innerStaticMethod ...");
+// }
+}
+```
+####静态内部类访问外部类非静态和静态方法
+```Java
+static class StaticInner {
+	StaticInner(String str) {
+		System.out.println("Create StaticInner Class "+str);
+	}
+	void staticInnerNonStaticMethod() {
+		System.out.println("call staticInnerNonStaticMethod ...");
+		//静态内部类无法直接使用外部类的非静态方法
+		// GetInner("staticInnerNonStaticMethod");
+		Outer outer = new Outer("staticInnerNonStaticMethod");
+		outer.GetInner("staticInnerNonStaticMethod");
+		StaticGetInner("staticInnerNonStaticMethod");
+	}
+	public static void staticInnerStaticMethod() {
+		System.out.println("call staticInnerStaticMethod ...");
+		//静态内部类无法直接使用外部类的非静态方法
+		// GetInner("staticInnerStaticMethod");
+		Outer outer = new Outer("staticInnerStaticMethod");
+		outer.GetInner("staticInnerStaticMethod");
+		StaticGetInner("staticInnerStaticMethod");
+	}
+}
 ```
 
