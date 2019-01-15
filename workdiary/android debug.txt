@@ -1,0 +1,24 @@
+#Leepi实机调试
+- 串口控制台设置以下属性，打开debug输出(21554对应0x5432)：  
+`setprop persist.iauto.log.switch 21554`
+
+- 增加logcat缓存容量  
+`logcat -G 20M`
+
+- logcat输出指定TAG的日志
+`logcat -s TAG`
+
+#串口连接
+使用minicom工具连接串口
+minicom -s
+配置参数
+设备：ttyUSB0
+波特率：921600
+
+#测试脚本
+```
+setprop persist.iauto.log.switch 21554
+logcat -G 20M
+logcat -c
+logcat -s SysCtrlService sysctrlmanager
+```
