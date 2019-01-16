@@ -1,19 +1,22 @@
 #Leepi实机调试
-- 串口控制台设置以下属性，打开debug输出(21554对应0x5432)：  
-`setprop persist.iauto.log.switch 21554`
+adb不能识别参考[Release烧写手顺](http://iautowiki.storm:8081/Release%E7%83%A7%E5%86%99%E6%89%8B%E9%A1%BA)
+
+- 串口控制台设置以下属性，打开debug输出：  
+`setprop persist.iauto.log.switch 15`
 
 - 增加logcat缓存容量  
 `logcat -G 20M`
 
-- logcat输出指定TAG的日志
+- logcat输出指定TAG的日志  
 `logcat -s TAG`
 
 #串口连接
-使用minicom工具连接串口
-minicom -s
-配置参数
-设备：ttyUSB0
-波特率：921600
+使用minicom工具连接串口  
+`minicom -s`  
+
+配置参数  
+- 设备：`ttyUSB0`  
+- 波特率：`921600`  
 
 #测试脚本
 ```

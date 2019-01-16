@@ -9,3 +9,6 @@
 
 武汉共享目录
 \\iauto-wuhan-1 iauto：wuhan2018
+
+上海共享目录
+\\uranus\iBigtom\Users\yuanjing storm域账号
