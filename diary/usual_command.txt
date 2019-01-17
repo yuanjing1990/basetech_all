@@ -1,0 +1,4 @@
+#安装软件
+	sudo dpkg -i *.deb
+
+#

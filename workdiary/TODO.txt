@@ -1,5 +1,6 @@
-2019-1-8
+#2019-1-8
 sysctrl多用户情况处理，用户id使用下列方法获取：
+```
 import android.os.UserHandle;
 import android.os.UserManager;
 
@@ -12,6 +13,7 @@ if (usi != null) {
 Log.i(TAG, "当前用户序列号:"+usi.serialNumber);
 }
 }
+```
 
 需要在LifeCycle中封装所有用户id相关的处理，外部服务无法感知。
 特别注意外部服务存在多用户和非多用户两类，需要统一处理。

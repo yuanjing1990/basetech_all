@@ -20,7 +20,7 @@ adb不能识别参考[Release烧写手顺](http://iautowiki.storm:8081/Release%E
 
 #测试脚本
 ```
-setprop persist.iauto.log.switch 21554
+setprop persist.iauto.log.switch 15
 logcat -G 20M
 logcat -c
 logcat -s SysCtrlService sysctrlmanager

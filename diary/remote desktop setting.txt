@@ -3,3 +3,8 @@ sudo apt install xrdp
 sudo apt install xubuntu-desktop
 echo "xfce4-session" > ~/.xsession
 sudo service xrdp restart
+
+连接上后提示passwd error，修改如下配置项
+/etc/vnc/seman.ini
+param8=-SecurityTypes
+param9=None
