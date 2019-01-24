@@ -12,3 +12,9 @@
 
 上海共享目录
 \\uranus\iBigtom\Users\yuanjing storm域账号
+
+star
+\\192.168.48.136
+
+my ubuntu in shanghai 
+\\192.168.48.147

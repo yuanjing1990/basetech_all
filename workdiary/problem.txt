@@ -5,3 +5,6 @@
   
 2.新装的ubutun系统无法解析内网域名，只能用ip访问
   需要配置dns服务器地址，内外dns地址为192.168.2.14
+
+3.下载完镜像后，打开本地git daemon服务，然后repo init，得到的manifests/default.xml中的远程地址还是原来的
+  需要手动修改init后得到的default.xml文件，使其指向本地地址，然后repo sync -m default.xml同步代码
