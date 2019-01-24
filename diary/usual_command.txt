@@ -1,4 +1,10 @@
 #安装软件
 	sudo dpkg -i *.deb
 
-#
+#格式化代码
+	astyle -z2 -s4 -f -n -p -c -H $(find ./ -name "*.java")
+
+#模式匹配文本
+下面表示在search_file里面查找mode_file里面以行分割的模式
+`grep -f mode_file search_file`
+
