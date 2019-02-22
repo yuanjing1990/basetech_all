@@ -18,3 +18,6 @@ star
 
 my ubuntu in shanghai 
 \\192.168.48.147
+
+user:3380
+pw:12345qwert
