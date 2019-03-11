@@ -25,3 +25,6 @@ logcat -G 20M
 logcat -c
 logcat -s SysCtrlService sysctrlmanager
 ```
+
+#dumpsys
+dumpsys activity service servicename

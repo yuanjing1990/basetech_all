@@ -1,0 +1,15 @@
+Unbuntu使用adb连接手机
+
+1、lsusb查看usb设备信息，接手机和不接手机分别查一次确定手机对应的信息如下：
+Bus 003 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub
+Bus 002 Device 006: ID 04e8:689e Samsung Electronics Co., Ltd 
+Bus 002 Device 003: ID 046d:c52f Logitech, Inc. Wireless Mouse M305
+
+2、编辑配置文件/etc/udev/rules.d/51-android.rule中的项，如下：
+SUBSYSTEMS=="usb", ATTRS{idVendor=="04e8", ATTRS{idProduct}=="689e", MODE="0666"}
+ID信息是上面查出来的046d:c52f形式的内容，前面为idVendor，后面为idProduct
+
+3、最后重启udev服务
+sudo /etc/init.d/udev restart
+
+后面就可以使用adb devices查看Android设备了
