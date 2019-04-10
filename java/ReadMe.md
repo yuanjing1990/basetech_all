@@ -1,9 +1,9 @@
-#Java Pratice
+# Java Pratice
 
 [TOC]
 
-##JavaIO (WriterReaderDemo.java)
-###总览
+## JavaIO (WriterReaderDemo.java)
+### 总览
 ![IO类结构](http://www.runoob.com/wp-content/uploads/2013/12/iostream2xx.png "io class")
 
 - 按处理对象可以分为：`字节流`和`字符流`
@@ -25,7 +25,7 @@
 	- `InputStreamReader`,`OutputStreamWriter` 提供了字符流和字节流的转化
 	- `DataInputStream`,`DataOutputStream` 提供了基础数据类型的读写
 
-###实例
+### 实例
  - Java IO库在java.io包内，使用下面的方法引入：
 ```Java
 	import java.io.*;
@@ -126,16 +126,16 @@
 	System.out.println(baos.toString());
 ```
 
-##外部类和内部类的访问 (Outer.java)
-###概述
+## 外部类和内部类的访问 (Outer.java)
+### 概述
 在定义内部类时常会遇到访问问题，比如静态方法访问内部类、非静态方法访问非静态的内部类等等情况，这里作个总结
 
 - 非静态内部类中无法定义静态方法
 
 - 静态方法中无法直接使用非静态的内部类
 
-###实例
-####外部类的静态方法访问非静态内部类
+### 实例
+#### 外部类的静态方法访问非静态内部类
 ```Java
 // 静态方法中无法直接使用非静态的内部类
 // public static Inner StaticGetInner(String str)
@@ -149,28 +149,28 @@ public static Inner StaticGetInner(String str)
 	return inner;
 }
 ```
-####外部类的非静态方法访问非静态内部类
+#### 外部类的非静态方法访问非静态内部类
 ```Java
 public Inner GetInner(String str)
 {
 	return new Inner(str);
 }
 ```
-####外部类的静态方法访问静态内部类
+#### 外部类的静态方法访问静态内部类
 ```Java
 public static StaticInner StaticGetStaticInner(String str)
 {
 	return new StaticInner(str);
 }
 ```
-####外部类的非静态方法访问静态内部类
+#### 外部类的非静态方法访问静态内部类
 ```Java
 public StaticInner GetStaticInner(String str)
 {
 	return new StaticInner(str);
 }
 ```
-####非静态内部类访问外部类非静态和静态方法
+#### 非静态内部类访问外部类非静态和静态方法
 ```Java
 class Inner
 {
@@ -190,7 +190,7 @@ void innerNonStaticMethod()
 // }
 }
 ```
-####静态内部类访问外部类非静态和静态方法
+#### 静态内部类访问外部类非静态和静态方法
 ```Java
 static class StaticInner {
 	StaticInner(String str) {

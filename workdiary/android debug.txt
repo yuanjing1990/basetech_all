@@ -1,4 +1,4 @@
-#Leepi实机调试
+# Leepi实机调试
 adb不能识别参考[Release烧写手顺](http://iautowiki.storm:8081/Release%E7%83%A7%E5%86%99%E6%89%8B%E9%A1%BA)
 
 - 串口控制台设置以下属性，打开debug输出：  
@@ -10,7 +10,7 @@ adb不能识别参考[Release烧写手顺](http://iautowiki.storm:8081/Release%E
 - logcat输出指定TAG的日志  
 `logcat -s TAG`
 
-#串口连接
+# 串口连接
 使用minicom工具连接串口  
 `minicom -s`  
 
@@ -18,7 +18,7 @@ adb不能识别参考[Release烧写手顺](http://iautowiki.storm:8081/Release%E
 - 设备：`ttyUSB0`  
 - 波特率：`921600`  
 
-#测试脚本
+# 测试脚本
 ```
 setprop persist.iauto.log.switch 15
 logcat -G 20M
@@ -26,5 +26,5 @@ logcat -c
 logcat -s SysCtrlService sysctrlmanager
 ```
 
-#dumpsys
+# dumpsys
 dumpsys activity service servicename

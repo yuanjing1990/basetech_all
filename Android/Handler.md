@@ -1,9 +1,9 @@
-#Handler综述
+# Handler综述
 Handler提供了Android系统里面的消息处理机制，包含Handler、Looper、MessageQueue、Message。  
 Handler为用户处理Message提供了界面，Looper实现了消息的驱动，MessageQueue和Message提供了消息的基本结构。
 
-#Handler机制详述
-##Message
+# Handler机制详述
+## Message
 首先看Message基本结构：
 ```Java
 public final class Message implements Parcelable {
@@ -46,7 +46,7 @@ public final class Message implements Parcelable {
 - 包含一个名为callback的Runnable 对象
 - 使用obtain 方法可以从消息池中获取Message的实例，也是推荐大家使用的方法，而不是直接调用构造方法。
 
-##MessageQueue
+## MessageQueue
 顾名思义，MessageQueue就是一个Message组成的队列，先看其构造函数：
 ```Java
 MessageQueue(boolean quitAllowed) {
@@ -70,7 +70,7 @@ Message next() {
 ```
 比较长没有截完，主要功能就是Message出队列。其实还有一个对应的方法enqueueMessage实现了进队列的功能，这个后面还会再讲到。
 
-##Looper
+## Looper
 Looper主要实现了消息的驱动，MessageQueue也是由它创建的。对于Looper主要关注两个函数，prepare()和loop()。
 
 - Looper-prepare():  
@@ -117,7 +117,7 @@ public static @Nullable Looper myLooper() {
 ```
 loop是个死循环，功能就是不停的从消息队列中取出消息交由msg.target.dispatchMessage处理。Message定义里面可以看到，这里msg.target实际就是Handler。
 
-##Handler
+## Handler
 先从Looper里面使用过的函数dispatchMessage看起：
 ```Java
 public void dispatchMessage(Message msg) {
@@ -259,7 +259,7 @@ boolean enqueueMessage(Message msg, long when) {
 ```
 到这里消息才被添加进消息队列，然后就交由Looper.loop函数驱动队列消息的处理，这又回到开始的dispatchMessage函数。
 
-#总结
+# 总结
 - 通过Looper的prepare方法创建MessageQueue
 - 通过loop方法找到和当前线程匹配的Looper对象me
 - 从me中取出消息队列对象mQueue

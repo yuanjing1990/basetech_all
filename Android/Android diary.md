@@ -1,6 +1,6 @@
-#Android 学习笔记
+# Android 学习笔记
 
-##TextView
+## TextView
 - android:text 文本内容
 - android:gravity 对齐方向
 - android:textStyle 字体类型（粗体，斜体等）
@@ -25,7 +25,7 @@
 - android:singleLine="true"
 - android:marqueeRepeatLimit="marquee_forever" 设置跑马灯效果，还需要调用TextView.setSelected(true)
 
-##TextEdit
+## TextEdit
 - android:selectAllOnFocus 获取焦点时全选文本
 - android:inputType 设置可接受的输入类型（电话，邮件，数组，字母等）
 - android:minLines

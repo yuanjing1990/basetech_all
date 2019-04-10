@@ -1,4 +1,4 @@
-#SmartPtr in Android
+# SmartPtr in Android
 Android中的智能指针需要指针类和计数类配合使用，指针类主要是android::sp<>和android::wp<>,计数类主要是LightRefBase和RefBase及他们的子类。
 指针类的模板参数需要是计数类或其子类，主要有以下3种组合。
 
@@ -6,7 +6,7 @@ Android中的智能指针需要指针类和计数类配合使用，指针类主�
 - `android::sp<RefBase>`：强智能指针
 - `android::wp<RefBase>`：弱智能指针
 
-##轻量级引用计数类LightRefBase
+## 轻量级引用计数类LightRefBase
 	源码位置：`/system/core/libutils/include/utils/LightRefBase.h`
 
 ```cpp
@@ -44,7 +44,7 @@ private:
 ```
 此类实现了基本的引用计数功能，成员变量mCount即是计数值，初始值为0，成员incStrong和decStrong实现了引用计数的管理，指针类会调用这两个函数，实际上这两个函数就是计数类和指针类间约定的接口。
 
-##强智能指针类android::sp<>
+## 强智能指针类android::sp<>
 源码位置：
 
 - `/system/core/libutils/include/utils/StrongPointer.h`
