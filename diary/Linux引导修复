@@ -1,0 +1,18 @@
+# Linux引导修复
+- 制作U盘安装镜像
+- 使用U盘镜像启动系统
+- 在grub启动选项页按ESC进入grub命令行
+- 执行如下指令，启动在硬盘上的系统
+```
+grub>set root=(hd1,sda2)
+grub>set perfix=(hd1,sda2)/boot/grub
+grub>linux /vmlinux-xxx-xxx root=/dev/sda2
+grub>initrd /initrd
+grub>boot
+```
+- 启动后打开控制台，运行grub安装指令
+```
+$ sudo upgrade-grub
+$ sudo grub-install /dev/sda
+```
+- 重启系统确认完成引导修复

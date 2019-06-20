@@ -31,3 +31,8 @@
 - android:minLines
 - android:maxLines 设置显示行数
 - android:singleLine="true" 设置单行显示
+
+## Button中Text使用英文时都是大写？
+> textAllCaps属性在5.0（21）以后默认为true，不需要全部大写的话把此属性设为false
+
+## 应用在@style/AppTheme模式下(就是所有Activity会有一个公共的头部)，头部文字能否反应当前Activity的层级关系？

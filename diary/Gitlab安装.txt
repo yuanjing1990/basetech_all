@@ -1,0 +1,89 @@
+Gitlab安装
+1.安装依赖包
+
+    sudo apt-get install curl openssh-server ca-certificates postfix
+
+    注：执行完成后，出现邮件配置，选择Internet那一项（不带Smarthost的）
+
+2.利用清华大学的镜像（https://mirror.tuna.tsinghua.edu.cn/help/gitlab-ce/）来进行主程序的安装
+首先信任 GitLab 的 GPG 公钥
+
+    curl https://packages.gitlab.com/gpg.key 2> /dev/null | sudo apt-key add - &>/dev/null
+
+使用root用户修改配置文件
+
+    vi /etc/apt/sources.list.d/gitlab-ce.list
+
+    #添加以下内容
+
+    deb https://mirrors.tuna.tsinghua.edu.cn/gitlab-ce/ubuntu xenial main
+
+    vi /etc/gitlab/gitlab.rb
+
+    external_url 'http://172.16.81.91/'
+
+安装 gitlab-ce
+
+    sudo apt-get update
+
+    sudo apt-get install gitlab-ce
+
+3.启动sshd和postfix服务
+
+    service sshd start
+
+    service postfix start
+
+4.添加防火墙规则
+
+    sudo iptables -A INPUT -p tcp -m tcp --dport 80 -j ACCEPT
+
+5.启动各项服务
+
+    sudo gitlab-ctl reconfigure
+
+6..检查GitLab是否安装好并且已经正确运行
+
+    sudo gitlab-ctl status
+
+    #如果得到类似下面的结果，则说明GitLab运行正常
+
+7.浏览web页面并设置密码
+
+    http://172.16.81.91/
+
+     
+
+8.创建组
+
+     
+
+9.添加ssh key
+
+    git仓库之间的代码传输协议主要使用ssh协议。而一般搭建gitlab的时候使用的git用户是没有密码的，因此直接ssh是不能登录的，就需要使用ssh-keygen上传公钥，使用非对称加密传输。下面讲述如何上传你的ssh公钥：
+
+    生成sshkey
+
+           在终端中敲下面的命令，第一步会生成一对私钥和公钥，分别存在 ~/.ssh/id_rsa和~/.ssh/id_rsa.pub中。第二步查看公钥字符串。
+
+       ssh-keygen -t rsa -C "邮箱地址"
+       cat ~/.ssh/id_rsa.pub
+
+    在面板上依次点击Profile Settings –> SSH Keys –> Add SSH Keys。然后把上一步中的id_rsa.pub中的内容拷贝出来粘贴到输入框中，保存。
+
+    完成上面两步之后就成功的添加了sshkey了，然后就可以上传代码了。
+
+10.创建项目
+
+    创建项目Test_Project
+
+    下一步，选择组，输入项目名
+
+    下一步，创建完成
+
+    在项目下面会有git的操作指南教你如何操作
+
+    完成创建项目！
+
+至此，基于Ubuntu 16.04 x64操作系统的GitLab服务器搭建工作就完成了！
+后续继续分享git的基本使用！
