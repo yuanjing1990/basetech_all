@@ -1,16 +1,16 @@
 #include "stdafx.h"
-class OpenGl
-{
+class OpenGl {
 public:
-	OpenGl();
-	virtual ~OpenGl();
+  OpenGl();
+  virtual ~OpenGl();
+
 public:
-	BOOL Init(int,int);
-	void Render();
-	void Destroy();
-	BOOL SetPixelFormat(HDC hdc);
-	
+  BOOL Init(int, int);
+  void Render();
+  void Destroy();
+  BOOL SetPixelFormat(HDC hdc);
+
 public:
-	HDC m_hdc;
-	HGLRC m_hrc;
+  HDC m_hdc;
+  HGLRC m_hrc;
 };

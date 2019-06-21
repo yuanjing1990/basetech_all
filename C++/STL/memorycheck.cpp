@@ -1,7 +1,7 @@
 //#include <crtdbg.h>
 //#include <iostream>
 //#define _DEBUG
-//int main(int argc,char* argv[])
+// int main(int argc,char* argv[])
 //{
 //	using namespace std;
 //	int* p = new int;
@@ -14,11 +14,10 @@
 */
 
 #ifdef _DEBUG
-   #define DEBUG_CLIENTBLOCK   new( _CLIENT_BLOCK, __FILE__, __LINE__)
+#define DEBUG_CLIENTBLOCK new (_CLIENT_BLOCK, __FILE__, __LINE__)
 #else
-   #define DEBUG_CLIENTBLOCK
+#define DEBUG_CLIENTBLOCK
 #endif // _DEBUG
-
 
 /* MyApp.cpp
     Compile options needed: /Zi /D_DEBUG /MLd
@@ -34,12 +33,12 @@
 #define new DEBUG_CLIENTBLOCK
 #endif
 
-#endif //WIN32
+#endif // WIN32
 
-int main( )   {
+int main() {
     char *p1;
-    p1 =  new char[40];
+    p1 = new char[40];
 #ifdef WIN32
-    _CrtMemDumpAllObjectsSince( NULL );
+    _CrtMemDumpAllObjectsSince(NULL);
 #endif
 }

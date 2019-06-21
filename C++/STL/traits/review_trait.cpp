@@ -1,57 +1,56 @@
-//traitÊÇÖ¸Ä³Ò»ÀàĞÍÊı¾İµÄÌØÓĞÊôĞÔ£¨¡°ÀàĞÍÌØÓĞ¡±¾ö¶¨ÁËtraitÊÇÒ»Ğ©ÀàĞÍĞÅÏ¢ºÍ¾²Ì¬³ÉÔ±»ò·½·¨
+// traitæ˜¯æŒ‡æŸä¸€ç±»å‹æ•°æ®çš„ç‰¹æœ‰å±æ€§ï¼ˆâ€œç±»å‹ç‰¹æœ‰â€å†³å®šäº†traitæ˜¯ä¸€äº›ç±»å‹ä¿¡æ¯å’Œé™æ€æˆå‘˜æˆ–æ–¹æ³•
 #include <iostream>
 using namespace std;
 
-//ÏÂÃæ¶¨ÒåµÄtraitÓÃÀ´ÌáÈ¡ÌØ¶¨ÀàĞÍÉÏ¶¨ÒåµÄ²Ù×÷ĞÅÏ¢
-template <typename T>
-class trait
-{
-	public:
-		typedef enum{ADD=0,SUB=0,MUL=0,DIV=0} OP;
+//ä¸‹é¢å®šä¹‰çš„traitç”¨æ¥æå–ç‰¹å®šç±»å‹ä¸Šå®šä¹‰çš„æ“ä½œä¿¡æ¯
+template <typename T> class trait {
+  public:
+    typedef enum { ADD = 0, SUB = 0, MUL = 0, DIV = 0 } OP;
 };
 
-//Ä£°æ²ÎÊıÎªintµÄÌØ»¯ÊµÀı
-template <>
-class trait<int>
-{
-	public:
-		typedef enum{ADD=1,SUB=1,MUL=1,DIV=0} OP;
+//æ¨¡ç‰ˆå‚æ•°ä¸ºintçš„ç‰¹åŒ–å®ä¾‹
+template <> class trait<int> {
+  public:
+    typedef enum { ADD = 1, SUB = 1, MUL = 1, DIV = 0 } OP;
 };
 
-//Ä£°æ²ÎÊıÎªfloatµÄÌØ»¯ÊµÀı
-template <>
-class trait<float>
-{
-	public:
-		typedef enum{ADD=1,SUB=0,MUL=0,DIV=0} OP;
+//æ¨¡ç‰ˆå‚æ•°ä¸ºfloatçš„ç‰¹åŒ–å®ä¾‹
+template <> class trait<float> {
+  public:
+    typedef enum { ADD = 1, SUB = 0, MUL = 0, DIV = 0 } OP;
 };
 
-//¶¨ÒåÄ£°æ£¬ÒÔµÚÒ»¸öÄ£°æ²ÎÊıÎªtraitµÄ²ÎÊıÀ´×÷ÎªµÚ¶ş¸öÄ£°æ²ÎÊı
-template <typename T,typename TT=trait<T> >
-class JudgeOp
-{
-	public:
-		void GetOpInfo(){
-			cout << "============================" << endl;
-			if(TT::ADD) cout << "Add Defined" << endl;
-			else cout << "Add Not Defined" << endl;
-			if(TT::SUB) cout << "Sub Defined" << endl;
-			else cout << "Sub Not Defined" << endl;
-			if(TT::MUL) cout << "Mul Defined" << endl;
-			else cout << "Mul Not Defined" << endl;
-			if(TT::DIV) cout << "Div Defined" << endl;
-			else cout << "Div Not Defined" << endl;
-			cout << "============================" << endl;
-		}
+//å®šä¹‰æ¨¡ç‰ˆï¼Œä»¥ç¬¬ä¸€ä¸ªæ¨¡ç‰ˆå‚æ•°ä¸ºtraitçš„å‚æ•°æ¥ä½œä¸ºç¬¬äºŒä¸ªæ¨¡ç‰ˆå‚æ•°
+template <typename T, typename TT = trait<T>> class JudgeOp {
+  public:
+    void GetOpInfo() {
+        cout << "============================" << endl;
+        if (TT::ADD)
+            cout << "Add Defined" << endl;
+        else
+            cout << "Add Not Defined" << endl;
+        if (TT::SUB)
+            cout << "Sub Defined" << endl;
+        else
+            cout << "Sub Not Defined" << endl;
+        if (TT::MUL)
+            cout << "Mul Defined" << endl;
+        else
+            cout << "Mul Not Defined" << endl;
+        if (TT::DIV)
+            cout << "Div Defined" << endl;
+        else
+            cout << "Div Not Defined" << endl;
+        cout << "============================" << endl;
+    }
 };
 
-int main(int argc,char* argv[])
-{
-	JudgeOp<int> tmp1;
-	tmp1.GetOpInfo();
-	JudgeOp<float> tmp2;
-	tmp2.GetOpInfo();
-	JudgeOp<short> tmp3;
-	tmp3.GetOpInfo();
-	return 0;
+int main(int argc, char *argv[]) {
+    JudgeOp<int> tmp1;
+    tmp1.GetOpInfo();
+    JudgeOp<float> tmp2;
+    tmp2.GetOpInfo();
+    JudgeOp<short> tmp3;
+    tmp3.GetOpInfo();
+    return 0;
 }

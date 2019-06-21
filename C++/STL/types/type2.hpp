@@ -1,63 +1,57 @@
 #ifndef TYPE2_HPP
 #define TYPE2_HPP
-//ÅĞ¶ÏÀàĞÍÊÇ·ñÊÇÖ¸Õë£¬ÒıÓÃ£¬Êı×é£¬º¯Êı£¬³ÉÔ±Ö¸Õë
-//»ù´¡Ä£°æ
-template <typename T>
-class CompoundT{
-	public:
-		enum{IsPtrT = 0,IsRefT = 0,IsArrayT = 0,IsFuncT = 0,IsPtrMemT = 0};
-		typedef T BaseT;
-		typedef T BottomT;
-		typedef CompoundT<void> ClassT;
+//åˆ¤æ–­ç±»å‹æ˜¯å¦æ˜¯æŒ‡é’ˆï¼Œå¼•ç”¨ï¼Œæ•°ç»„ï¼Œå‡½æ•°ï¼Œæˆå‘˜æŒ‡é’ˆ
+//åŸºç¡€æ¨¡ç‰ˆ
+template <typename T> class CompoundT {
+  public:
+    enum { IsPtrT = 0, IsRefT = 0, IsArrayT = 0, IsFuncT = 0, IsPtrMemT = 0 };
+    typedef T BaseT;
+    typedef T BottomT;
+    typedef CompoundT<void> ClassT;
 };
 
-//ÅĞ¶ÏÊÇÒıÓÃµÄÆ«ÌØ»¯
-template<typename T>
-class CompoundT<T&>{
-	public:
-		enum{IsPtrT = 0,IsRefT = 1,IsArrayT = 0,IsFuncT = 0,IsPtrMemT = 0};
-		typedef T BaseT;
-		typedef typename CompoundT<T>::BottomT BottomT;
-		typedef CompoundT<void> ClassT;
+//åˆ¤æ–­æ˜¯å¼•ç”¨çš„åç‰¹åŒ–
+template <typename T> class CompoundT<T &> {
+  public:
+    enum { IsPtrT = 0, IsRefT = 1, IsArrayT = 0, IsFuncT = 0, IsPtrMemT = 0 };
+    typedef T BaseT;
+    typedef typename CompoundT<T>::BottomT BottomT;
+    typedef CompoundT<void> ClassT;
 };
 
-//ÅĞ¶ÏÊÇÖ¸ÕëµÄÆ«ÌØ»¯
-template<typename T>
-class CompoundT<T*>{
-	public:
-		enum{IsPtrT = 1,IsRefT = 0,IsArrayT = 0,IsFuncT = 0,IsPtrMemT = 0};
-		typedef T BaseT;
-		typedef typename CompoundT<T>::BottomT BottomT;
-		typedef CompoundT<void> ClassT;
+//åˆ¤æ–­æ˜¯æŒ‡é’ˆçš„åç‰¹åŒ–
+template <typename T> class CompoundT<T *> {
+  public:
+    enum { IsPtrT = 1, IsRefT = 0, IsArrayT = 0, IsFuncT = 0, IsPtrMemT = 0 };
+    typedef T BaseT;
+    typedef typename CompoundT<T>::BottomT BottomT;
+    typedef CompoundT<void> ClassT;
 };
 
-//ÅĞ¶ÏÊÇÊı×éµÄÆ«ÌØ»¯
-template<typename T,size_t N>
-class CompoundT<T[N]>{
-	public:
-		enum{IsPtrT = 0,IsRefT = 0,IsArrayT = 1,IsFuncT = 0,IsPtrMemT = 0};
-		typedef T BaseT;
-		typedef typename CompoundT<T>::BottomT BottomT;
-		typedef CompoundT<void> ClassT;
+//åˆ¤æ–­æ˜¯æ•°ç»„çš„åç‰¹åŒ–
+template <typename T, size_t N> class CompoundT<T[N]> {
+  public:
+    enum { IsPtrT = 0, IsRefT = 0, IsArrayT = 1, IsFuncT = 0, IsPtrMemT = 0 };
+    typedef T BaseT;
+    typedef typename CompoundT<T>::BottomT BottomT;
+    typedef CompoundT<void> ClassT;
 };
 
-//ÅĞ¶ÏÊÇÊı×éµÄÆ«ÌØ»¯
-template<typename T>
-class CompoundT<T[]>{
-	public:
-		enum{IsPtrT = 1,IsRefT = 0,IsArrayT = 0,IsFuncT = 0,IsPtrMemT = 0};
-		typedef T BaseT;
-		typedef typename CompoundT<T>::BottomT BottomT;
-		typedef CompoundT<void> ClassT;
+//åˆ¤æ–­æ˜¯æ•°ç»„çš„åç‰¹åŒ–
+template <typename T> class CompoundT<T[]> {
+  public:
+    enum { IsPtrT = 1, IsRefT = 0, IsArrayT = 0, IsFuncT = 0, IsPtrMemT = 0 };
+    typedef T BaseT;
+    typedef typename CompoundT<T>::BottomT BottomT;
+    typedef CompoundT<void> ClassT;
 };
 
-//ÅĞ¶ÏÊÇ³ÉÔ±Ö¸ÕëµÄÆ«ÌØ»¯
-template<typename T,typename C>
-class CompoundT<T C::*>{
-	public:
-		enum{IsPtrT = 0,IsRefT = 0,IsArrayT = 0,IsFuncT = 0,IsPtrMemT = 1};
-		typedef T BaseT;
-		typedef typename CompoundT<T>::BottomT BottomT;
-		typedef C ClassT;
+//åˆ¤æ–­æ˜¯æˆå‘˜æŒ‡é’ˆçš„åç‰¹åŒ–
+template <typename T, typename C> class CompoundT<T C::*> {
+  public:
+    enum { IsPtrT = 0, IsRefT = 0, IsArrayT = 0, IsFuncT = 0, IsPtrMemT = 1 };
+    typedef T BaseT;
+    typedef typename CompoundT<T>::BottomT BottomT;
+    typedef C ClassT;
 };
 #endif

@@ -2,30 +2,29 @@
 #define ACCUM_HPP
 #include "accumtraits1.hpp"
 #include "sumpolicy1.hpp"
-template <typename T,
-	typename Policy = SumPolicy,
-	typename AT = AccumulationTraits<T> >
-class Accum{
-	public:
-		static typename AT::Acct accum(T const* beg, T const* end){
-			typename AT::Acct total = AT::zero;
-			while(beg != end){
-				Policy::accumulate(total,*beg);
-				++beg;
-			}
-			return total;
-		}
+template <typename T, typename Policy = SumPolicy,
+          typename AT = AccumulationTraits<T>>
+class Accum {
+  public:
+    static typename AT::Acct accum(T const *beg, T const *end) {
+        typename AT::Acct total = AT::zero;
+        while (beg != end) {
+            Policy::accumulate(total, *beg);
+            ++beg;
+        }
+        return total;
+    }
 };
-//ÒÔÏÂµÄÁ½¸öº¯ÊýÎÞ·¨±àÒë£¿£¿£¿£¿£¿£¿£¿£¿£¿£¿£¿£¿£¿£¿£¿£¿£¿£¿£¿
-//template <typename T>
-//inline
-//typename AccumulationTraits<T>::AccT accum(T const* beg,T const* end)
+// ä»¥ä¸‹çš„ä¸¤ä¸ªå‡½æ•°æ— æ³•ç¼–è¯‘ï¼Ÿï¼Ÿï¼Ÿï¼Ÿï¼Ÿï¼Ÿï¼Ÿï¼Ÿï¼Ÿï¼Ÿï¼Ÿï¼Ÿï¼Ÿï¼Ÿï¼Ÿï¼Ÿï¼Ÿï¼Ÿï¼Ÿ
+// template <typename T>
+// inline
+// typename AccumulationTraits<T>::AccT accum(T const* beg,T const* end)
 //{
 //	return Accum<T>::accum(beg,end);
 //}
-//template <typename Traits,typename T>
-//inline
-//typename Traits::Acct accum(T const* beg,T const* end)
+// template <typename Traits,typename T>
+// inline
+// typename Traits::Acct accum(T const* beg,T const* end)
 //{
 //	return Accum<T,Traits>::accum(beg,end);
 //}

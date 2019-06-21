@@ -3,10 +3,10 @@
 #include "accumtraits1.hpp"
 #include <iterator>
 
-//º¯Êı²»ÄÜÊ¹ÓÃÄ¬ÈÏµÄÄ£°æ²ÎÊı£¬Ö»ÓĞÀà¿ÉÒÔ
-//template <typename T/*,typename traits = AccumulationTraits<T>*/ >
-//inline
-//typename AccumulationTraits<T>::Acct accum(T const* beg,T const* end)
+// å‡½æ•°ä¸èƒ½ä½¿ç”¨é»˜è®¤çš„æ¨¡ç‰ˆå‚æ•°ï¼Œåªæœ‰ç±»å¯ä»¥
+// template <typename T/*,typename traits = AccumulationTraits<T>*/ >
+// inline
+// typename AccumulationTraits<T>::Acct accum(T const* beg,T const* end)
 //{
 //	typedef typename AccumulationTraits<T>::Acct Acct;
 //	Acct total = AccumulationTraits<T>::zero;
@@ -17,19 +17,17 @@
 //	return total;
 //};
 
-//ĞŞ¸ÄºóÊ¹ÓÃµü´úÆ÷µÄtraits
+// ä¿®æ”¹åä½¿ç”¨è¿­ä»£å™¨çš„traits
 template <typename Iter>
-inline
-typename std::iterator_traits<Iter>::value_type accum(Iter start,Iter end)
-{
-	typedef typename std::iterator_traits<Iter>::value_type VT;
-	VT total = VT();
-	while(start != end)
-	{
-		total += *start;
-		++start;
-	}
-	return total;
+inline typename std::iterator_traits<Iter>::value_type accum(Iter start,
+                                                             Iter end) {
+    typedef typename std::iterator_traits<Iter>::value_type VT;
+    VT total = VT();
+    while (start != end) {
+        total += *start;
+        ++start;
+    }
+    return total;
 }
 
 #endif

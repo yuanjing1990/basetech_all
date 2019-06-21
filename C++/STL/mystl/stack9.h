@@ -1,2 +1,2 @@
 #include <stdexcept>
-template 
+template
