@@ -1,5 +1,5 @@
 # Handler综述
-Handler提供了Android系统里面的消息处理机制，包含Handler、Looper、MessageQueue、Message。  
+Handler提供了Android系统里面的消息处理机制，包含Handler、Looper、MessageQueue、Message。
 Handler为用户处理Message提供了界面，Looper实现了消息的驱动，MessageQueue和Message提供了消息的基本结构。
 
 # Handler机制详述
@@ -7,7 +7,6 @@ Handler为用户处理Message提供了界面，Looper实现了消息的驱动，
 首先看Message基本结构：
 ```Java
 public final class Message implements Parcelable {
- 
     public int what;
     public int arg1; 
     public int arg2;
@@ -40,7 +39,6 @@ public final class Message implements Parcelable {
 }
 ```
 看到这个类的前四个属性，大家应该很熟悉，就是我们使用Handler时经常用到的那几个属性。用来在传递我们特定的信息。其次我们还可以总结出以下信息：
-
 - Message 实现了Parcelable 接口，也就是说实现了序列化，这就说明Message可以在不同进程之间传递。
 - 包含一个名为target的Handler 对象
 - 包含一个名为callback的Runnable 对象
@@ -56,6 +54,7 @@ MessageQueue(boolean quitAllowed) {
 ```
 传入一个bool变量，来决定队列是否可以终止，保存在成员变量mQuitAllowed中；另外使用nativeInit初始化了一个long类型成员mPtr。  
 再看另一个方法next():
+
 ```Java
 Message next() {
     // Return here if the message loop has already quit and been disposed.
@@ -201,7 +200,7 @@ private boolean enqueueMessage(MessageQueue queue, Message msg, long uptimeMilli
     return queue.enqueueMessage(msg, uptimeMillis);
 }
 ```
-顺这调用关系发现会调用到MessageQueue的enqueueMessage函数，前面已经说过这是一个消息进消息队列的函数。
+顺着调用关系发现会调用到MessageQueue的enqueueMessage函数，前面已经说过这是一个消息进消息队列的函数。
 ```Java
 boolean enqueueMessage(Message msg, long when) {
 	if (msg.target == null) {
