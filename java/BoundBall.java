@@ -1,11 +1,9 @@
-import java.lang.*;
 import java.awt.*;
 import javax.swing.*;
 public class BoundBall
 {
 	public static void main(String args[])
 	{
-		int input = 0;
 		System.out.println("Begin");
 		ChessBoard cb = new BoundChessBoard();
 	}
@@ -13,6 +11,11 @@ public class BoundBall
 
 abstract class ChessBoard extends JFrame
 {
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = -6666547555911981833L;
+
 	public abstract boolean Init();
 	public abstract void Draw();
 	public abstract int GetInput();
@@ -21,6 +24,11 @@ abstract class ChessBoard extends JFrame
 }
 class BoundChessBoard extends ChessBoard
 {
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = -6491778022929525447L;
+
 	public BoundChessBoard()
 	{
 		m_level = 1;
