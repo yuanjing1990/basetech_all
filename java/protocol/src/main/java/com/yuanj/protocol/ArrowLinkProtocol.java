@@ -54,6 +54,7 @@ public class ArrowLinkProtocol {
     private int mTypeState = ARROW_TTYPE_READY;
     private int mBuffHeader = 0;
     private int mBuffTail = 0;
+    @SuppressWarnings("rawtypes")
     private ArrayList[] mBuffSequence = new ArrayList[ARROW_MAX_BUFF];
     private byte[] mDataOut = null;
     private int mDataOffect = 0;
@@ -158,6 +159,7 @@ public class ArrowLinkProtocol {
      * @param payload Data.
      * @return if mArrowLinkFunc == null ,return 1; else return 0;
      */
+    @SuppressWarnings("unchecked")
     public byte allinkL1SendData(byte gid, byte cid, byte[] payload) {
         if (mArrowLinkFunc == null) {
             GenDbg.e(GenDbg.TLINK, "Send OverFunction null");

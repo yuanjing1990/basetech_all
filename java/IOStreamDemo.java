@@ -1,7 +1,7 @@
 import java.io.*;
 
 public class IOStreamDemo {
-	@SuppressWarnings("unckecked")
+	@SuppressWarnings("deprecation")
 	public static void main(String[] args) {
 		try {
 			// 1.Buffered input file
@@ -13,8 +13,8 @@ public class IOStreamDemo {
 			in.close();
 			// System.out.println(s2);
 			// 2.Input from memory
-			StringBufferInputStream in2 = new StringBufferInputStream(s2);
-			int c;
+			// StringBufferInputStream in2 = new StringBufferInputStream(s2);
+			// int c;
 			// while((c = in2.read()) != -1)
 			// System.out.print((char)c);
 			// 3.Formatted memory input
@@ -33,6 +33,7 @@ public class IOStreamDemo {
 				while ((s = in4.readLine()) != null)
 					out1.println("Line" + li.getLineNumber() + s);
 				out1.close();
+				in4.close();
 			} catch (EOFException e) {
 				System.out.println("End of stream encountered");
 			}
@@ -46,6 +47,7 @@ public class IOStreamDemo {
 				DataInputStream in5 = new DataInputStream(new BufferedInputStream(new FileInputStream("Data.txt")));
 				System.out.println(in5.readLine());
 				System.out.println(in5.readDouble());
+				in5.close();
 			} catch (EOFException e) {
 				System.out.println("End of stream encounted");
 			}
