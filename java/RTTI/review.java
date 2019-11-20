@@ -1,25 +1,28 @@
-class Circle
-{
-public Circle(){System.out.println("Create Circle!");}
+package RTTI;
+
+class Circle {
+	public Circle() {
+		System.out.println("Create Circle!");
+	}
 }
-class Rect
-{
+
+class Rect {
 	static {
 		System.out.println("Rect Loading...");
 	}
-	public static void main(String[] argv)
-	{
+
+	public static void main(String[] argv) {
 		System.out.println("Rect Main");
 	}
 }
-public class review
-{
-	static{
-		Circle cr = new Circle();
+
+public class review {
+	static {
+		new Circle();
 		System.out.println("Before Main...");
 	}
-	public static void main(String[] argv)
-	{
+
+	public static void main(String[] argv) {
 		System.out.println("Hello World");
 	}
 }

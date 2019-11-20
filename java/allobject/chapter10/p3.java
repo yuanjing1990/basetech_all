@@ -1,41 +1,36 @@
+package allobject.chapter10;
+
 import java.io.*;
 import java.util.*;
-public class p3
-{
-	public static void main(String[] args)
-	{
-		try{
-			LineNumberInputStream li = new LineNumberInputStream(
-				new BufferedInputStream(
-				new FileInputStream(args[0])));
-			DataInput id = new DataInputStream(li);
-				
-			BufferedOutputStream db = new BufferedOutputStream(
-				new FileOutputStream(args[1]));
-			DataOutput od = new DataOutputStream(db);
-			String str = id.readLine();
-			Vector v = new Vector();
-			while(str != null)
-			{
+
+public class p3 {
+	public static void main(String[] args) {
+		try {
+			LineNumberReader lr = new LineNumberReader(new FileReader(args[0]));
+			BufferedReader br = new BufferedReader(lr);
+
+			BufferedOutputStream db = new BufferedOutputStream(new FileOutputStream(args[1]));
+			String str = br.readLine();
+			ArrayList<String> v = new ArrayList<>();
+			while (str != null) {
 				System.out.println(str);
-				str = "Line "+ li.getLineNumber() + " " + str + "\n";
+				str = "Line " + lr.getLineNumber() + " " + str + "\n";
 				v.add(str);
-				//od.writeBytes("Line "+ li.getLineNumber() + " " + str + "\n");
-				str = id.readLine();
+				str = br.readLine();
 			}
+			br.close();
 			int i = 0;
-			Iterator it = v.iterator();
-			while(i < v.size())
-				System.out.print(((String)v.get(i++)).toUpperCase());
-			while(it.hasNext())
-			{
-				String temp = (String)it.next();
-				if(temp.indexOf(args[2]) != -1)
+			Iterator<String> it = v.iterator();
+			while (i < v.size())
+				System.out.print(((String) v.get(i++)).toUpperCase());
+			while (it.hasNext()) {
+				String temp = (String) it.next();
+				if (temp.indexOf(args[2]) != -1)
 					System.out.print(temp);
 			}
 			db.flush();
-		}catch(Exception e)
-		{
+			db.close();
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}

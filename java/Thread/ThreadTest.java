@@ -1,4 +1,5 @@
-import java.lang.*;
+package Thread;
+
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.*;
 

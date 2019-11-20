@@ -1,56 +1,52 @@
-public class StaticTest
-{
-	public static void main(String args[])
-	{
+public class StaticTest {
+	public static void main(String args[]) {
 		Employee[] staff = new Employee[3];
-		staff[0] = new Employee("ÕÅÈı",40000);
-		staff[1] = new Employee("ÀîËÄ",60000);
-		staff[2] = new Employee("ÍõÎå",65000);
-		for(int i = 0; i < staff.length; i++)
-			{
-				Employee e = staff[i];
-				e.setId();
-				System.out.println("ĞÕÃû£º"+e.getName()+",±àºÅ£º"+e.getId()+",¹¤×Ê£º"+e.getSalary());
-			}
+		staff[0] = new Employee("ï¿½ï¿½ï¿½ï¿½", 40000);
+		staff[1] = new Employee("ï¿½ï¿½ï¿½ï¿½", 60000);
+		staff[2] = new Employee("ï¿½ï¿½ï¿½ï¿½", 65000);
+		for (int i = 0; i < staff.length; i++) {
+			Employee e = staff[i];
+			e.setId();
+			System.out.println("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½" + e.getName() + ",ï¿½ï¿½Å£ï¿½" + e.getId() + ",ï¿½ï¿½ï¿½Ê£ï¿½" + e.getSalary());
+		}
 		int n = Employee.getNextId();
-		System.out.println("ÏÂÒ»¸öÓĞĞ§±àºÅ£º"+n);
+		System.out.println("ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½Ğ§ï¿½ï¿½Å£ï¿½" + n);
 	}
 }
 
-class Employee
-{
-	public Employee(String n,double s)
-	{
+class Employee {
+	public Employee(String n, double s) {
 		m_name = n;
 		m_salary = s;
 		m_id = 0;
 	}
-	public String getName()
-	{
+
+	public String getName() {
 		return m_name;
 	}
-	public double getSalary()
-	{
+
+	public double getSalary() {
 		return m_salary;
 	}
-	public int getId()
-	{
+
+	public int getId() {
 		return m_id;
 	}
-	public void setId()
-	{
+
+	public void setId() {
 		m_id = nextId;
 		nextId++;
 	}
-	public static int getNextId()
-	{
+
+	public static int getNextId() {
 		return nextId;
 	}
-	public static void main(String args[])
-	{
-		Employee e = new Employee("ÕÅÈı",50000);
-		System.out.println(e.getName()+" "+e.getSalary());
+
+	public static void main(String args[]) {
+		Employee e = new Employee("ï¿½ï¿½ï¿½ï¿½", 50000);
+		System.out.println(e.getName() + " " + e.getSalary());
 	}
+
 	private String m_name;
 	private double m_salary;
 	private int m_id;

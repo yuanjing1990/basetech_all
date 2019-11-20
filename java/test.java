@@ -1,5 +1,4 @@
-//:test.java
-import java.util.*;
+
 /**The first Thinking in Java example program.
 *Lists system information on current machine.
 *@author Bruce Eckel
@@ -20,8 +19,8 @@ public class test{
 		System.out.println(str);
 	}
 	public static void main(String[] args){
-		test t = new test();
-		test t1 = new test("This is a test");
+		new test();
+		new test("This is a test");
 		test[] t_vec = new test[4];
 		for(int i = 1; i <= 4; ++i)
 		{

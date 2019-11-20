@@ -2,7 +2,6 @@ package com.yuanj.protocol;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -175,7 +174,9 @@ public class ArrowLinkProtocol {
         byte[] l2packdata = linkL2PackData(gid, cid, payload);
         byte[] l1packdata = linkL1PackData(l2packdata);
         mBuffSequence[mBuffTail].clear();
-        mBuffSequence[mBuffTail].addAll(Collections.singletonList(l1packdata));
+        for(int i= 0; i < l1packdata.length; ++i) {
+            mBuffSequence[mBuffTail].add(l1packdata[i]);
+        }
         mBuffTail = (mBuffTail + 1) >= ARROW_MAX_BUFF ? 0 : (mBuffTail + 1);
 
         if (mTypeState == ARROW_TTYPE_READY) {

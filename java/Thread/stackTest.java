@@ -1,7 +1,7 @@
-public class stackTest
-{
-	public static void main(String args[])
-	{
+package Thread;
+
+public class stackTest {
+	public static void main(String args[]) {
 		stack s = new stack();
 		Runnable producer = new Producer(s);
 		Runnable customer = new Customer(s);
@@ -11,79 +11,70 @@ public class stackTest
 		c.start();
 	}
 }
-class Producer implements Runnable
-{
+
+class Producer implements Runnable {
 	stack stackOne;
-	public Producer(stack s)
-	{
+
+	public Producer(stack s) {
 		stackOne = s;
 	}
-	public void run()
-	{
+
+	public void run() {
 		String strTemp = null;
-		for(int i = 0; i < 20; i++)
-		{
-			strTemp = String.valueOf(i+1);
+		for (int i = 0; i < 20; i++) {
+			strTemp = String.valueOf(i + 1);
 			stackOne.push(strTemp);
-			System.out.println("Produce:"+i);
-			try
-			{
-				Thread.sleep((int)(Math.random()*100));
+			System.out.println("Produce:" + i);
+			try {
+				Thread.sleep((int) (Math.random() * 100));
+			} catch (InterruptedException e) {
 			}
-			catch(InterruptedException e){}
 		}
 	}
 }
-class Customer implements Runnable
-{
+
+class Customer implements Runnable {
 	stack stackOne;
-	public Customer(stack s)
-	{
+
+	public Customer(stack s) {
 		stackOne = s;
 	}
-	public void run()
-	{
-		String strTemp = null;
-		for(int i = 0; i < 20; i++)
-		{
-			strTemp = stackOne.pop();
-			System.out.println("Customer:"+i);
-			try
-			{
-				Thread.sleep((int)(Math.random()*100));
+
+	public void run() {
+		for (int i = 0; i < 20; i++) {
+			stackOne.pop();
+			System.out.println("Customer:" + i);
+			try {
+				Thread.sleep((int) (Math.random() * 100));
+			} catch (InterruptedException e) {
 			}
-			catch(InterruptedException e){}
 		}
 	}
 }
-class stack
-{
+
+class stack {
 	int sip = 0;
 	String[] data = new String[6];
-	public synchronized void push(String strCell)
-	{
-		while(sip == data.length)
-		{
-			try
-			{
+
+	public synchronized void push(String strCell) {
+		while (sip == data.length) {
+			try {
 				this.wait();
+			} catch (InterruptedException e) {
 			}
-			catch(InterruptedException e){}
 		}
 		this.notify();
 		data[sip] = strCell;
 		sip++;
 		System.out.println("push " + strCell);
 	}
-	public synchronized String pop()
-	{
-		while(sip == 0)
-		{
-			try
-			{
+
+	public synchronized String pop() {
+		while (sip == 0) {
+			try {
 				this.wait();
+			} catch (InterruptedException e) {
 			}
-			catch(InterruptedException e){}
 		}
 		this.notify();
 		sip--;

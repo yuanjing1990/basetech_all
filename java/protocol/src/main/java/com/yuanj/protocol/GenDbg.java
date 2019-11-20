@@ -81,7 +81,6 @@ public class GenDbg {
     }
 
     private static String saveAplinkLog(String data) {
-        long timetamp = System.currentTimeMillis();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSS");
         String time = format.format(new Date());
         String contents = time + '\t' + data + '\n';

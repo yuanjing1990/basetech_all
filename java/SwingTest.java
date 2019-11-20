@@ -1,13 +1,18 @@
-import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 public class SwingTest extends JFrame
 {
-	public SwingTest(){
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = -4806845269405973805L;
+
+	public SwingTest() {
 		setTitle("Test");
 		setBounds(30,30,100,100);
 		addWindowListener(new WindowAdapter(){
-			public void windowCloseing(WindowEvent e){
+			@Override
+			public void windowClosing(WindowEvent e){
 				System.exit(0);
 			}
 		});

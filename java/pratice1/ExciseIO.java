@@ -1,3 +1,5 @@
+package pratice1;
+
 import java.io.*;
 public class ExciseIO {
 	public static void main(String[] args) {
