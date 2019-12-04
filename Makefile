@@ -1,4 +1,3 @@
-sfdsf
 platform=WIN32
 config=debug
 
