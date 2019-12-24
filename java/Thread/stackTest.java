@@ -1,14 +1,18 @@
-package Thread;
-
 public class stackTest {
 	public static void main(String args[]) {
 		stack s = new stack();
 		Runnable producer = new Producer(s);
 		Runnable customer = new Customer(s);
-		Thread p = new Thread(producer);
-		Thread c = new Thread(customer);
-		p.start();
-		c.start();
+		Thread p1 = new Thread(producer);
+		Thread p2 = new Thread(producer);
+		Thread p3 = new Thread(producer);
+		Thread c1 = new Thread(customer);
+		Thread c2 = new Thread(customer);
+		p1.start();
+		p2.start();
+		p3.start();
+		c1.start();
+		c2.start();
 	}
 }
 
@@ -23,8 +27,7 @@ class Producer implements Runnable {
 		String strTemp = null;
 		for (int i = 0; i < 20; i++) {
 			strTemp = String.valueOf(i + 1);
-			stackOne.push(strTemp);
-			System.out.println("Produce:" + i);
+			stackOne.push(strTemp + " in " + Thread.currentThread().getId());
 			try {
 				Thread.sleep((int) (Math.random() * 100));
 			} catch (InterruptedException e) {
@@ -41,9 +44,8 @@ class Customer implements Runnable {
 	}
 
 	public void run() {
-		for (int i = 0; i < 20; i++) {
-			stackOne.pop();
-			System.out.println("Customer:" + i);
+		for (int i = 0; i < 30; i++) {
+			String str = stackOne.pop();
 			try {
 				Thread.sleep((int) (Math.random() * 100));
 			} catch (InterruptedException e) {
@@ -63,10 +65,10 @@ class stack {
 			} catch (InterruptedException e) {
 			}
 		}
-		this.notify();
 		data[sip] = strCell;
 		sip++;
 		System.out.println("push " + strCell);
+		this.notify();
 	}
 
 	public synchronized String pop() {
@@ -76,9 +78,9 @@ class stack {
 			} catch (InterruptedException e) {
 			}
 		}
-		this.notify();
 		sip--;
-		System.out.println("pop " + data[sip]);
+		this.notify();
+		System.out.println("pop " + data[sip] + " in thread:" + Thread.currentThread().getId());
 		return data[sip];
 	}
 }
