@@ -1,0 +1,50 @@
+SRC_EXTEND=.cpp
+OBJ_EXTEND=.o
+EXE_EXTEND=.exe
+
+CPP=g++
+CC=gcc
+LD=ld
+
+#compile flags setting
+CPPFLAGS+=-D_DEBUG -g
+CPPFLAGS+=-Iinclude/
+LDFLAGS+=-L./$(LIB_DIR)
+LDFLAGS+=-l:libyjutil.so -ldl
+
+SRC_DIR=src
+OBJ_DIR=obj
+LIB_DIR=lib
+BIN_DIR=bin
+TEST_DIR=test
+
+#default rule setting
+$(BIN_DIR)/%$(EXE_EXTEND): $(OBJ_DIR)/%$(OBJ_EXTEND)
+	$(CPP) $^ -o $@ $(LDFLAGS)
+$(OBJ_DIR)/%$(OBJ_EXTEND): $(TEST_DIR)/%$(SRC_EXTEND)
+	$(CPP) -c $(CPPFLAGS) $< -o $@
+$(OBJ_DIR)/%$(OBJ_EXTEND): $(SRC_DIR)/%$(SRC_EXTEND)
+	$(CPP) -c $(CPPFLAGS) $< -o $@
+
+#source file,obj file and exe file setting
+SRC_FILES=$(shell ls $(SRC_DIR)/*$(SRC_EXTEND))
+OBJ_FILES=$(SRC_FILES:$(SRC_DIR)%$(SRC_EXTEND)=$(OBJ_DIR)%$(OBJ_EXTEND))
+TEST_FILES=$(shell ls $(TEST_DIR)/*$(SRC_EXTEND))
+TEST_OBJ_FILES=$(TEST_FILES:$(TEST_DIR)%$(SRC_EXTEND)=$(OBJ_DIR)%$(OBJ_EXTEND))
+TEST_EXE_FILES=$(TEST_FILES:$(TEST_DIR)%$(SRC_EXTEND)=$(BIN_DIR)%$(EXE_EXTEND))
+
+MODULE=yjutil
+
+$(MODULE):lib/lib$(MODULE).so
+
+lib/lib$(MODULE).so:$(OBJ_FILES)
+	$(CPP) $^ --shared -fPIC -o $@ 
+
+all:$(MODULE) test
+
+test:$(TEST_EXE_FILES)
+
+clean:
+	@-rm -rf $(OBJ_FILES) $(TEST_OBJ_FILES) $(TEST_EXE_FILES) *.ilk *.pdb *.manifest
+
+.PHONY:all clean
