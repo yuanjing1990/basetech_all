@@ -4,10 +4,11 @@
 usage() {
 	if [ $1 -eq "clear_dir" ]; then
 		echo "usage: clear_dir DIR"
+		echo "delete all files in the DIR"
 	fi
 }
 
-#delete all file in dir
+#delete all files in the DIR
 #usage:
 #	clear_dir DIR
 # 目录中大量文件删除：ls | xargs rm

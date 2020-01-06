@@ -28,3 +28,7 @@ logcat -s SysCtrlService sysctrlmanager
 
 # dumpsys
 dumpsys activity service servicename
+
+# logcat
+adb shell setprop persist.log.tag S
+adb shell setprop persist.log.tag.NUTSHELL V
