@@ -2,6 +2,7 @@
 #define YJBITREE_H_
 
 #include <iostream>
+#include <vector>
 
 namespace yjutil {
 /**
@@ -13,7 +14,8 @@ namespace yjutil {
 /**
  * @brief Define and implement a binary tree
  */
-template <class T> struct _bitree {
+template <typename T>
+struct _bitree {
     _bitree *m_left_child;
     _bitree *m_right_child;
     T m_value;
@@ -64,7 +66,7 @@ template <class T> struct _bitree {
         _tmp.push_back(this);
         while (_tmp.size() > 0) {
             vector<_bitree *> _tmp_t;
-            vector<_bitree *>::iterator _it = _tmp.begin();
+            typename vector<_bitree *>::iterator _it = _tmp.begin();
             for (; _it != _tmp.end(); ++_it) {
                 os << (*_it)->m_value << ",";
                 if ((*_it)->m_left_child != NULL)
@@ -78,13 +80,13 @@ template <class T> struct _bitree {
     }
 
     /// 友元函数模版重载输出运算符
-    template <class T>
-    friend std::ostream &operator<<(std::ostream &os, const _bitree<T> &e);
+    template <typename E>
+    friend std::ostream &operator<<(std::ostream &os, const _bitree<E> &e);
 };
 
 /// 输出二叉树
 template <class T>
-std::ostream &operator<<(std::ostream &os, const yq::_bitree<T> &e) {
+std::ostream &operator<<(std::ostream &os, const yjutil::_bitree<T> &e) {
     _bitree<T>(e).DFS_print(os);
     return os;
 }

@@ -17,8 +17,8 @@ namespace yjutil {
  * @return the iterator of e in vec,if not found,vec.end() will be return
  *
  */
-template <class T>
-typename T::iterator seq_search(T &vec, const typename T::value_type &e) {
+template <class T, class VT>
+typename T::iterator seq_search(T &vec, VT e) {
 	typename T::iterator _it = vec.begin();
 	while (_it != vec.end()) {
 		if (*_it == e)
@@ -38,7 +38,8 @@ typename T::iterator seq_search(T &vec, const typename T::value_type &e) {
  * 		   will be return
  *
  */
-template <class T, class Op> typename T::iterator seq_search(T &vec, Op _op) {
+template <class T, class Op>
+typename T::iterator seq_search_if(T &vec, Op _op) {
 	typename T::iterator _it = vec.begin();
 	for (_it; _it != vec.end(); ++_it) {
 		if (_op(*_it))
