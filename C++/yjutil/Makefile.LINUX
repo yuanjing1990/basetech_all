@@ -9,8 +9,8 @@ LD=ld
 #compile flags setting
 CPPFLAGS+=-D_DEBUG -g
 CPPFLAGS+=-Iinclude/
-LDFLAGS+=-L./$(LIB_DIR)
-LDFLAGS+=-l:libyjutil.so -ldl
+LDFLAGS+=-L./$(LIB_DIR) -L/usr/local/lib
+LDFLAGS+=-l:libyjutil.so -ldl -lgtest
 
 SRC_DIR=src
 OBJ_DIR=obj

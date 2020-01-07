@@ -1,5 +1,6 @@
 #include <dlfcn.h>
 #include <vector>
+#include <gtest/gtest.h>
 
 #include "yjdef.h"
 #include "yjlog.h"
@@ -9,17 +10,15 @@ void test_yjdef();
 void test_yjlog();
 void test_ylalg();
 
-int main(int argc, char const *argv[]) {
-	dlopen("libyjutil.so", 0);
-	test_yjdef();
-	test_yjlog();
-	test_ylalg();
-	return 0;
+int main(int argc, char **argv) {
+	::testing::InitGoogleTest(&argc, argv);
+    return RUN_ALL_TESTS();
 }
 
-void test_yjdef() {
+TEST(TestYjUtil, test_yjdef) {
 	int* a = new int;
 	SAFE_DELETE(a);
+	ASSERT_TRUE(a == NULL);
 
 	int i = 1000 * 1000 * 1000;
 	TICK_BEGIN;
@@ -38,12 +37,12 @@ void test_yjdef() {
 	DEBUG_PRINT("test_yjdef");
 }
 
-void test_yjlog() {
+TEST(TestYjUtil, test_yjlog) {
 	std::vector<int> vec = {1,3,5,8,2,9,7,6,4};
 	yjutil::print(vec);
 }
 
-void test_ylalg() {
+TEST(TestYjUtil, test_ylalg) {
 	std::vector<int> vec = {1,3,5,8,2,9,7,6,4};
 	const int i = 7;
 	// std::vector<int>::iterator it = yjutil::seq_search(vec, i);
