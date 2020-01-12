@@ -42,7 +42,11 @@ lib/lib$(MODULE).so:$(OBJ_FILES)
 
 all:$(MODULE) test
 
-test:$(TEST_EXE_FILES)
+GTEST_EXE_FILE=gtest$(MODULE)$(EXE_EXTEND)
+
+$(BIN_DIR)/$(GTEST_EXE_FILE):$(TEST_OBJ_FILES)
+	$(CPP) $(TEST_OBJ_FILES) $(LDFLAGS) -o $@
+test:$(BIN_DIR)/$(GTEST_EXE_FILE)
 
 clean:
 	@-rm -rf $(OBJ_FILES) $(TEST_OBJ_FILES) $(TEST_EXE_FILES) *.ilk *.pdb *.manifest

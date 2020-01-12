@@ -11,6 +11,9 @@ class CollectorMgr {
   public:
 	CollectorMgr();
 	~CollectorMgr();
+    bool add(Collector* collector);
+    bool del(Collector* collector);
+    bool collect();
   public:
 	std::vector<Collector*> m_collectorVec;
 };  // class CollectorMgr
