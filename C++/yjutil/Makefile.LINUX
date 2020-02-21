@@ -38,7 +38,7 @@ MODULE=yjutil
 $(MODULE):lib/lib$(MODULE).so
 
 lib/lib$(MODULE).so:$(OBJ_FILES)
-	$(CPP) $(OBJ_FILES) --shared -fPIC -o $@ 
+	$(CPP) $(OBJ_FILES) --shared -fPIC -o $@ -lcrypto
 
 all:$(MODULE) test
 

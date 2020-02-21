@@ -3,6 +3,7 @@
 #include <vector>
 
 #include "yjutil.h"
+#include "crypt.h"
 
 void test_yjdef();
 void test_yjlog();
@@ -16,6 +17,13 @@ int main(int argc, char **argv) {
 TEST(Test, test) {
     int i = 0;
     int j = 1;
+}
+
+
+TEST(TestYjUtil, test_crypt) {
+	DtlogdLogCrypt crypt("Makefile");
+	crypt.encryptFile("Makefile", "Makefile.encrypt");
+	crypt.decryptFile("Makefile.encrypt", "Makefile.decrypt");
 }
 
 TEST(TestYjUtil, test_yjdef) {
