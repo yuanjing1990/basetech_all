@@ -15,6 +15,18 @@ class TestCopyPolicy : public yjutil::CopyPolicyImpl {
         std::string destFile = src;
         destFile.replace(destFile.begin(), destFile.begin() + srcDir.size(),
                          destDir);
+
+        FILE* pipeFile = popen("md5sum " + src, "r");
+        if (!pipeFile) {
+            return false;
+        }
+
+        char temp[1024] = {0};
+        while (fgets(temp, sizeof(temp), pipeFile) != NULL) {
+            str->add(temp);
+        }
+        pclose(pipeFile);
+
         DEBUG_PRINT("copy: %s -> %s", src.c_str(), destFile.c_str());
 
         char buff[1024] = {0};

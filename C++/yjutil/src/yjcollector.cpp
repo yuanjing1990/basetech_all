@@ -14,7 +14,7 @@ Collector::Collector(const std::string &strSrcPath,
                      const std::string &strDestPath,
                      CopyPolicyImpl *copyImpl,
                      FilterPolicyImpl *matchImpl)
-    : m_srcDir(strSrcPath), m_copyPolicy(copyImpl,strSrcPath, strDestPath),
+    : m_srcDir(strSrcPath), m_destDir(strDestPath), m_copyPolicy(copyImpl,strSrcPath, strDestPath),
       m_filterPolicy(matchImpl){};
 
 Collector::~Collector() {}

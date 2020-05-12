@@ -4,6 +4,9 @@
 
 #include "yjutil.h"
 #include "crypt.h"
+#include "zlib.h"
+#include "unistd.h"
+#include "fcntl.h"
 
 void test_yjdef();
 void test_yjlog();
@@ -19,11 +22,22 @@ TEST(Test, test) {
     int j = 1;
 }
 
+TEST(TestYjUtil, test_gzip) {
+    int fd = open("test.txt", 755);
+    gzFile gf = gzdopen(fd, "w");
+    if(gf == NULL) {
+        DEBUG_PRINT("gzopen failed!");
+    }
+
+    char* buf = "Hello World zlib!";
+    gzwrite(gf, buf, strlen(buf));
+    gzclose(gf);
+}
 
 TEST(TestYjUtil, test_crypt) {
-	DtlogdLogCrypt crypt("Makefile");
-	crypt.encryptFile("Makefile", "Makefile.encrypt");
-	crypt.decryptFile("Makefile.encrypt", "Makefile.decrypt");
+	DtlogdLogCrypt crypt("bin/aes.key");
+	// crypt.encryptFile("bin/02dropbox_SYSTEM_TOMBSTONE@1582294132056.txt", "Makefile.encrypt");
+	crypt.decryptFile("bin/02dropbox_SYSTEM_TOMBSTONE@1582294132056.txt", "bin/02dropbox_SYSTEM_TOMBSTONE@1582294132056.decrypt");
 }
 
 TEST(TestYjUtil, test_yjdef) {
