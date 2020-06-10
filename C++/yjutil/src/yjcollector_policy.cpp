@@ -6,14 +6,15 @@
 #include <string>
 
 namespace yjutil {
-CopyPolicy::CopyPolicy(CopyPolicyImpl *impl, const std::string &srcDir,
-                       const std::string &destDir)
-    : m_impl(impl), m_srcDir(srcDir), m_destDir(destDir) {}
+CopyPolicy::CopyPolicy(CopyPolicyImpl *impl, RenamePolicy *renamePolicy,
+                       const std::string &srcDir, const std::string &destDir)
+    : m_impl(impl), m_renamePolicy(renamePolicy), m_srcDir(srcDir),
+      m_destDir(destDir) {}
 
 CopyPolicy::~CopyPolicy() {}
 
 bool CopyPolicy::copy(const std::string &src) {
-  return m_impl->copy(src, m_srcDir, m_destDir, true);
+  return m_impl->copy(src, m_srcDir, m_destDir, m_renamePolicy);
 }
 
 FilterPolicy::FilterPolicy(FilterPolicyImpl *impl) : m_impl(impl) {}
@@ -29,15 +30,14 @@ CopyPolicyImpl::CopyPolicyImpl() {}
 CopyPolicyImpl::~CopyPolicyImpl() {}
 
 bool CopyPolicyImpl::copy(const std::string &src, const std::string &srcDir,
-                          const std::string &destDir, const bool &isRename) {
+                          const std::string &destDir,
+                          RenamePolicySp renamePolicy) {
   if (src.find(srcDir) != 0) {
     return false;
   }
   std::string relativePath = src.substr(srcDir.size(), src.size());
-  if(isRename) {
-      std::vector<char> buf(relativePath.begin(), relativePath.end());
-      std::replace(buf.begin(), buf.end(), '/', '_');
-      relativePath.assign(buf.begin(), buf.end());
+  if (renamePolicy) {
+    relativePath = renamePolicy->rename(relativePath);
   }
 
   std::string destFile = destDir + relativePath;
@@ -48,8 +48,8 @@ bool CopyPolicyImpl::copy(const std::string &src, const std::string &srcDir,
 
   std::ifstream ifs(src, std::ios::binary);
   std::ofstream ofs(destFile, std::ios::binary);
-  if(!ifs || !ofs) {
-      return false;
+  if (!ifs || !ofs) {
+    return false;
   }
   ofs << ifs.rdbuf();
   return true;
@@ -60,5 +60,9 @@ FilterPolicyImpl::FilterPolicyImpl() {}
 FilterPolicyImpl::~FilterPolicyImpl() {}
 
 bool FilterPolicyImpl::filter(const std::string &file) { return false; }
+
+std::string RenamePolicySame::rename(const std::string& src) {
+    return src;
+}
 
 } // namespace yjutil

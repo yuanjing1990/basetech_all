@@ -10,6 +10,7 @@ class CopyPolicy;
 class CopyPolicyImpl;
 class FilterPolicy;
 class FilterPolicyImpl;
+class RenamePolicy;
 
 class Collector {
 public:
@@ -21,7 +22,8 @@ class FileCollector : public Collector {
 public:
   FileCollector(const std::string &strSrcPath, const std::string &strDestPath,
                 CopyPolicyImpl *copyImpl = new CopyPolicyImpl(),
-                FilterPolicyImpl *filterImpl = new FilterPolicyImpl());
+                FilterPolicyImpl *filterImpl = new FilterPolicyImpl(),
+                RenamePolicy *renameImpl = new RenamePolicySame());
   ~FileCollector();
 
 public:
