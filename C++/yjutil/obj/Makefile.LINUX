@@ -10,7 +10,7 @@ LD=ld
 CPPFLAGS+=-D_DEBUG -g
 CPPFLAGS+=-Iinclude/
 LDFLAGS+=-L./$(LIB_DIR) -L/usr/local/lib
-LDFLAGS+=-l:libyjutil.so -ldl -lgtest
+LDFLAGS+=-l:libyjutil.so -ldl -lgtest -lz
 
 SRC_DIR=src
 OBJ_DIR=obj
@@ -38,7 +38,7 @@ MODULE=yjutil
 $(MODULE):lib/lib$(MODULE).so
 
 lib/lib$(MODULE).so:$(OBJ_FILES)
-	$(CPP) $(OBJ_FILES) --shared -fPIC -o $@ -lcrypto
+	$(CPP) $(OBJ_FILES) --shared -fPIC -o $@ -lcrypto -lboost_filesystem -lboost_system
 
 all:$(MODULE) test
 

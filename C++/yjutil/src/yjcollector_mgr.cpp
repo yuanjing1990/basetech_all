@@ -1,30 +1,28 @@
-#include <algorithm>
 #include "yjcollector_mgr.h"
-#include "yjutil.h"
 #include "yjcollector.h"
+#include "yjutil.h"
+#include <algorithm>
 
 namespace yjutil {
 CollectorMgr::CollectorMgr() {}
 
 CollectorMgr::~CollectorMgr() {}
 
-bool CollectorMgr::add(Collector *collector) {
-    m_collectorVec.push_back(collector);
+void CollectorMgr::add(CollectorSp collector) {
+  std::lock_guard<std::mutex> lock(m_mutex);
+  m_collectorSet.insert(collector);
 }
 
-bool CollectorMgr::del(Collector *collector) {
-    auto it = std::remove(m_collectorVec.begin(), m_collectorVec.end(), collector);
-    if(it != m_collectorVec.end()) {
-        m_collectorVec.erase(it, m_collectorVec.end());
-        SAFE_DELETE(collector);
-        return true;
-    }
-    return false;
+void CollectorMgr::del(CollectorSp collector) {
+  std::lock_guard<std::mutex> lock(m_mutex);
+  m_collectorSet.erase(collector);
 }
 
-bool CollectorMgr::collect() {
-    std::for_each(m_collectorVec.begin(), m_collectorVec.end(), std::mem_fun(&Collector::doCollect));
-    return true;
+void CollectorMgr::collect() {
+  std::lock_guard<std::mutex> lock(m_mutex);
+  for (auto e : m_collectorSet) {
+    e->doCollect();
+  }
 }
 
 } // namespace yjutil

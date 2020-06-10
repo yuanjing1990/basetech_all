@@ -1,22 +1,29 @@
 #ifndef YJCOLLECTOR_MGR_H
 #define YJCOLLECTOR_MGR_H
 
-#include <vector>
+#include <boost/shared_ptr.hpp>
+#include <mutex>
+#include <set>
+
+using boost::shared_ptr;
 
 namespace yjutil {
 class CollectorMgr;
 class Collector;
+typedef shared_ptr<Collector> CollectorSp;
 
 class CollectorMgr {
-  public:
-	CollectorMgr();
-	~CollectorMgr();
-    bool add(Collector* collector);
-    bool del(Collector* collector);
-    bool collect();
-  public:
-	std::vector<Collector*> m_collectorVec;
-};  // class CollectorMgr
-}  // namespace yjutil
+public:
+  CollectorMgr();
+  ~CollectorMgr();
+  void add(CollectorSp collector);
+  void del(CollectorSp collector);
+  void collect();
 
-#endif
+private:
+  std::set<CollectorSp> m_collectorSet;
+  std::mutex m_mutex;
+}; // class CollectorMgr
+} // namespace yjutil
+
+#endif // YJCOLLECTOR_MGR_H

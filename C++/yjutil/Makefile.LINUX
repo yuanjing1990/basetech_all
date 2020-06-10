@@ -38,14 +38,14 @@ MODULE=yjutil
 $(MODULE):lib/lib$(MODULE).so
 
 lib/lib$(MODULE).so:$(OBJ_FILES)
-	$(CPP) $(OBJ_FILES) --shared -fPIC -o $@ -lcrypto
+	$(CPP) $(OBJ_FILES) --shared -fPIC -o $@ -lcrypto -lboost_filesystem -lboost_system
 
 all:$(MODULE) test
 
 GTEST_EXE_FILE=gtest$(MODULE)$(EXE_EXTEND)
 
 $(BIN_DIR)/$(GTEST_EXE_FILE):$(TEST_OBJ_FILES)
-	$(CPP) $(TEST_OBJ_FILES) $(LDFLAGS) -o $@
+	$(CPP) $(TEST_OBJ_FILES) $(LDFLAGS) -o $@ -lboost_filesystem -lboost_system
 test:$(BIN_DIR)/$(GTEST_EXE_FILE)
 
 clean:

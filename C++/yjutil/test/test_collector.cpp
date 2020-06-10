@@ -1,50 +1,36 @@
 #include <gtest/gtest.h>
 #include <fstream>
+#include <boost/filesystem.hpp>
 
 #include "yjcollector.h"
+#include "yjcollector_mgr.h"
+#include "yjcollector_policy.h"
 
-class TestFilterPolicy : public yjutil::FilterPolicyImpl {
-  public:
-    virtual bool filter(const std::string &file) { return true; }
-};
+using namespace yjutil;
+using namespace boost::filesystem;
 
-class TestCopyPolicy : public yjutil::CopyPolicyImpl {
-  public:
-    virtual bool copy(const std::string &src, const std::string &srcDir,
-                      const std::string &destDir) {
-        std::string destFile = src;
-        destFile.replace(destFile.begin(), destFile.begin() + srcDir.size(),
-                         destDir);
+TEST(TestYjUtil, test_yjcollector_policy) {
+    std::string path("/tmp/test_yjcollector_policy");
+    CopyPolicyImpl copyPolicyImpl;
+    ASSERT_FALSE(copyPolicyImpl.copy(path, "/tmp_no/", ""));
+    
+    ASSERT_FALSE(exists(path));
+    ASSERT_FALSE(copyPolicyImpl.copy(path, "/tmp/", "/tmp/tmp/"));
 
-        FILE* pipeFile = popen("md5sum " + src, "r");
-        if (!pipeFile) {
-            return false;
-        }
+    std::ofstream of(path);
+    of << "test";
+    of.close();
 
-        char temp[1024] = {0};
-        while (fgets(temp, sizeof(temp), pipeFile) != NULL) {
-            str->add(temp);
-        }
-        pclose(pipeFile);
+    ASSERT_TRUE(exists(path));
+    ASSERT_TRUE(copyPolicyImpl.copy(path, "/tmp/", "/tmp/tmp/"));
+    ASSERT_TRUE(exists("/tmp/tmp/test_yjcollector_policy"));
 
-        DEBUG_PRINT("copy: %s -> %s", src.c_str(), destFile.c_str());
-
-        char buff[1024] = {0};
-        std::ifstream ifs(src, std::ios::binary);
-        std::ofstream ofs(destFile, std::ios::binary);
-
-        while (ifs && !ifs.eof()) {
-            ifs.read(buff, sizeof(buff));
-            ofs.write(buff, ifs.gcount());
-        }
-        ifs.close();
-        ofs.close();
-
-        return true;
-    }
-};
+    ASSERT_TRUE(boost::filesystem::remove(path));
+    ASSERT_TRUE(boost::filesystem::remove("/tmp/tmp/test_yjcollector_policy"));
+}
 
 TEST(TestYjUtil, test_yjcollector) {
-    yjutil::Collector collector(".", "obj", new TestCopyPolicy);
+
+    yjutil::FileCollector collector("./", "obj/");
     collector.doCollect();
 }
