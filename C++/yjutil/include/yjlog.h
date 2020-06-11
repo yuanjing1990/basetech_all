@@ -20,42 +20,42 @@ namespace yjutil {
  *
  */
 struct _Tick {
-	/**
+    /**
 	 * @brief Start the clock.
 	 *
 	 * @return The start clock in milisecond.
 	 *
 	 */
-	static clock_t start();
+    static clock_t start();
 
-	/**
+    /**
 	 * @brief Start the clock and print info.
 	 *
 	 * @return The start clock in minisecond.
 	 *
 	 */
-	static clock_t start_out();
+    static clock_t start_out();
 
-	/**
+    /**
 	 * @brief Stop the clock and print result.
 	 *
 	 * @return The end clock in minisecond.
 	 *
 	 */
-	static clock_t end();
+    static clock_t end();
 
-	/**
+    /**
 	 * @brief Print the clock and print result.
 	 * Print the clock and print result,and then print clock will stop.
 	 *
 	 * @return zero,which is useless
 	 *
 	 */
-	static clock_t end_out();
+    static clock_t end_out();
 
   private:
-	static clock_t m_start;
-	static bool m_bflag;
+    static clock_t m_start;
+    static bool m_bflag;
 };
 
 /**
@@ -65,11 +65,12 @@ struct _Tick {
  * @param vec,the collection will be print.
  *
  */
-template <class T> void print(const T &vec) {
-	using namespace std;
-	for (typename T::const_iterator _it = vec.begin(); _it != vec.end(); ++_it)
-		cout << *_it << ' ';
-	cout << endl;
+template <class T>
+void print(const T &vec) {
+    using namespace std;
+    for (typename T::const_iterator _it = vec.begin(); _it != vec.end(); ++_it)
+        cout << *_it << ' ';
+    cout << endl;
 }
 
 /**
@@ -77,6 +78,6 @@ template <class T> void print(const T &vec) {
  */
 //==========log util class===========-<End
 
-}
+} // namespace yjutil
 
 #endif

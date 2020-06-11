@@ -15,10 +15,10 @@
  *
  * @param p is a ptr of a certain object
  */
-#define SAFE_DELETE(p)                                                         \
-    if ((p) != NULL) {                                                         \
-        delete p;                                                              \
-        p = NULL;                                                              \
+#define SAFE_DELETE(p) \
+    if ((p) != NULL) { \
+        delete p;      \
+        p = NULL;      \
     }
 
 /**
@@ -50,9 +50,9 @@
  * @see DEBUG_PRINT
  */
 #ifdef _DEBUG
-	#define DEBUG_PRINT(format, ...) printf(format"\n", ##__VA_ARGS__)
+#define DEBUG_PRINT(format, ...) printf(format "\n", ##__VA_ARGS__)
 #else
-	#define DEBUG_PRINT(format, ...)
+#define DEBUG_PRINT(format, ...)
 #endif
 /**
  * @}

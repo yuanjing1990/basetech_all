@@ -13,16 +13,16 @@ class Collector;
 typedef shared_ptr<Collector> CollectorSp;
 
 class CollectorMgr {
-public:
-  CollectorMgr();
-  ~CollectorMgr();
-  void add(CollectorSp collector);
-  void del(CollectorSp collector);
-  void collect();
+  public:
+    CollectorMgr();
+    ~CollectorMgr();
+    void add(CollectorSp collector);
+    void del(CollectorSp collector);
+    void collect();
 
-private:
-  std::set<CollectorSp> m_collectorSet;
-  std::mutex m_mutex;
+  private:
+    std::set<CollectorSp> m_collectorSet;
+    std::mutex m_mutex;
 }; // class CollectorMgr
 } // namespace yjutil
 
