@@ -6,7 +6,7 @@
 #include <string>
 
 namespace yjutil {
-CopyPolicy::CopyPolicy(CopyPolicyImpl *impl, RenamePolicy *renamePolicy,
+CopyPolicy::CopyPolicy(CopyPolicyImpl *impl, RenamePolicyImpl *renamePolicy,
                        const std::string &srcDir, const std::string &destDir)
     : m_impl(impl), m_renamePolicy(renamePolicy), m_srcDir(srcDir),
       m_destDir(destDir) {}
@@ -25,19 +25,29 @@ bool FilterPolicy::filter(const std::string &file) {
     return m_impl->filter(file);
 }
 
+RenamePolicy::RenamePolicy(RenamePolicyImpl *renamePolicy) : m_impl(renamePolicy) {}
+
+std::string RenamePolicy::rename(const std::string &src) {
+    if (!m_impl) {
+        return "";
+    }
+    return m_impl->rename(src);
+}
+
 CopyPolicyImpl::CopyPolicyImpl() {}
 
 CopyPolicyImpl::~CopyPolicyImpl() {}
 
 bool CopyPolicyImpl::copy(const std::string &src, const std::string &srcDir,
                           const std::string &destDir,
-                          RenamePolicySp renamePolicy) {
+                          RenamePolicy renamePolicy) {
     if (src.find(srcDir) != 0) {
         return false;
     }
     std::string relativePath = src.substr(srcDir.size(), src.size());
-    if (renamePolicy) {
-        relativePath = renamePolicy->rename(relativePath);
+    std::string rename_relativePath = renamePolicy.rename(relativePath);
+    if (!rename_relativePath.empty()) {
+        relativePath = rename_relativePath;
     }
 
     std::string destFile = destDir + relativePath;
@@ -61,7 +71,11 @@ FilterPolicyImpl::~FilterPolicyImpl() {}
 
 bool FilterPolicyImpl::filter(const std::string &file) { return false; }
 
-std::string RenamePolicySame::rename(const std::string &src) {
+RenamePolicyImpl::RenamePolicyImpl() {}
+
+RenamePolicyImpl::~RenamePolicyImpl() {}
+
+std::string RenamePolicyImpl::rename(const std::string &src) {
     return src;
 }
 

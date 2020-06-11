@@ -23,7 +23,7 @@ class FileCollector : public Collector {
     FileCollector(const std::string &strSrcPath, const std::string &strDestPath,
                   CopyPolicyImpl *copyImpl = new CopyPolicyImpl(),
                   FilterPolicyImpl *filterImpl = new FilterPolicyImpl(),
-                  RenamePolicy *renameImpl = new RenamePolicySame());
+                  RenamePolicyImpl *renameImpl = new RenamePolicyImpl());
     ~FileCollector();
 
   public:

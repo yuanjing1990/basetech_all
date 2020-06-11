@@ -15,7 +15,7 @@ FileCollector::FileCollector(const std::string &strSrcPath,
                              const std::string &strDestPath,
                              CopyPolicyImpl *copyImpl,
                              FilterPolicyImpl *filterImpl,
-                             RenamePolicy *renameImpl)
+                             RenamePolicyImpl *renameImpl)
     : m_srcDir(strSrcPath), m_destDir(strDestPath),
       m_copyPolicy(copyImpl, renameImpl, strSrcPath, strDestPath),
       m_filterPolicy(filterImpl){};
