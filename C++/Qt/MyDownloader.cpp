@@ -34,7 +34,6 @@ void MyDownloader::getFile() {
     httpRequestAborted = false;
 
     startRequest(downloadUrl);
-    std::cout << "startRequest" << std::endl;
 }
 
 void MyDownloader::startRequest(QUrl url) {
@@ -48,7 +47,7 @@ void MyDownloader::startRequest(QUrl url) {
                 SLOT(downloadReadyRead()));
         connect(downloadReply, SIGNAL(finished()), this,
                 SLOT(downloadFinished()));
-        std::cout << "startRequest" << std::endl;
+        std::cout << "startRequest:" << url.toString().toStdString() << "!" << std::endl;
     }
 }
 
@@ -57,7 +56,6 @@ QString MyDownloader::getDownloadVersionCode() { return versionCode; }
 QString MyDownloader::getFileName() { return fileName; }
 
 void MyDownloader::downloadReadyRead() {
-    std::cout << "downloadReadyRead" << std::endl;
     if (downloadFile)
         downloadFile->write(downloadReply->readAll());
 }
@@ -77,17 +75,11 @@ void MyDownloader::cancel() {
 void MyDownloader::downloadFinished() {
     downloadFile->flush();
     downloadFile->close();
-    QVariant redirectionTarget = downloadReply->attribute(QNetworkRequest::RedirectionTargetAttribute);
+    std::cout << "downloadFinished!" << std::endl;
+
     if (downloadReply->error()) {
         std::cout << "download error!" << std::endl;
         emit downloadResult(downloadReply->error());
-    } else if (!redirectionTarget.isNull()) {
-        QUrl newUrl = downloadUrl.resolved(redirectionTarget.toUrl());
-        downloadUrl = newUrl;
-        downloadReply->deleteLater();
-        downloadFile->open(QIODevice::WriteOnly);
-        downloadFile->resize(0);
-        startRequest(downloadUrl);
     } else {
         QString fileName = QFileInfo(downloadUrl.path()).fileName();
         delete downloadFile;

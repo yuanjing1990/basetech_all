@@ -37,19 +37,19 @@ int main(int argc, char *argv[]) {
     std::cout << "1.3 第二种创建线程方法============<End" << std::endl;
 
     std::cout << "1.5 下载文件============>Begin" << std::endl;
+    MyDownloader m_downLoder;
     {
-        MyDownloader m_downLoder;
         m_downLoder.setData(
             QUrl("http://yantu.qiniu.tms.y-link.cn/plt_update_yldz_v1.zip"),
             "./download.zip");
-        m_downLoder.cancel();
+        // m_downLoder.cancel();
         m_downLoder.getFile();
         std::cout << "Downloading ...";
-        while (!m_downLoder.isFinished()) {
-            std::cout << ".";
-            std::cout.flush();
-            QThread::sleep(1);
-        }
+        // while (!m_downLoder.isFinished()) {
+        //     std::cout << ".";
+        //     std::cout.flush();
+        //     QThread::sleep(1);
+        // }
         std::cout << std::endl;
     }
     std::cout << "1.5 下载文件============<End" << std::endl;
