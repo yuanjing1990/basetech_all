@@ -1,3 +1,4 @@
+package tmp;
 
 //<applet code=Applet1.class width=200 height=100></applet>
 import java.awt.*;

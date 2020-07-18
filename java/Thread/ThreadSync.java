@@ -1,10 +1,14 @@
+package Thread;
+
 public class ThreadSync {
     public static int count = 0;
     public static final int MAX_COUNT = 100;
+
     public static void main(String[] args) {
         // testVolatile();
         testWait();
     }
+
     public static void testVolatile() {
         Thread t1 = new Thread() {
             @Override

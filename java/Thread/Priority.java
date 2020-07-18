@@ -1,12 +1,15 @@
+package Thread;
+
 import java.util.concurrent.TimeUnit;
 import java.util.*;
 
 public class Priority {
     private static volatile boolean notStart = true;
     private static volatile boolean notEnd = true;
+
     public static void main(String[] args) {
         ArrayList<Job> jobs = new ArrayList<Job>();
-        for(int i =0; i < 10; ++i) {
+        for (int i = 0; i < 10; ++i) {
             int priority = i < 5 ? Thread.MIN_PRIORITY : Thread.MAX_PRIORITY;
             Job job = new Job(priority);
             jobs.add(job);
@@ -21,22 +24,24 @@ public class Priority {
         } catch (InterruptedException e) {
         }
         notEnd = false;
-        for(Job job : jobs) {
-            System.out.println("Job Priority : " + job.priority +", Count : " + job.jobCount);
+        for (Job job : jobs) {
+            System.out.println("Job Priority : " + job.priority + ", Count : " + job.jobCount);
         }
     }
 
     static class Job implements Runnable {
         private int priority;
         private long jobCount;
+
         public Job(int priority) {
             this.priority = priority;
         }
+
         public void run() {
-            while(notStart) {
+            while (notStart) {
                 Thread.yield();
             }
-            while(notEnd) {
+            while (notEnd) {
                 Thread.yield();
                 jobCount++;
             }
