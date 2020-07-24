@@ -172,9 +172,34 @@ void heap_sort(T array[], int length) {
     std::cout << std::endl;
 }
 
+template <typename T>
+void count_sort(T array[], int length) {
+    std::cout << __FUNCTION__ << " before:";
+    std::copy(array, array + length, std::ostream_iterator<int>(std::cout, " "));
+    std::cout << std::endl;
+
+    const int max_int = 100;
+    int count_array[max_int] = {0};
+    for (size_t i = 0; i < length; i++) {
+        ++count_array[array[i]];
+    }
+    for (size_t i = 1; i < max_int; i++) {
+        count_array[i] += count_array[i - 1];
+    }
+    int sorted_array[length];
+    for (size_t i = length; i > 0; i--) {
+        sorted_array[--count_array[array[i - 1]]] = array[i - 1];
+    }
+    std::copy(sorted_array, sorted_array + length, array);
+
+    std::cout << __FUNCTION__ << " after:";
+    std::copy(array, array + length, std::ostream_iterator<int>(std::cout, " "));
+    std::cout << std::endl;
+}
+
 int main(int argc, char *argv[]) {
     int bubble_array[] = {22, 34, 3, 32, 82, 55, 89, 50, 37, 5, 64, 35, 9, 70};
     // bubble_sort<int>(bubble_array, sizeof(bubble_array) / sizeof(int));
     // merge_sort<int>(bubble_array, sizeof(bubble_array) / sizeof(int));
-    quick_sort<int>(bubble_array, sizeof(bubble_array) / sizeof(int));
+    count_sort<int>(bubble_array, sizeof(bubble_array) / sizeof(int));
 }
