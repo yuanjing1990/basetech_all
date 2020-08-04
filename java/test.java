@@ -1,3 +1,4 @@
+import java.util.logging.Logger;
 
 /**The first Thinking in Java example program.
 *Lists system information on current machine.
@@ -14,6 +15,7 @@ public class test{
 */
 	public test(){
 		System.out.println("Hello World.");
+		Logger.getGlobal().log("Test");
 	}
 	public test(String str){
 		System.out.println(str);

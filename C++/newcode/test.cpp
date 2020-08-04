@@ -4,8 +4,12 @@
 #include <iostream>
 #include <iterator>
 #include <map>
+#include <mutex>
 #include <numeric>
+#include <thread>
+#include <unistd.h>
 #include <vector>
+#include <condition_variable>
 
 void huawei_2016_1() {
     int m = 0, n = 0;
@@ -49,26 +53,52 @@ void huawei_2016_2() {
     ifs.close();
 }
 
-int solve(std::string s) {
-    // write code here
-    std::string max;
-    int start = 0, end = 1;
-    try {
-        while (end < s.length()) {
-            char cur = s.at(end);
-            if (!std::isdigit(cur) && (cur < 'A' || cur > 'F')) {
-                max = std::max(max, s.substr(start, end - start));
-                start = end + 1;
-            }
-            ++end;
-        }
-    } catch (std::exception e) {
-        std::cout << e.what() << std::endl;
-    }
-    std::cout << max;
-}
-
 int main(int argc, char *argv[]) {
-    solve("012345BZ16");
+    std::vector<std::thread::id> product;
+    std::mutex mtx;
+    std::condition_variable cv;
+    auto consumer_thread = [&mtx, &cv, &product]() {
+        try {
+            int cnt = 0;
+            while (cnt < 10) {
+                std::unique_lock<std::mutex> lck(mtx);
+                if (!product.empty()) {
+                    product.pop_back();
+                    std::cout << std::this_thread::get_id() << " consumer one:" << product.size() << std::endl;
+                    ++cnt;
+                    cv.notify_all();
+                } else {
+                    cv.wait(lck);
+                }
+            }
+        } catch (std::exception e) {
+            std::cout << e.what() << std::endl;
+        }
+    };
+    auto productor_thread = [&mtx, &cv, &product]() {
+        try {
+            static int cnt = 0;
+            while (cnt < 30) {
+                std::unique_lock<std::mutex> lck(mtx);
+                if (product.size() < 10) {
+                    product.push_back(std::this_thread::get_id());
+                    std::cout << std::this_thread::get_id() << " produce one:" << product.size() << std::endl;
+                    ++cnt;
+                    cv.notify_all();
+                } else {
+                    cv.wait(lck);
+                }
+            }
+        } catch (std::exception e) {
+            std::cout << e.what() << std::endl;
+        }
+    };
+    std::thread t1(consumer_thread), t2(consumer_thread), t3(consumer_thread);
+    std::thread t4(productor_thread), t5(productor_thread);
+    t1.join();
+    t2.join();
+    t3.join();
+    t4.join();
+    t5.join();
     return 0;
 }
