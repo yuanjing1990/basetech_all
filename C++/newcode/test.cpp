@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <condition_variable>
 #include <fstream>
 #include <functional>
 #include <iostream>
@@ -9,7 +10,6 @@
 #include <thread>
 #include <unistd.h>
 #include <vector>
-#include <condition_variable>
 
 void huawei_2016_1() {
     int m = 0, n = 0;
@@ -31,10 +31,14 @@ void huawei_2016_1() {
         } else if (op == 'Q') {
             if (first > second)
                 std::swap(first, second);
-            result.push_back(std::accumulate(grade + first - 1, grade + second, 0, std::ptr_fun<const int &, const int &, const int &>(std::max<int>)));
+            result.push_back(std::accumulate(
+                grade + first - 1, grade + second, 0,
+                std::ptr_fun<const int &, const int &, const int &>(
+                    std::max<int>)));
         }
     }
-    std::copy(result.begin(), result.end(), std::ostream_iterator<int>(std::cout, "\n"));
+    std::copy(result.begin(), result.end(),
+              std::ostream_iterator<int>(std::cout, "\n"));
 }
 
 void huawei_2016_2() {
@@ -53,7 +57,7 @@ void huawei_2016_2() {
     ifs.close();
 }
 
-int main(int argc, char *argv[]) {
+void testThread() {
     std::vector<std::thread::id> product;
     std::mutex mtx;
     std::condition_variable cv;
@@ -64,7 +68,9 @@ int main(int argc, char *argv[]) {
                 std::unique_lock<std::mutex> lck(mtx);
                 if (!product.empty()) {
                     product.pop_back();
-                    std::cout << std::this_thread::get_id() << " consumer one:" << product.size() << std::endl;
+                    std::cout << std::this_thread::get_id()
+                              << " consumer one:" << product.size()
+                              << std::endl;
                     ++cnt;
                     cv.notify_all();
                 } else {
@@ -82,7 +88,8 @@ int main(int argc, char *argv[]) {
                 std::unique_lock<std::mutex> lck(mtx);
                 if (product.size() < 10) {
                     product.push_back(std::this_thread::get_id());
-                    std::cout << std::this_thread::get_id() << " produce one:" << product.size() << std::endl;
+                    std::cout << std::this_thread::get_id()
+                              << " produce one:" << product.size() << std::endl;
                     ++cnt;
                     cv.notify_all();
                 } else {
@@ -100,5 +107,32 @@ int main(int argc, char *argv[]) {
     t3.join();
     t4.join();
     t5.join();
+}
+
+int *testStatic() {
+    static int a;
+    std::cout << a << std::endl;
+    return &a;
+}
+
+struct ObjB;
+struct ObjA {
+    std::shared_ptr<ObjB> _b;
+    ~ObjA() { std::cout << "destruct OjbA" << std::endl; }
+};
+struct ObjB {
+    std::shared_ptr<ObjA> _a;
+    ~ObjB() { std::cout << "destruct OjbB" << std::endl; }
+};
+
+void testSharePtr() {
+    std::shared_ptr<ObjA> a(new ObjA);
+    std::shared_ptr<ObjB> b(new ObjB);
+    // a->_b = b;
+    // b->_a = a;
+}
+
+int main(int argc, char *argv[]) {
+    testSharePtr();
     return 0;
 }
