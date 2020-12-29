@@ -6,7 +6,22 @@
 
 #模式匹配文本
 下面表示在search_file里面查找mode_file里面以行分割的模式
-`grep -f mode_file search_file`
+grep -f mode_file search_file
+或者
+grep -E "mode1|mode2|mode3" search_file
 
 #分割字符串
 echo log.txt | cut -d' ' -f1-
+
+#发送邮件
+sudo apt install s-nail
+vi /etc/s-nail.rc
+添加：
+set from=邮箱地址 smtp=smtp.邮箱地址后缀 //如set from=123456@qq.com smtp=smtp.qq.com
+set smtp-auth-user=邮箱地址 smtp-auth-password="邮箱密码" smtp-auth=login
+配置好后就可以发送邮件了:
+s-nail -s "主题" "目的邮箱地址" <<< "邮件内容"
+
+#vi 替换windows的回车换行
+命令模式输入,^M是一个字符不是输入^和M两个字符，即按住 Ctrl 键不放，同时按 V 键产生^，依然按住 Ctrl 键不放，同时按 M 产生M
+:%s/^M//g
