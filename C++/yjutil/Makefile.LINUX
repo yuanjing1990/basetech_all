@@ -10,7 +10,7 @@ LD=ld
 CPPFLAGS+=-D_DEBUG -g -fPIC
 CPPFLAGS+=-Iinclude/
 LDFLAGS+=-L./$(LIB_DIR) -L/usr/local/lib
-LDFLAGS+=-l:libyjutil.so -ldl -lgtest -lz
+LDFLAGS+=-lyjutil -ldl -lgtest -lz
 
 SRC_DIR=src
 OBJ_DIR=obj

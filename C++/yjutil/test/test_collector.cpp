@@ -4,6 +4,7 @@
 #include <gtest/gtest.h>
 #include <queue>
 #include <stack>
+#include <string>
 
 #include "yjcollector.h"
 #include "yjcollector_mgr.h"
@@ -12,39 +13,86 @@
 using namespace yjutil;
 using namespace boost::filesystem;
 
-TEST(TestYjUtil, test_yjcollector_policy) {
-    std::string path("/tmp/test_yjcollector_policy");
-    std::string destFile("/tmp/tmp/test_yjcollector_policy");
+static std::string sSrcPath = "/tmp/testyjutil/";
+static std::string sDestPath = "/tmp/testyjutil/copy_to/";
+class TestCollector : public ::testing::Test {
+    public:
+        TestCollector(){}
+        virtual ~TestCollector(){}
+
+        virtual void SetUp() {
+            DEBUG_PRINT("SetUp ... ");
+            boost::filesystem::create_directories(sSrcPath);
+            std::ofstream ofs(sSrcPath + "testfile.txt");
+            ofs << "test";
+            ofs.close();
+        }
+
+        virtual void TearDown() {
+            DEBUG_PRINT("TearDown ... ");
+            boost::filesystem::remove_all(sSrcPath);
+        }
+};
+
+TEST_F(TestCollector, test_rename_policy) {
+    std::string anypath("/path/to/anything");
+
+    RenamePolicy renamePolicy(nullptr);
+    ASSERT_TRUE(0 == anypath.compare(renamePolicy.rename(anypath)));
+
+    RenamePolicyImplSp renamePolicyImpl(new RenamePolicyImpl());
+    ASSERT_TRUE(0 == anypath.compare(renamePolicyImpl->rename(anypath)));
+
+    RenamePolicy renamePolicyWithImpl(new RenamePolicyImpl());
+    ASSERT_TRUE(0 == anypath.compare(renamePolicyWithImpl.rename(anypath)));
+}
+
+TEST_F(TestCollector, test_filter_policy) {
+    std::string anypath("/path/to/anything");
+
+    FilterPolicy filterPolicy(nullptr);
+    ASSERT_FALSE(filterPolicy.filter(anypath));
+
+    FilterPolicyImplSp filterPolicyImpl(new FilterPolicyImpl());
+    ASSERT_FALSE(filterPolicyImpl->filter(anypath));
+
+    FilterPolicy filterPolicyWithImpl(new FilterPolicyImpl());
+    ASSERT_FALSE(filterPolicyWithImpl.filter(anypath));
+}
+
+TEST_F(TestCollector, test_copy_policy) {
+    std::string srcFile("test_copy_policy");
+    std::string sDestPath(sSrcPath + "test_copy_to/");
+
+    std::string srcFilePath = sSrcPath + srcFile;
+    std::ofstream ofs(srcFilePath);
+    ofs << "test";
+    ofs.close();
+    ASSERT_TRUE(exists(srcFilePath));
+    ASSERT_FALSE(exists(sDestPath + srcFile));
 
     CopyPolicyImpl copyPolicyImpl;
-    ASSERT_FALSE(copyPolicyImpl.copy(path, "/tmp_no/", "", RenamePolicy(nullptr)));
+    ASSERT_FALSE(copyPolicyImpl.copy(srcFilePath, "/not_src_path/", sDestPath, RenamePolicy(nullptr)));
+    ASSERT_FALSE(exists(sDestPath + srcFile));
 
-    ASSERT_FALSE(exists(path));
-    ASSERT_FALSE(copyPolicyImpl.copy(path, "/tmp/", "/tmp/tmp/", RenamePolicy(nullptr)));
+    ASSERT_FALSE(copyPolicyImpl.copy(srcFilePath, sSrcPath, "/dest_not_exist/", RenamePolicy(nullptr)));
 
-    CopyPolicy copyPolicy(new CopyPolicyImpl, new RenamePolicyImpl, "/tmp/", "/tmp/tmp/");
-    ASSERT_FALSE(copyPolicy.copy(path));
-
-    std::ofstream of(path);
-    of << "test";
-    of.close();
-
-    ASSERT_TRUE(exists(path));
-    ASSERT_TRUE(copyPolicyImpl.copy(path, "/tmp/", "/tmp/tmp/", RenamePolicy(nullptr)));
-    ASSERT_TRUE(exists(destFile));
-    ASSERT_TRUE(boost::filesystem::remove(destFile));
-    ASSERT_TRUE(copyPolicy.copy(path));
-
-    ASSERT_TRUE(boost::filesystem::remove(path));
-    ASSERT_TRUE(boost::filesystem::remove(destFile));
+    create_directories(sDestPath);
+    ASSERT_TRUE(copyPolicyImpl.copy(srcFilePath, sSrcPath, sDestPath, RenamePolicy(nullptr)));
+    ASSERT_TRUE(exists(sDestPath + srcFile));
+    remove_all(sDestPath);
 }
 
-TEST(TestYjUtil, test_yjcollector) {
+TEST_F(TestCollector, test_filecollector_docollect) {
+    boost::shared_ptr<Collector> collector(new FileCollector(sSrcPath, sDestPath, new CopyPolicyImpl(), new FilterPolicyImpl(), new RenamePolicyImpl()));
+    ASSERT_FALSE(collector->doCollect());
 
-    yjutil::FileCollector collector("./", "obj/");
-    collector.doCollect();
+    create_directories(sDestPath);
+    ASSERT_TRUE(collector->doCollect());
+    remove_all(sDestPath);
 }
 
+// ===================================================================================
 /*
 输入第一行包含一个字符串s，代表压缩后的字符串。
 S的长度<=1000;
@@ -52,8 +100,7 @@ S仅包含大写字母、[、]、|;
 解压后的字符串长度不超过100000;
 压缩递归层数不超过10层;
 */
-TEST(TestYjUtil, test_mytest1) {
-
+void test() {
     std::string inStr;
     std::cin >> inStr;
 
@@ -135,7 +182,7 @@ int get_result(std::vector<int> &vec, std::vector<int> &result) {
         int r = vec.size() - 1;
         int cnt_after = 0;
         do {
-            if (i + 1 >= vec.size() -1 )
+            if (i + 1 >= vec.size() - 1)
                 break;
             r = find_max_from_begin(vec, i, r) - 1;
             ++cnt_after;
@@ -146,7 +193,7 @@ int get_result(std::vector<int> &vec, std::vector<int> &result) {
         int cnt_before = 0;
         r = 0;
         do {
-            if (i <= 0 )
+            if (i <= 0)
                 break;
             r = find_max_from_end(vec, r, i) + 1;
             ++cnt_before;
@@ -158,7 +205,7 @@ int get_result(std::vector<int> &vec, std::vector<int> &result) {
     }
 }
 
-TEST(TestYjUtil, test_mytest2) {
+void test_mytest2() {
 
     std::vector<int> vec;
     int n = 0;

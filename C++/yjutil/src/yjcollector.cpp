@@ -59,7 +59,9 @@ bool FileCollector::getFileVecInner(const std::string &dirRoot,
 
 bool FileCollector::doCollect() {
     std::vector<std::string> srcFileVec;
-    getFileVec(m_srcDir, srcFileVec);
+    if (!getFileVec(m_srcDir, srcFileVec) || !isDirExist(m_destDir)) {
+        return false;
+    }
 
     std::for_each(srcFileVec.begin(), srcFileVec.end(),
                   std::bind1st(std::mem_fun(&FileCollector::collectFile), this));

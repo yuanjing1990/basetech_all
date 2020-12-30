@@ -2,15 +2,16 @@
 #include <gtest/gtest.h>
 #include <vector>
 
-#include "yjutil.h"
 #include "crypt.h"
-#include "zlib.h"
-#include "unistd.h"
 #include "fcntl.h"
+#include "unistd.h"
+#include "yjutil.h"
+#include "zlib.h"
+#include "yjfile.h"
 
-void test_yjdef();
-void test_yjlog();
-void test_ylalg();
+// void test_yjdef();
+// void test_yjlog();
+// void test_ylalg();
 
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);
@@ -25,19 +26,19 @@ TEST(Test, test) {
 TEST(TestYjUtil, test_gzip) {
     int fd = open("test.txt", 755);
     gzFile gf = gzdopen(fd, "w");
-    if(gf == NULL) {
+    if (gf == NULL) {
         DEBUG_PRINT("gzopen failed!");
     }
 
-    char* buf = "Hello World zlib!";
+    char *buf = "Hello World zlib!";
     gzwrite(gf, buf, strlen(buf));
     gzclose(gf);
 }
 
 TEST(TestYjUtil, test_crypt) {
-	DtlogdLogCrypt crypt("bin/aes.key");
-	// crypt.encryptFile("bin/02dropbox_SYSTEM_TOMBSTONE@1582294132056.txt", "Makefile.encrypt");
-	crypt.decryptFile("bin/02dropbox_SYSTEM_TOMBSTONE@1582294132056.txt", "bin/02dropbox_SYSTEM_TOMBSTONE@1582294132056.decrypt");
+    DtlogdLogCrypt crypt("bin/aes.key");
+    // crypt.encryptFile("bin/02dropbox_SYSTEM_TOMBSTONE@1582294132056.txt", "Makefile.encrypt");
+    crypt.decryptFile("bin/02dropbox_SYSTEM_TOMBSTONE@1582294132056.txt", "bin/02dropbox_SYSTEM_TOMBSTONE@1582294132056.decrypt");
 }
 
 TEST(TestYjUtil, test_yjdef) {
@@ -78,6 +79,28 @@ TEST(TestYjUtil, test_yjbitree) {
     std::vector<int> vec = {1, 3, 5, 8, 2, 9, 7, 6, 4};
     yjutil::_bitree<int> *tree = yjutil::_bitree<int>::CreateTree(vec, 8, 0);
     std::cout << *tree << std::endl;
+}
+
+TEST(TestYjUtil, test_yjfile) {
+    std::string filePath("/tmp/testyjutil/");
+    std::string fileName("testfile");
+    ASSERT_TRUE(fileName == getFileName(filePath + fileName));
+    ASSERT_TRUE(filePath == getFileDirectory(filePath + fileName));
+    ASSERT_FALSE(isFileExist(filePath));
+    ASSERT_FALSE(isFileExist(filePath + fileName));
+    ASSERT_FALSE(isDirectory(filePath));
+    ASSERT_FALSE(isFile(filePath + fileName));
+
+    ASSERT_TRUE(createDir(filePath, false));
+    ASSERT_TRUE(isFileExist(filePath));
+    ASSERT_TRUE(isDirectory(filePath));
+
+    ASSERT_TRUE(createFile(filePath + fileName));
+    ASSERT_TRUE(isFileExist(filePath + fileName));
+    ASSERT_TRUE(isFile(filePath + fileName));
+
+    ASSERT_TRUE(removeFile(filePath + fileName));
+    ASSERT_TRUE(removeDir(filePath));
 }
 
 int add(int &i) { ++i; }

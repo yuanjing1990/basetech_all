@@ -1,4 +1,4 @@
-#include "../include/crypt.h"
+#include "crypt.h"
 #include <algorithm>
 #include <fstream>
 #include <math.h>

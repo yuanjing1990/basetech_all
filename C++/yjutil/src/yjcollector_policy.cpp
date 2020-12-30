@@ -22,6 +22,9 @@ FilterPolicy::FilterPolicy(FilterPolicyImpl *impl) : m_impl(impl) {}
 FilterPolicy::~FilterPolicy() {}
 
 bool FilterPolicy::filter(const std::string &file) {
+    if (!m_impl) {
+        return false;
+    }
     return m_impl->filter(file);
 }
 
@@ -29,7 +32,7 @@ RenamePolicy::RenamePolicy(RenamePolicyImpl *renamePolicy) : m_impl(renamePolicy
 
 std::string RenamePolicy::rename(const std::string &src) {
     if (!m_impl) {
-        return "";
+        return src;
     }
     return m_impl->rename(src);
 }
@@ -41,7 +44,7 @@ CopyPolicyImpl::~CopyPolicyImpl() {}
 bool CopyPolicyImpl::copy(const std::string &src, const std::string &srcDir,
                           const std::string &destDir,
                           RenamePolicy renamePolicy) {
-    if (src.find(srcDir) != 0) {
+    if (src.find(srcDir) != 0 || !boost::filesystem::exists(destDir)) {
         return false;
     }
     std::string relativePath = src.substr(srcDir.size(), src.size());
