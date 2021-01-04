@@ -54,6 +54,19 @@
 #else
 #define DEBUG_PRINT(format, ...)
 #endif
+
+#if defined( WIN32 ) && defined( _MSC_VER )
+#ifdef UTILLIB
+#define UTIL_EXPORT __declspec(dllexport)
+#else
+#define UTIL_EXPORT __declspec(dllimport)
+#endif //UTILLIB
+#elif defined(__GNUC__)
+#define UTIL_EXPORT __attribute__((visibility("default")))
+#endif 
+
+#define interface struct
+
 /**
  * @}
  */

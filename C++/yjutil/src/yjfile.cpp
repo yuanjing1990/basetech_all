@@ -5,6 +5,8 @@
 #include <dirent.h>
 #include <fcntl.h>
 
+namespace yjutil {
+
 std::string getFileName(const std::string& filePath) {
     return filePath.substr(filePath.find_last_of("/") + 1, filePath.length());
 }
@@ -81,4 +83,6 @@ bool removeDir(const std::string& dirPath, bool bRecursion) {
         ret = ret && (0 == rmdir(dirPath.c_str()));
     }
     return ret;
+}
+
 }

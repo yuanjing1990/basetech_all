@@ -12,6 +12,7 @@
 // void test_yjdef();
 // void test_yjlog();
 // void test_ylalg();
+using namespace yjutil;
 
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);

@@ -2,6 +2,7 @@
 #define YJLOG_H_
 
 #include <iostream>
+#include <iterator>
 
 #include "yjdef.h"
 
@@ -68,8 +69,7 @@ struct _Tick {
 template <class T>
 void print(const T &vec) {
     using namespace std;
-    for (typename T::const_iterator _it = vec.begin(); _it != vec.end(); ++_it)
-        cout << *_it << ' ';
+	std::copy(vec.begin(), vec.end(), std::ostream_iterator<typename T::value_type>(cout, " "));
     cout << endl;
 }
 
