@@ -6,7 +6,7 @@
 namespace yq {
 template <class T> class BiTree {
   public:
-    typedef typename T *type_ptr;
+    typedef T* type_ptr;
     typedef size_t size_type;
     BiTree() { memset(this, sizeof(BiTree), 0); };
     ~BiTree() {
