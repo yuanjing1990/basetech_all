@@ -1,0 +1,197 @@
+{
+   "checksum": "14d859022955a749ae79b8c6520e53fb",
+   "roots": {
+      "bookmark_bar": {
+         "children": [ {
+            "date_added": "13251786323820033",
+            "guid": "710d1fb7-07a0-4412-b567-dee09ce462c6",
+            "id": "5",
+            "name": "飞书",
+            "type": "url",
+            "url": "https://thundersoft.feishu.cn/messenger/?from=navigation_bar_free_register"
+         }, {
+            "children": [ {
+               "date_added": "13255494838323493",
+               "guid": "11b3c420-ba39-47bc-bf62-3ac2899654d6",
+               "id": "24",
+               "name": "配置中心",
+               "type": "url",
+               "url": "http://devops.thundersoft.com/cc/#/authority"
+            }, {
+               "date_added": "13252475291217602",
+               "guid": "dd573d57-0551-4e74-9a78-e87e4829599d",
+               "id": "13",
+               "name": "Jenkins",
+               "type": "url",
+               "url": "http://192.168.9.180:8080/view/E-cockpit3.5/job/Airliner_Verify_Build/build?delay=0sec"
+            }, {
+               "date_added": "13252475801262738",
+               "guid": "f81924fb-331a-4f3d-a3a0-8dbce6b7bf2a",
+               "id": "14",
+               "name": "ThunderSoft_FTP - Synology DiskStation",
+               "type": "url",
+               "url": "http://192.168.9.8:5000/"
+            }, {
+               "date_added": "13251792332562817",
+               "guid": "4f56885f-45bb-4a0a-b628-cd3c38090758",
+               "id": "10",
+               "name": "威马 主页 - 威马 - Confluence",
+               "type": "url",
+               "url": "http://116.236.72.99:28090/confluence/pages/viewpage.action?pageId=1310765"
+            }, {
+               "date_added": "13251788145360302",
+               "guid": "6b52557b-958c-4edc-9e52-aa4f15c15f99",
+               "id": "9",
+               "name": "集团工作平台 - 袁晶",
+               "type": "url",
+               "url": "http://i.thundersoft.com/wui/main.jsp"
+            }, {
+               "date_added": "13251788058569865",
+               "guid": "43800e2d-fa7d-4c30-b358-e3e8a35cd144",
+               "id": "8",
+               "name": "My Reviews | 192.168 Code Review",
+               "type": "url",
+               "url": "http://192.168.11.88/gerrit/#/dashboard/self"
+            }, {
+               "date_added": "13251786598098198",
+               "guid": "672d257f-bd14-4013-8a98-c2546f9b626f",
+               "id": "7",
+               "name": "Cross Reference: /cauchy-gallop/lagvm/LINUX/android/",
+               "type": "url",
+               "url": "http://192.168.9.48:8080/source/xref/cauchy-gallop/lagvm/LINUX/android/"
+            }, {
+               "date_added": "13251786539361241",
+               "guid": "1416161b-0c8f-4fca-b64d-95462daeb353",
+               "id": "6",
+               "name": "Cherish - Revision 3383: /",
+               "type": "url",
+               "url": "http://192.168.9.128:8000/svn2/Cherish/"
+            }, {
+               "date_added": "13256118339448081",
+               "guid": "a2152057-0069-4971-b1df-c2867f8073ea",
+               "id": "32",
+               "name": "[GAL-12277] 【Function Test】【电源策略】OTA模式下,语音可正常使用 - Jira",
+               "type": "url",
+               "url": "http://sh-jira.thundersoft.com:28080/jira/browse/GAL-12277?filter=-1"
+            } ],
+            "date_added": "13255753465247071",
+            "date_modified": "13256118339448081",
+            "guid": "d64142d9-8125-40f4-81fb-e756fde6640a",
+            "id": "29",
+            "name": "公司网站",
+            "type": "folder"
+         }, {
+            "children": [ {
+               "date_added": "13255697933860609",
+               "guid": "02a94d83-65bf-4a22-81da-fd0c074e817c",
+               "id": "28",
+               "name": "理解 Context.getSystemService 原理_weixin_34104341的博客-CSDN博客",
+               "type": "url",
+               "url": "https://blog.csdn.net/weixin_34104341/article/details/91394734"
+            }, {
+               "date_added": "13256207441952621",
+               "guid": "d28e3948-448f-4beb-ae8c-ad677e5fe3c5",
+               "id": "36",
+               "name": "screen使用_张智超的博客-CSDN博客_screen使用",
+               "type": "url",
+               "url": "https://blog.csdn.net/qq_28832135/article/details/79831700"
+            }, {
+               "date_added": "13256207492004605",
+               "guid": "042541b6-3fd0-4960-9bc9-4fb939563ad3",
+               "id": "37",
+               "name": "gRPC的C++编译及简单使用 – 九霄天空-IT技术分享学习",
+               "type": "url",
+               "url": "http://turbock79.cn/?p=2042"
+            }, {
+               "date_added": "13256216048515490",
+               "guid": "ecc4066e-7680-4fef-95e4-c4606f634407",
+               "id": "40",
+               "name": "Linux下so动态库查看与运行时搜索路径的设置_六桥风月IT随笔-CSDN博客",
+               "type": "url",
+               "url": "https://blog.csdn.net/qq_21051503/article/details/80282189"
+            }, {
+               "date_added": "13256796708734841",
+               "guid": "f14faea9-b454-490d-b595-f5aa6d73300c",
+               "id": "42",
+               "name": "__stdcall详解 - haotianling - 博客园",
+               "type": "url",
+               "url": "https://www.cnblogs.com/songfeixiang/p/3733661.html"
+            } ],
+            "date_added": "13256122836632582",
+            "date_modified": "13256796708734841",
+            "guid": "ca33b2df-692f-4a0a-8149-ed6e00e571ce",
+            "id": "33",
+            "name": "技术网页",
+            "type": "folder"
+         }, {
+            "children": [ {
+               "date_added": "13254474160958958",
+               "guid": "2f2ba889-3d64-468b-bc08-ad0fddebb752",
+               "id": "22",
+               "name": "码工具 - 代码在线工具箱",
+               "type": "url",
+               "url": "https://www.matools.com/#"
+            }, {
+               "date_added": "13256122890104263",
+               "guid": "9b5420bd-9f51-4166-b12f-82edda1b5596",
+               "id": "35",
+               "name": "1.0 Android基础入门教程 | 菜鸟教程",
+               "type": "url",
+               "url": "https://www.runoob.com/w3cnote/android-tutorial-intro.html"
+            }, {
+               "date_added": "13253873518022419",
+               "guid": "3a8d272b-79a9-457c-8181-73bfea236824",
+               "id": "20",
+               "name": "中文版Effective STL:50条有效使用STL的经验",
+               "type": "url",
+               "url": "http://reader.epubee.com/books/mobile/c3/c3c27ee9bcda6aa3472c700ead378781/text00012.html#mllj4"
+            }, {
+               "date_added": "13256215227767521",
+               "guid": "70160845-c8f5-4883-9584-c1a799d8dfcd",
+               "id": "38",
+               "name": "GRPC C++: GRPC Core",
+               "type": "url",
+               "url": "http://grpc.github.io/grpc/cpp/index.html"
+            }, {
+               "date_added": "13256215914051936",
+               "guid": "7cfa81e4-9892-49f3-abbc-85640ca7f1eb",
+               "id": "39",
+               "name": "AndroidXRef",
+               "type": "url",
+               "url": "http://androidxref.com/"
+            } ],
+            "date_added": "13256122862208032",
+            "date_modified": "13256216048515490",
+            "guid": "2ca02d00-5b1f-45b8-a669-67c09baef5d0",
+            "id": "34",
+            "name": "工具网页",
+            "type": "folder"
+         } ],
+         "date_added": "13251786073937271",
+         "date_modified": "13256122862208616",
+         "guid": "00000000-0000-4000-a000-000000000002",
+         "id": "1",
+         "name": "书签栏",
+         "type": "folder"
+      },
+      "other": {
+         "children": [  ],
+         "date_added": "13251786073937271",
+         "date_modified": "0",
+         "guid": "00000000-0000-4000-a000-000000000003",
+         "id": "2",
+         "name": "其他书签",
+         "type": "folder"
+      },
+      "synced": {
+         "children": [  ],
+         "date_added": "13251786073937272",
+         "date_modified": "0",
+         "guid": "00000000-0000-4000-a000-000000000004",
+         "id": "3",
+         "name": "移动设备书签",
+         "type": "folder"
+      }
+   },
+   "version": 1
+}
