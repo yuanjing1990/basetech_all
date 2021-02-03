@@ -7,6 +7,7 @@
 #include <ctime>
 #include <functional>
 #include <iostream>
+#include <vector>
 namespace yq {
 //==========工具宏===========->Begin
 #define SAFE_DELETE(p)                                                         \
@@ -68,7 +69,7 @@ bool _Tick::m_bflag = 0;
 
 template <class T> void print(const T &vec) {
     using namespace std;
-    for (T::const_iterator _it = vec.begin(); _it != vec.end(); ++_it)
+    for (typename T::const_iterator _it = vec.begin(); _it != vec.end(); ++_it)
         cout << *_it << ' ';
     cout << endl;
 }
@@ -78,7 +79,7 @@ template <class T> void print(const T &vec) {
 // 在集合中顺序查找等于特定值元素
 template <class T>
 typename T::iterator seq_search(T &vec, const typename T::value_type &e) {
-    T::iterator _it = vec.begin();
+    typename T::iterator _it = vec.begin();
     while (_it != vec.end()) {
         if (*_it == e)
             return _it;
@@ -88,21 +89,22 @@ typename T::iterator seq_search(T &vec, const typename T::value_type &e) {
 }
 
 // 在集合中顺序查找满足指定条件的元素
-template <class T, class Op> typename T::iterator seq_search(T &vec, Op _op) {
-    T::iterator _it = vec.begin();
-    for (_it; _it != vec.end(); ++_it) {
-        if (_op(*_it))
-            return _it;
-    }
-    return _it;
-}
+// template <class T, class Op>
+// typename T::iterator seq_search(T &vec, Op _op) {
+//     typename T::iterator _it = vec.begin();
+//     for (_it; _it != vec.end(); ++_it) {
+//         if (_op(*_it))
+//             return _it;
+//     }
+//     return _it;
+// }
 
 //查询集合中指定的元素值是否存在,二分查找
-template <class T> bool binary_search(T &vec, typename const T::value_type &e) {
+template <class T> bool binary_search(T &vec, const typename T::value_type &e) {
     size_t _up_pos = vec.size() - 1;
     size_t _down_pos = 0;
     size_t _cur_pos = (_up_pos + _down_pos) / 2;
-    T::value_type _value = vec.at(_cur_pos);
+    typename T::value_type _value = vec.at(_cur_pos);
     while (_value != e) {
         if (_value < e) {
             _down_pos = _cur_pos + 1;
@@ -135,7 +137,7 @@ template <class T> struct _bitree {
     }
     //构造二叉树（用递归）
     //先造树根，再造左子树，接着右子树，直到返回NULL
-    static _bitree *CreateTree(std::vector<T> vec, int up_pos, int down_pos) {
+    static _bitree<T>* CreateTree(std::vector<T> vec, int up_pos, int down_pos) {
         int _cur_pos = (up_pos + down_pos) / 2;
         //递归终止
         if (up_pos - down_pos < 0)
@@ -147,6 +149,7 @@ template <class T> struct _bitree {
         _root->m_right_child = CreateTree(vec, up_pos, _cur_pos + 1);
         return _root;
     }
+
     bool InsertElem(T e) {
         if (m_value == e)
             return false;
@@ -163,6 +166,7 @@ template <class T> struct _bitree {
         }
         return true;
     }
+
     //深度优先探索
     void DFS_print(std::ostream &os) {
         using namespace std;
@@ -170,7 +174,7 @@ template <class T> struct _bitree {
         _tmp.push_back(this);
         while (_tmp.size() > 0) {
             vector<_bitree *> _tmp_t;
-            vector<_bitree *>::iterator _it = _tmp.begin();
+            typename vector<_bitree *>::iterator _it = _tmp.begin();
             for (; _it != _tmp.end(); ++_it) {
                 os << (*_it)->m_value << ",";
                 if ((*_it)->m_left_child != NULL)
@@ -184,13 +188,13 @@ template <class T> struct _bitree {
     }
 
     // 友元函数模版重载输出运算符
-    template <class T>
-    friend std::ostream &operator<<(std::ostream &os, const _bitree<T> &e);
+    template <class TP>
+    friend std::ostream &operator<<(std::ostream &os, const _bitree<TP> &e);
 };
 // 输出二叉树
-template <class T>
-std::ostream &operator<<(std::ostream &os, const yq::_bitree<T> &e) {
-    _bitree<T>(e).DFS_print(os);
+template <class TP>
+std::ostream &operator<<(std::ostream &os, const yq::_bitree<TP> &e) {
+    _bitree<TP>(e).DFS_print(os);
     return os;
 }
 
@@ -203,9 +207,9 @@ struct _Runtime_Class {
     const char *m_lpClassName;
     int m_nObjectSize;
     unsigned int m_wSchema;
-    _Object *(_stdcall *m_pfnCreateObject)();
+    _Object *( *m_pfnCreateObject)();
 #ifdef _AFXDLL
-    _Runtime_Class *(_stdcall *m_pfnGetBaseClass)();
+    _Runtime_Class *( *m_pfnGetBaseClass)();
 #else
     _Runtime_Class *m_pBaseClass;
 #endif

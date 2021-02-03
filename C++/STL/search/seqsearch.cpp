@@ -23,7 +23,7 @@ int main(int argc, char **argv) {
 
     // 使用查询一个满足特定函数的元素
     TICK_BEGIN;
-    it = yq::seq_search(vec, bind2nd(greater<int>(), temp));
+    // it = yq::seq_search(vec, bind2nd(greater<int>(), temp));
     if (it != vec.end())
         cout << *it << endl;
     else

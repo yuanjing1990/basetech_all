@@ -29,5 +29,6 @@ int main() {
     test(7);
     test(MyType());
     test_type(7);
-    test_type(&MyType());
+    MyType tmp;
+    test_type(&tmp);
 }

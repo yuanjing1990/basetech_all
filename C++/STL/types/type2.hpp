@@ -1,5 +1,6 @@
 #ifndef TYPE2_HPP
 #define TYPE2_HPP
+#include <stddef.h>
 //判断类型是否是指针，引用，数组，函数，成员指针
 //基础模版
 template <typename T> class CompoundT {

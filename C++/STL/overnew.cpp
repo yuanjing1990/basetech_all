@@ -1,6 +1,7 @@
 #include "myutil.h"
 #include <ctime>
 #include <iostream>
+using namespace yq;
 class A {
   private:
     int m_a;
@@ -45,17 +46,17 @@ class A {
 const int A::BLOCK_SIZE = 100;
 A *A::headofFreeList;
 int main(int argc, char *argv[]) {
-    CLOCK_START
+    OUT_TICK_BEGIN
     for (int i = 0; i < 1000000; i++) {
         A *a = new A;
         delete a;
     }
-    CLOCK_END
+    OUT_TICK_END
 
-    CLOCK_START
+    OUT_TICK_BEGIN
     for (int i = 0; i < 1000000; i++) {
         A *a = static_cast<A *>(::operator new(sizeof(A)));
         delete a;
     }
-    CLOCK_END
+    OUT_TICK_END
 }
