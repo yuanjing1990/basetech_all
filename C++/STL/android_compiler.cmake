@@ -1,7 +1,8 @@
+# cmake -DCMAKE_TOOLCHAIN_PATH=android_compiler.cmake <CMakeLists_FilePath>
 set(CMAKE_SYSTEM_NAME Android)
 set(CMAKE_SYSTEM_VERSION 1)
 
-set(CMAKE_FIND_ROOT_PATH  /tmp/ndk-yuanjing/arm-linux-androideabi)
+set(CMAKE_FIND_ROOT_PATH /tmp/ndk-yuanjing/arm-linux-androideabi /usr/)
 set(CMAKE_C_COMPILER ${CMAKE_FIND_ROOT_PATH}/bin/arm-linux-androideabi-gcc)
 set(CMAKE_CXX_COMPILER ${CMAKE_FIND_ROOT_PATH}/bin/arm-linux-androideabi-g++)
 
