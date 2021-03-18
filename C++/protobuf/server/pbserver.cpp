@@ -1,4 +1,5 @@
-#include "../proto/test.grpc.pb.h"
+#include "test.grpc.pb.h"
+#include "GrpcService.h"
 #include <grpcpp/grpcpp.h>
 #include <grpcpp/health_check_service_interface.h>
 #include <grpcpp/ext/proto_server_reflection_plugin.h>
@@ -35,6 +36,10 @@ void RunServer() {
 }
 
 int main(int argc, char* argv[]) {
-    RunServer();
+    // RunServer();
+    TestImpl service;
+    GrpcService svr("0.0.0.0:50051", &service);
+    char q;
+    std::cin >> q;
     return 0;
 }

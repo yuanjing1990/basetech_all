@@ -82,7 +82,7 @@ else()
   # Find Protobuf installation
   # Looks for protobuf-config.cmake file installed by Protobuf's cmake installation.
   set(protobuf_MODULE_COMPATIBLE TRUE)
-  find_package(Protobuf CONFIG REQUIRED)
+  find_package(protobuf CONFIG REQUIRED)
   message(STATUS "Using protobuf ${Protobuf_VERSION}")
 
   set(_PROTOBUF_LIBPROTOBUF protobuf::libprotobuf)
@@ -138,5 +138,15 @@ foreach(_target
   target_link_libraries(${_target}
     ${_REFLECTION}
     ${_GRPC_GRPCPP}
-    ${_PROTOBUF_LIBPROTOBUF})
+    ${_PROTOBUF_LIBPROTOBUF}
+    protolib)
 endforeach()
+
+aux_source_directory(lib/src protolib_SRCS)
+include_directories(lib/include)
+add_library(protolib SHARED ${protolib_SRCS})
+target_link_libraries(protolib
+  ${_REFLECTION}
+  ${_GRPC_GRPCPP}
+  ${_PROTOBUF_LIBPROTOBUF}
+)

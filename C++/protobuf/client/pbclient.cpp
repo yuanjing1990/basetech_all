@@ -1,4 +1,4 @@
-#include "../proto/test.grpc.pb.h"
+#include "test.grpc.pb.h"
 #include <grpcpp/grpcpp.h>
 
 int main(int argc, char* argv[]) {
