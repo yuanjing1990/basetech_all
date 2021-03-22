@@ -6,3 +6,4 @@
 *.so
 C++/yjutil/bin/*
 C++/yjutil/obj/*
+**/build/*
