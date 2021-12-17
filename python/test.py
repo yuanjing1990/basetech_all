@@ -11,7 +11,12 @@ character_tbl = {}
 svr_socket_str = "tcp://*:5555"
 clt_socket_str = "tcp://localhost:5555"
 
+# MVC模型示例
+# 此程序是一个选择题生成工具，带命令行和GUI两种视图
+
+
 class Question:
+    # 此类是具体问题的数据表示：（目标选项，所有选项）
     def __init__(self, data=()):
         self.m_data = data
         pass
@@ -22,25 +27,27 @@ class Question:
 
     def __getitem__(self, i):
         return self.m_data[i]
-    
+
     def __len__(self):
         return len(self.m_data)
 
 
 class QuestionFactory:
+    # 此类是Question的工厂类，根据题库自动生成问题
     @staticmethod
     def createQuestion():
         sel_index = []
         while len(sel_index) < 4:
-            sel = random.randint(1,10)
+            sel = random.randint(1, 10)
             if sel not in sel_index:
                 sel_index.append(sel)
-        ret = (random.choice(sel_index),sel_index)
+        ret = (random.choice(sel_index), sel_index)
         return Question(ret)
         pass
 
 
 class ConsoleView:
+    # 控制台视图，问题显示和作答都在控制台中进行
     def __init__(self):
         self.m_question = Question()
         self.m_ctrl = None
@@ -56,22 +63,25 @@ class ConsoleView:
     def setQuestion(self, question):
         self.m_question = question
 
+    # 显示Question的具体方法
     def draw(self):
         print("How to write the character %d?" % self.m_question[0])
         choice_str = ""
-        for e in self.m_question[1]:
-            choice_str += "%d.%d\t" % (self.m_question[1].index(e)+1,e)
+        for i in range(1, len(self.m_question[1]) + 1):
+            choice_str += "%d.%d\t" % (i, self.m_question[1][i-1])
         print(choice_str)
         pass
 
+    # 获取answer并判断答案
     def getAnswer(self):
         while True:
             if len(self.m_question) < 2:
                 continue
-            answer = input("Please input your answer[1-%d] or q|quit:" % len(self.m_question[1]))
+            answer = input(
+                "Please input your answer[1-%d] or q|quit:" % len(self.m_question[1]))
             ret = 0
             try:
-                if answer in ("q","quit"):
+                if answer in ("q", "quit"):
                     ret = -1
                 elif int(answer) in range(1, len(self.m_question[1])+1):
                     ret = int(answer)
@@ -79,7 +89,7 @@ class ConsoleView:
                     print("Input Error!")
             except ValueError as e:
                 print("Input ValueError:%s!" % e)
-            
+
             ctx = zmq.Context()
             sck = ctx.socket(zmq.REQ)
             sck.connect(clt_socket_str)
@@ -107,7 +117,8 @@ class GuiView:
         self.m_qstLabel.pack()
         self.m_ansEntry = tkinter.Entry(self.m_rootWnd)
         self.m_ansEntry.pack()
-        self.m_okBtn = tkinter.Button(self.m_rootWnd, text="OK", command=self.onOkBtnClick)
+        self.m_okBtn = tkinter.Button(
+            self.m_rootWnd, text="OK", command=self.onOkBtnClick)
         self.m_okBtn.pack()
         self.m_msgLabel = tkinter.Label(self.m_rootWnd)
         self.m_msgLabel.pack()
@@ -117,7 +128,7 @@ class GuiView:
     def close(self):
         self.m_rootWnd.destroy()
 
-    def setctrl(self,ctrl):
+    def setctrl(self, ctrl):
         self.m_ctrl = ctrl
         pass
 
@@ -160,7 +171,7 @@ class GuiView:
             sck.connect(clt_socket_str)
             sck.send(b"%d" % ret)
 
-    def checkAnswer(self,ans):
+    def checkAnswer(self, ans):
         if ans == -1:
             return -1
         elif ans == self.m_question[1].index(self.m_question[0])+1:
@@ -175,7 +186,7 @@ class GuiView:
 class TrainModel:
     def __init__(self, view):
         self.m_question = []
-        self.m_view = [view,]
+        self.m_view = [view, ]
         pass
 
     def add_view(self, view):
@@ -208,13 +219,13 @@ class Controller:
     def checkAnswer(self, ans):
         ret = self.m_model.checkAnswer(ans)
         for e in self.m_view:
-            ret = e.checkAnswer(ret)
+            ret = e.checkAnswer(ans)
         return ret
         pass
 
     def getAnswerFromViews(self):
         for e in self.m_view:
-            thd = threading.Thread(target = e.getAnswer)
+            thd = threading.Thread(target=e.getAnswer)
             thd.start()
 
     def train(self):
@@ -244,6 +255,7 @@ def main():
     model.add_view(conview)
     ctrl = Controller(model)
     view.setctrl(ctrl)
+    conview.setctrl(ctrl)
     ctrl.getAnswerFromViews()
     threading.Thread(target=ctrl.train).start()
     view.m_rootWnd.mainloop()
@@ -252,4 +264,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
