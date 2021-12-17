@@ -1,4 +1,6 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.17)
+
+include_directories(D:/3rdlibs/include)
 
 add_executable(example_format example_format.cpp)
 

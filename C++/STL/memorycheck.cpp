@@ -36,8 +36,7 @@
 #endif // WIN32
 
 int main() {
-    char *p1;
-    p1 = new char[40];
+    // char* p1 = new char[40];
 #ifdef WIN32
     _CrtMemDumpAllObjectsSince(NULL);
 #endif

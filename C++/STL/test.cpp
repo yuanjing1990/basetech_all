@@ -22,19 +22,6 @@ using namespace boost::unit_test::framework;
 #else
 #endif
 
-BOOST_AUTO_TEST_CASE(test) {
-    char* argv[] = {"awk", "/----- pid/,/histogram:/", "test.log", 0};
-    printf("awk");
-    for(auto i : argv) {
-        printf(" %s", i);
-    }
-    printf("\n");
-    execvp("awk", argv);
-    // char* argv[] = {"-l", "-t", 0};
-    // execvp("ls", argv);
-}
-
-// 演示和测试boost::any的基本用法
 BOOST_AUTO_TEST_CASE(test_any)
 {
         using boost::any;
@@ -130,35 +117,4 @@ BOOST_AUTO_TEST_CASE(test_gregorian)
         using namespace boost::gregorian;
         date today = day_clock::local_day();
         std::cout << today << std::endl;
-}
-
-// 演示std::stream_iterator用法
-BOOST_AUTO_TEST_CASE(test_stream_iterator)
-{
-        using std::string;
-        using std::vector;
-
-        {
-                // 读取文件内容输出到cout
-                vector<string> vec;
-                auto i = std::ifstream("Makefile");
-                std::istream_iterator<string> isReader(i);
-                std::ostream_iterator<string> osWriter(std::cout, " ");
-                std::copy(isReader, std::istream_iterator<string>(), std::back_inserter(vec));
-                std::copy(vec.begin(), vec.end(), osWriter);
-                std::cout << std::endl;
-        }
-
-        {
-                vector<string> vec;
-                auto i = std::ifstream("Makefile");
-                std::ostream_iterator<string> osWriter(std::cout, "\n");
-                vec.push_back("");
-                while(std::getline(i, vec.back())) {
-                        vec.push_back("");
-                }
-                vec.pop_back();
-                std::copy(vec.begin(), vec.end(), osWriter);
-                std::cout << std::endl;
-        }
 }

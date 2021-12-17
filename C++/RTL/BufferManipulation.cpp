@@ -36,7 +36,7 @@ int main(int argc, char *argv[]) {
     // int err = memcpy_s(dest,510,buf,512);
     // if(err == ERANGE)
     // printf("%s","Dest Range Error!");
-#ifdef WIN32
+#ifdef NOTDEFINE
     swab(buf, dest, sizeof(buf));
     printf("%s", dest);
     printf("\n");

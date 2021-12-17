@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.17)
 
 add_executable(ColorCode ColorCode.cpp)
 
@@ -15,8 +15,8 @@ add_executable(preprocess preprocess.cpp)
 
 add_executable(rtti rtti.cpp)
 
-add_executable(test_prog test.cpp)
-target_link_libraries(test_prog boost_unit_test_framework boost_system)
+# add_executable(test_prog test.cpp)
+# target_link_libraries(test_prog boost_unit_test_framework boost_system)
 
 add_subdirectory(example_boost)
 add_subdirectory(exprtmp)

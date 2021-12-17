@@ -132,6 +132,19 @@ void testSharePtr() {
     // b->_a = a;
 }
 
+class Solution {
+  public:
+    vector<int> twoSum(vector<int> &nums, int target) {
+        for (int i = 0; i < nums.size(); ++i) {
+            int x = target - nums[i];
+            auto pos = std::find(nums.begin(), nums.end(), x);
+            if (pos != nums.end() && pos - nums.begin() != i) {
+                return vector<int>{i, pos};
+            }
+        }
+    }
+};
+
 int main(int argc, char *argv[]) {
     testSharePtr();
     return 0;
