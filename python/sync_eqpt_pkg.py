@@ -8,6 +8,7 @@ class FtpHelper(object):
     ftp = FTP()
     def __init__(self, srv, port=21):
         self.ftp.connect(srv, port)
+        self.ftp.set_debuglevel(2)
     
     def login(self, username, passwd):
         self.ftp.login(username, passwd)
@@ -27,8 +28,8 @@ class FtpHelper(object):
                 self.ftp.mkd(path)
                 self.ftp.cwd(path)
 
-    def close(self):
-        self.ftp.close()
+    def quit(self):
+        self.ftp.quit()
 
 def UploadEqptFile(dirPath, subDirName):
     dirPath = dirPath.rstrip("/")
@@ -40,18 +41,20 @@ def UploadEqptFile(dirPath, subDirName):
     ftpHelper.login("51ftpvipuser", "ftpvipuser@51")
     for file in files:
         filePath = os.path.join(srcPath, file)
-        if os.path.isfile(filePath):
-            dstPath = r"Board-Software/" + subDirName + "/" + file[file.find("V100"):file.find(".rar")]
+        print("file:%s" % file)
+        ret = re.search(r"(V[0-9]{3}R[0-9]{3}C[0-9]{2}SPC[0-9]{3}B[0-9]{3})(.rar$)", file)
+        if ret != None and os.path.isfile(filePath):
+            dstPath = r"Board-Software/" + subDirName + "/" + ret.group(1)
             print("dstPath:%s" % dstPath)
             ftpHelper.uploadFile(filePath, dstPath)
             print("srcPath:%s" % filePath)
-    ftpHelper.close()
+    ftpHelper.quit()
 
 def GetDirFileList(dirpath):
     files = os.listdir(dirpath)
     for file in files:
         fi_d = os.path.join(dirpath, file)
-        if os.path.isdir(fi_d):
+        if re.match("[0-9]{5}[a-zA-Z]{3}", file) != None and os.path.isdir(fi_d):
             yield file
 
 class GuiView:
